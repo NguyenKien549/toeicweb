@@ -1,0 +1,86 @@
+package com.bktoeic.serviceImpl;
+
+import java.sql.Timestamp;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.bktoeic.dao.UserDAO;
+import com.bktoeic.model.Account;
+import com.bktoeic.model.Comment;
+import com.bktoeic.model.Discussion;
+import com.bktoeic.model.Report;
+import com.bktoeic.service.userService;
+
+@Service("userService")
+public class userServiceImpl implements userService {
+	
+	@Autowired
+	private UserDAO userDAO;
+
+	public Account checkAccount(String username, String pass) {
+		return userDAO.checkAccount(username, pass);
+	}
+
+	public boolean register(Account account) {
+		String salt=MD5Lib.createSalt();
+		account.setSalt(salt);
+		account.setPassword(MD5Lib.md5_pass_salt(account.getPassword(), salt));
+		account.setActive((byte) 1);
+		account.setType("User");
+		return userDAO.register(account);
+	}
+
+	public boolean updateUser(Account account) {
+		return userDAO.updateUser(account);
+	}
+
+	public List<Discussion> getDiscussionList() {
+		return userDAO.getDiscussionList();
+	}
+
+	public Discussion getDiscussion(int id) {
+		return userDAO.getDiscussion(id);
+	}
+
+	public boolean addDiscussion(Discussion discussion) {
+		return userDAO.addDiscussion(discussion);
+	}
+
+	public boolean updateDiscussion(Discussion discussion) {
+		return userDAO.updateDiscussion(discussion);
+	}
+
+	public boolean deleteDiscussion(int id) {
+		return userDAO.deleteDiscussion(id);
+	}
+
+	public boolean addComment(Comment comment) {
+		comment.setActive((byte) 1);
+		comment.setTime(new Timestamp(System.currentTimeMillis()));
+		return userDAO.addComment(comment);
+	}
+
+	public boolean updateComment(Comment comment) {
+		return userDAO.updateComment(comment);
+	}
+
+	public boolean deleteComment(int id) {
+		return userDAO.deleteComment(id);
+	}
+
+	public Comment getComment(int id) {
+		return userDAO.getComment(id);
+	}
+
+	public boolean report(Report report) {
+		report.setTime(new Timestamp(System.currentTimeMillis()));
+		return userDAO.report(report);
+	}
+
+	public int getNumberPage(String type, int pageSize) {
+		return userDAO.getNumberPage(type, pageSize);
+	}
+
+}

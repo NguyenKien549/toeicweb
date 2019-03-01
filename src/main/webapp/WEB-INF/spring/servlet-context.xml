@@ -14,31 +14,24 @@
 		http://www.springframework.org/schema/tx 
 		http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
 		
-		
-		
-		<annotation-driven />
-		
-		<!-- tai cac tep tin da phuong tien -->
-		<beans:bean id="multipartResolver"
-		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-		</beans:bean>
-		
+		<annotation-driven/>
 		<context:component-scan base-package="com.bktoeic"/>
-		<tx:annotation-driven/>
+		
+		<resources location="/resources/" mapping="/resources/**"/>
+		<resources location="/upload/" mapping="/upload/**"/>
+		
 		<beans:bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<beans:property name="prefix" value="/WEB-INF/views/" />
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
-	
-	
-		
+
 		<beans:bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<beans:property name="driverClassName"
 			value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
 		<beans:property name="url"
-			value="jdbc:sqlserver://localhost:1433;DatabaseName=WEBTOEIC_DATABASE" />
+			value="jdbc:sqlserver://localhost:1433;DatabaseName=TOEIC_DATABASE" />
 		<beans:property name="username" value="sa" />
 		<beans:property name="password" value="1234" />
 	</beans:bean>
@@ -65,21 +58,11 @@
 	</beans:bean>
 
 	<tx:annotation-driven transaction-manager="transactionManager" />
-		
-	<!-- import css -->
-		<default-servlet-handler/>
-	<resources location="/webapp/js/" mapping="webapp/js/**"/>
-	<resources location="/webapp/css/" mapping="webapp/css/**"/>
-		
-		
-		<!-- vi du mot bean dao va service se nhu the nay  -->
-		<beans:bean id="userDAO" class="com.bktoeic.dao.UserDAO">
-		<beans:property name="sessionFactory" ref="sessionFactory" />
-	</beans:bean>
-	
-		<beans:bean id="dlBaiHocDAO" class="com.bktoeic.dao.DLBaiHocDAO">
-		<beans:property name="sessionFactory" ref="sessionFactory" />
-	</beans:bean>
 
+	<beans:bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		 <!-- setting maximum upload size -->
+<!-- 		<beans:property name="maxUploadSize" value="100000" /> -->
+		</beans:bean>
 	
 </beans:beans>

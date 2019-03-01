@@ -1,0 +1,70 @@
+*{
+	margin:0;
+	padding: 0;
+}
+
+.content{
+	background: white;
+}
+
+.background{
+	height: 350px;
+	background:linear-gradient(
+      rgba(255,255,255,0.1), 
+      rgba(255,255,255,0.1)
+    ),  url("resources/img/forum.jpg");
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+
+.listDiscussion thead{
+	background-color: white!important;
+}
+
+.listDiscussion tbody td{
+	padding: 0 5px 0 5px!important;
+}
+
+.note{
+	margin-top: 75px;
+	font-family: Helvetica,Arial,sans-serif;
+	font-size: 14px;
+	color: #222;
+}
+
+.btn{
+	margin-top: 5px;
+}
+
+/* animation cho slogan */
+@-webkit-keyframes my {
+	 0% { color: #0000EE; }
+	 50% { color: #DD0000;  }
+	 100% { color: #0000EE;  }
+ }
+ @-moz-keyframes my { 
+	 0% { color: #0000EE;  } 
+	 50% { color: #DD0000;  }
+	 100% { color:#0000EE;  } 
+ }
+ @-o-keyframes my { 
+	 0% { color: #0000EE; } 
+	 50% { color: #DD0000; } 
+	 100% { color: #0000EE;  } 
+ }
+ @keyframes my { 
+	 0% { color: #0000EE;  } 
+	 50% { color: #DD0000;  }
+	 100% { color: #0000EE;  } 
+ } 
+ .forumSlogan {
+ 
+         font-size:20px;
+         font-weight:bold;
+	 -webkit-animation: my 700ms infinite;
+	 -moz-animation: my 700ms infinite; 
+	 -o-animation: my 700ms infinite; 
+	 animation: my 700ms infinite;
+}

@@ -1,81 +1,29 @@
 package com.bktoeic.dao;
 
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
+import java.util.List;
 
 import com.bktoeic.model.Account;
+import com.bktoeic.model.Comment;
+import com.bktoeic.model.Discussion;
+import com.bktoeic.model.Report;
 
-@Repository
-public class UserDAO {
+public interface UserDAO {
+	public Account checkAccount(String username,String pass);
+	public boolean register(Account account);
+	public boolean updateUser(Account account);
 	
-	private SessionFactory sessionFactory;
-
-	@Autowired
-	public void setSessionFactory(SessionFactory sessionFactory) {
-		this.sessionFactory = sessionFactory;
-	}
+	public int getNumberPage(String type,int pageSize);
 	
-	@Transactional
-	public boolean checkAccount(String username,String pass) {
-		try {
-			Session session=sessionFactory.getCurrentSession();
-			String hql="from Account where Username=:username and Password =:pass";
-			Query query=session.createQuery(hql);
-			query.setParameter("username", username);
-			query.setParameter("pass", pass);
-			Account acc = (Account) query.uniqueResult();
-			if(acc!=null) return true;
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
+	public List<Discussion> getDiscussionList();
+	public Discussion getDiscussion(int id);
+	public boolean addDiscussion(Discussion discussion);
+	public boolean updateDiscussion(Discussion discussion);
+	public boolean deleteDiscussion(int id);
 	
-	@Transactional
-	public boolean addUser(Account account) {
-		try {
-			Session session=sessionFactory.getCurrentSession();
-			session.save(account);
-			System.out.println("save account done...");
-			return true;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
+	public Comment getComment(int id);
+	public boolean addComment(Comment comment);
+	public boolean updateComment(Comment comment);
+	public boolean deleteComment(int id);
 	
-	@Transactional
-	public Account getUser(String username) {
-		Session session=sessionFactory.getCurrentSession();
-		String hql="from Account where username =:username";
-		Query query=session.createQuery(hql);
-		query.setParameter("username", username);
-		Account user=(Account) query.uniqueResult();
-		return user;
-	}
-	
-	@Transactional
-	public boolean updateUser(Account account) {
-		Session session=sessionFactory.getCurrentSession();
-		String hql="UPDATE Account SET Name = :name, DateOfBirth=:DateOfBirth,Gender=:Gender,"
-				+ "Email=:Email where Id=:Id";
-		Query query=(Query) session.createQuery(hql);
-		query.setParameter("name", account.getName());
-		query.setParameter("DateOfBirth", account.getDateOfBirth());
-		query.setParameter("Gender", account.getGender());
-		query.setParameter("Email", account.getEmail());
-		query.setParameter("Id", account.getId());
-		int a=query.executeUpdate();
-		if(a>0) {
-			System.out.println("update account done.");
-			return true;
-		}
-		System.out.println("update fail");
-		return false;
-	}
+	public boolean report(Report report);
 }

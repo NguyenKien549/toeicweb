@@ -1,0 +1,29 @@
+
+*{
+	margin:0;
+	padding: 0;
+}
+
+.content{
+	background: white;
+}
+
+.background{
+	height: 350px;
+	background:linear-gradient(
+      rgba(255,255,255,0.1), 
+      rgba(255,255,255,0.1)
+    ),  url("../img/forum.jpg");
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+
+.listDiscussion thead{
+	background-color: white!important;
+}
+
+.listDiscussion tbody td{
+	padding: 0 5px 0 5px!important;
+}
