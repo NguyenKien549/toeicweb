@@ -7,8 +7,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Part 7 Management</title>
 <link rel="stylesheet" type="text/css"
-	href="../../resources/css/bootstrap/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="../../resources/css/admin.css">
+	href="../../../resources/css/bootstrap/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="../../../resources/css/admin.css">
 </head>
 <body>
 <!-- HEADER -->
@@ -23,10 +23,10 @@
 				<ul class="navbar-nav">
 					<li id="mail" class="nav-item"><a class="nav-link mr-100"
 						href="#"><img class="ico-header"
-							src="../../resources/img/email-icon.png"></a></li>
+							src="../../../resources/img/email-icon.png"></a></li>
 					<li id="acc" class="nav-item">
 						<div class="dropdown nav-link" data-toggle="dropdown">
-							<img class="ico-header" src="../../resources/img/account-icon.png">
+							<img class="ico-header" src="../../../resources/img/account-icon.png">
 							<ul class="dropdown-menu" id="menu-acc">
 								<li id="dangxuat-btn">Đăng xuất</li>
 							</ul>
@@ -42,17 +42,17 @@
 		<div id="sidebar-wrapper">
 			<ul class="sidebar-nav">
 				<li> <a href="#" class="choice" ><img class="ico-manag"
-						src="../../resources/img/account-manager.png">Quản lý tài khoản</a>
+						src="../../../resources/img/account-manager.png">Quản lý tài khoản</a>
 				</li>
 				<li><a href="#"  class="choice"><img class="ico-manag"
-						src="../../resources/img/baihoc-manager.png">Quản lý bài học</a>
+						src="../../../resources/img/baihoc-manager.png">Quản lý bài học</a>
 				</li>
 				<li>
 					<a href="#"  class="choice" style="color: white">
-					<img class="ico-manag" src="../../resources/img/baihoc-manager.png">Quản lý ngân hàng câu hỏi</a>
+					<img class="ico-manag" src="../../../resources/img/baihoc-manager.png">Quản lý ngân hàng câu hỏi</a>
 				</li>
 				<li><a href="#"  class="choice"><img class="ico-manag"
-						src="../../resources/img/btl-manager.png">Quản lý bài thảo luận</a></li>
+						src="../../../resources/img/btl-manager.png">Quản lý bài thảo luận</a></li>
 			</ul>
 		</div>
 
@@ -136,13 +136,13 @@
 			<!-- btn delete -->
 			<div class="col-11 row justify-content-start"
 				style="margin-top: 1.5em; margin-bottom: 1em">
-				<input id="add" type="button" name="" value="Thêm câu hỏi"
-					data-toggle="modal" data-target="#myModal-addDocument"
-					style="padding: 0.8em 1em; background-color: #066310; color: white; border: none; border-radius: 0.5em; margin-right: 2em">
-				<input id="update" type="button" name="" value="Sửa tài khoản"
+<!-- 				<input id="add" type="button" name="" value="Thêm câu hỏi" -->
+<!-- 					data-toggle="modal" data-target="#myModal-addDocument" -->
+<!-- 					style="padding: 0.8em 1em; background-color: #066310; color: white; border: none; border-radius: 0.5em; margin-right: 2em"> -->
+				<input id="update" type="button" name="" value="Update"
 					data-target="#myModal-update"
 					style="padding: 0.8em 1em; background-color: #c9310c; color: white; border: none; border-radius: 0.5em; margin-right: 2em">
-				<input id="delete" type="button" name="" value="Xóa tài khoản"
+				<input id="delete" type="button" name="" value="Delete"
 					style="padding: 0.8em 1em; background-color: #F70000; color: white; border: none; border-radius: 0.5em; margin-right: 2em">
 			</div>
 		</div>
@@ -150,36 +150,93 @@
 
 	
 
-	<!-- modal them document -->
+<!-- 	<!-- modal them document --> 
 
-	<div class="modal fade" id="myModal-addDocument">
-		<div class="modal-dialog modal-lg">
+<!-- 	<div class="modal fade" id="myModal-addDocument"> -->
+<!-- 		<div class="modal-dialog modal-lg"> -->
+<!-- 			<!-- Modal content--> 
+<!-- 			<div class="modal-content"> -->
+<!-- 				<div class="modal-header" style="background-color: #035904"> -->
+<!-- 					<h4 class="modal-title" style="color: white">Add Document</h4> -->
+<!-- 				</div> -->
+<!-- 				<form action="../addDocument" method="POST" -->
+<!-- 					modelAttribute="paragraph" id="form-them" accept-charset="UTF-8"> -->
+<!-- 					<div class="modal-body form-group"> -->
+<!-- 						<div class="addContent"> -->
+<!-- 							<div class="input-modal row" style="height: 120px"> -->
+<!-- 								<span class="col-2" style="line-height: 35px">Paragraph</span> -->
+<!-- 								<textarea name="Paragraph" class="form-control" rows="4" style="height: 95%;width:80%;"></textarea>  -->
+<!-- 							</div> -->
+
+<!-- 							<div class="audioQuestions"> -->
+<!-- 								<div class="questions"> -->
+<!-- 									<div class="input-modal row"> -->
+<!-- 										<span class="col-2"  style="line-height: 35px">Question</span> -->
+<!-- 										<input -->
+<!-- 											type="text" class="col-8 form-control" id="question1" class="form-control"> -->
+<!-- 										<img src="../../resources/img/add_button_2-512.png" alt="abc" class="col-1 add add_AudioQuestion"> -->
+<!-- 										<img src="../../resources/img/subtract-512.png" class="col-1 sub sub_AudioQuestion"> -->
+<!-- 									</div> -->
+<!-- 									<div class="input-modal row"> -->
+<!-- 										<span class="col-2" style="line-height: 35px">A</span><input -->
+<!-- 											type="text" name="A" class="form-control col-8"> -->
+<!-- 									</div> -->
+<!-- 									<div class="input-modal row"> -->
+<!-- 										<span class="col-2" style="line-height: 35px">B</span><input class="col-8 form-control" type="text" name="B" class="form-control"> -->
+<!-- 									</div> -->
+<!-- 									<div class="input-modal row"> -->
+<!-- 										<span class="col-2" style="line-height: 35px">C</span><input class="col-8 form-control" type="text" name="C" class="form-control"> -->
+<!-- 									</div> -->
+<!-- 									<div class="input-modal row"> -->
+<!-- 										<span class="col-2" style="line-height: 35px">D</span><input -->
+<!-- 											class="col-8 form-control" type="text" name="D" class="form-control"> -->
+<!-- 									</div> -->
+<!-- 									<div class="input-modal row"> -->
+<!-- 										<span class="col-2" style="line-height: 35px">Right Answer:</span> -->
+<!-- 										<input class="col-8 form-control" type="text" name="RightAnswer" class="form-control"> -->
+<!-- 									</div> -->
+<!-- 								</div> -->
+<!-- 							</div> het phan danh sach cau hoi -->
+
+<!-- 							<div class="input-modal row"> -->
+<!-- 								<span class="col-2" style="line-height: 35px">PracticeID</span><input -->
+<!-- 									type="text" name="PracticeID" class="form-control"> -->
+<!-- 							</div> -->
+<!-- 							<div class="input-modal row"> -->
+<!-- 								<span class="col-2" style="line-height: 35px">LessionID</span><input -->
+<!-- 									type="text" name="LessionID" class="form-control"> -->
+<!-- 							</div> -->
+					
+<!-- 						</div> het phan noi dung can them addContent -->
+
+<!-- 						<div class="submitA" style="justify-content: center"> -->
+<!-- 							<button id="submit-add-btn" -->
+<!-- 								style="background-color: #035904; color: white; margin-left: 43%;width: 100px;" -->
+<!-- 								class="btn btn-default" data-dismiss="modal">ADD</button> -->
+<!-- 						</div> -->
+
+<!-- 					</div> het phan modal-body -->
+<!-- 				</form> -->
+<!-- 			</div> -->
+<!-- 		</div> -->
+<!-- 	</div> het phan modal them tai lieu -->
+
+	<!-- modal sua document -->
+	<div class="modal fade" id="myModal-update">
+		<div class="modal-dialog">
 			<!-- Modal content-->
 			<div class="modal-content">
-				<div class="modal-header" style="background-color: #035904">
-					<h4 class="modal-title" style="color: white">Add Document</h4>
+				<div class="modal-header" style="background-color: #c9310c">
+					<h4 class="modal-title" style="color: white">Sửa account</h4>
 				</div>
+
 				<form action="Admin/addDocument" method="POST"
 					modelAttribute="account" id="form-them" accept-charset="UTF-8">
 					<div class="modal-body form-group">
-						<div class="input-modal row">
-							<span class="col-2" style="line-height: 35px">Type</span><select
-								name="Part" class="form-control add_type">
-								<option value="audio">Audio</option>
-								<option value="image">Image</option>
-								<option value="part5">Question (Part 5)</option>
-								<option value="paragraph">Paragraph</option>
-							</select>
-						</div>
-						
-						<div class="addContent">
-							<div class="input-modal row">
-								<span class="col-2" style="line-height: 35px">Audio</span> <input
-									type="file" name="Audio" class="form-control">
-							</div>
+						<div class="updateContent">
 							<div class="input-modal row" style="height: 120px">
-								<span class="col-2" style="line-height: 35px">Script</span>
-								<textarea name="AudioParagraph" class="form-control" rows="4" style="height: 95%;width:80%;"></textarea> 
+								<span class="col-2" style="line-height: 35px">Paragraph</span>
+								<textarea name="Paragraph" class="form-control" rows="4" style="height: 95%;width:80%;"></textarea> 
 							</div>
 
 							<div class="audioQuestions">
@@ -235,71 +292,15 @@
 				</form>
 			</div>
 		</div>
-	</div> <!-- het phan modal them tai lieu -->
-
-	<!-- modal sua document -->
-	<div class="modal fade" id="myModal-update">
-		<div class="modal-dialog">
-			<!-- Modal content-->
-			<div class="modal-content">
-				<div class="modal-header" style="background-color: #c9310c">
-					<h4 class="modal-title" style="color: white">Sửa account</h4>
-				</div>
-
-				<form id="form-update" action="Admin/updateaccount"
-					modelAttribute="account" method="POST" accept-charset="UTF-8">
-					<div class="modal-body">
-						<input id="id" name="Id" value="0" style="display: none" />
-						<div class="input-modal row">
-							<span class="col-3" style="line-height: 35px">Họ tên</span><input
-								type="text" name="Name">
-						</div>
-						<div class="input-modal row">
-							<span class="col-3" style="line-height: 35px">Ngày sinh</span><input
-								id="date" type="date" name="DateOfBirth">
-						</div>
-						<div class="input-modal row">
-							<span class="col-3" style="line-height: 35px">Giới tính</span><select
-								name="Gender">
-								<option value="Male">Male</option>
-								<option value="Female">Female</option>
-								<option value="other">Other</option>
-
-							</select>
-						</div>
-						<div class="input-modal row">
-							<span class="col-3" style="line-height: 35px">Username</span><input
-								type="text" name="Username">
-						</div>
-						<div class="input-modal row">
-							<span class="col-3" style="line-height: 35px">Email</span><input
-								type="text" name="Email">
-						</div>
-						<div class="input-modal row">
-							<span class="col-3" style="line-height: 35px">Type account</span>
-							<select name="Type">
-								<option value="User">user</option>
-								<option value="Admin">admin</option>
-							</select>
-						</div>
-					</div>
-					<div class="modal-footer" style="justify-content: center">
-						<button id="submit-update-btn"
-							style="background-color: #c9310c; color: white" type="submit"
-							class="btn btn-default" data-dismiss="modal">UPDATE</button>
-					</div>
-				</form>
-			</div>
-		</div>
 	</div>
 	<!-- footer -->
-<!-- 	<script type="text/javascript" src="../../resources/js/jquery-3.3.1.min.js"></script> -->
+<!-- 	<script type="text/javascript" src="../../../resources/js/jquery-3.3.1.min.js"></script> -->
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-	<script type="text/javascript" src="../../resources/js/js-for-admin-acc.js"></script>
+	<script type="text/javascript" src="../../../resources/js/js-for-admin-acc.js"></script>
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-	<script type="text/javascript" src="../../resources/js/bootstrap/bootstrap.min.js"></script>
-	<script type="text/javascript" src="../../resources/js/questionManagement.js"></script>
+	<script type="text/javascript" src="../../../resources/js/bootstrap/bootstrap.min.js"></script>
+	<script type="text/javascript" src="../../../resources/js/questionManagement.js"></script>
 </body>
 </body>
 </html>

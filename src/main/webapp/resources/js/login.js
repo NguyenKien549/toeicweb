@@ -14,7 +14,7 @@
 //});
 
 $(document).on("click", "#dangxuat-btn", function() {
-	$.get("/webtoeicproject/logout", function() {
+	$.get("/logout", function() {
 		window.location.reload();
 	});
 });

@@ -12,42 +12,41 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Practice {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int Id;
 
 	@Column(unique = true)
 	private String Code;
-	
+
 	private String Name;
-	
+
 	private byte Part;
-	
-	@Column(name="AccessCount",nullable=false)
+
+	@Column(name = "AccessCount", nullable = false)
 	private long View;
+
+	@JsonManagedReference
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "practice", cascade = CascadeType.ALL)
+	private Audio audio;
+
+	@JsonManagedReference
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "practice", cascade = CascadeType.ALL)
+	private Set<Paragraph> listParagraph;
+
 	
-	@OneToMany(fetch=FetchType.LAZY,mappedBy="practice",cascade=CascadeType.ALL)
 	@JsonIgnore
-	private Set<Image> listImage =new HashSet<Image>();
-	
-	@OneToMany(fetch=FetchType.LAZY,mappedBy="practice",cascade=CascadeType.ALL)
-	@JsonIgnore
-	private Set<Audio> listAudio=new HashSet<Audio>();
-	
-	
-	@OneToMany(fetch=FetchType.LAZY,mappedBy="practice",cascade=CascadeType.ALL)
-	@JsonBackReference
-	private Set<Paragraph> listParagraph=new HashSet<Paragraph>();
-	
-	@OneToMany(fetch=FetchType.LAZY,mappedBy="practice",cascade=CascadeType.ALL)
-	private Set<Part5> listPart5=new HashSet<Part5>();
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "practice", cascade = CascadeType.ALL)
+	private Set<Part5> listPart5 = new HashSet<Part5>();
 
 	public final long getView() {
 		return View;
@@ -57,20 +56,12 @@ public class Practice {
 		View = view;
 	}
 
-	public final Set<Image> getListImage() {
-		return listImage;
+	public final Audio getAudio() {
+		return audio;
 	}
 
-	public final void setListImage(Set<Image> listImage) {
-		this.listImage = listImage;
-	}
-
-	public final Set<Audio> getListAudio() {
-		return listAudio;
-	}
-
-	public final void setListAudio(Set<Audio> listAudio) {
-		this.listAudio = listAudio;
+	public final void setAudio(Audio audio) {
+		this.audio = audio;
 	}
 
 	public final Set<Paragraph> getListParagraph() {

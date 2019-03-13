@@ -16,6 +16,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "Account")
 public class Account {
@@ -29,26 +32,50 @@ public class Account {
 	private String Gender;
 	private String Email;
 	private String Username;
+	
+	@JsonIgnore
 	private String Password;
+	
+	@JsonIgnore
 	private String Salt;
 	private String Avatar;
+	
+	@JsonIgnore
 	private String Type;
+	
+	@JsonIgnore
 	private byte Active;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy="user",fetch=FetchType.LAZY,cascade=CascadeType.ALL)
 	private Set<Discussion> discussionList;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy="user",fetch=FetchType.LAZY,cascade=CascadeType.ALL)
 	private Set<Comment> commentList;
+
+	@JsonIgnore
+	@OneToMany(mappedBy="user",fetch=FetchType.LAZY,cascade=CascadeType.ALL)
+	private Set<ReplyComment> replies;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy="user",fetch=FetchType.LAZY,cascade=CascadeType.ALL)
 	private Set<Report> reportList;
 	
+	@JsonIgnore
 	@ManyToMany(fetch=FetchType.LAZY,cascade=CascadeType.ALL)
 	@JoinTable(name="User_Test", joinColumns=@JoinColumn(name="UserID"),inverseJoinColumns=@JoinColumn(name="TestID"))
 	private Set<Test> testList;
 
 	
+	public final Set<ReplyComment> getReplies() {
+		return replies;
+	}
+
+	public final void setReplies(Set<ReplyComment> replies) {
+		this.replies = replies;
+	}
+
 	public final Set<Discussion> getDiscussionList() {
 		return discussionList;
 	}

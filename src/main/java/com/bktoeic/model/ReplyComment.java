@@ -1,6 +1,8 @@
 package com.bktoeic.model;
 
 import java.sql.Timestamp;
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +13,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 public class ReplyComment {
@@ -24,17 +29,31 @@ public class ReplyComment {
 
 	private String Image;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "UserID", nullable = false, foreignKey = @ForeignKey(name = "FK_Comment_Account"))
 	private Account user;
 
 	private Timestamp Time;
 
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JsonBackReference
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "RepliedCommentID", nullable = true)
 	private Comment comment;
 
+	@JsonBackReference
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "reportedReplyComment", nullable = true)
+	private Set<Report> reports;
+
 	private byte Active;
+
+	public final Set<Report> getReports() {
+		return reports;
+	}
+
+	public final void setReports(Set<Report> reports) {
+		this.reports = reports;
+	}
 
 	public final int getId() {
 		return Id;

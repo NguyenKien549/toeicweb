@@ -13,8 +13,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Test {
@@ -30,24 +33,29 @@ public class Test {
 	@Column(name = "AccessCount")
 	private long View;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "test", cascade = CascadeType.ALL)
-	@JsonIgnore
-	private Set<Image> listImage = new HashSet<Image>();
+	@JsonManagedReference
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "test", cascade = CascadeType.ALL)
+	private Audio audio;
 
+	@JsonManagedReference
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "test", cascade = CascadeType.ALL)
-	@JsonIgnore
-	private Set<Audio> listAudio = new HashSet<Audio>();
+	private Set<Paragraph> listParagraph;
 
+	@JsonManagedReference
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "test", cascade = CascadeType.ALL)
-	@JsonIgnore
-	private Set<Paragraph> listParagraph = new HashSet<Paragraph>();
+	private Set<Part5> listPart5;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "test", cascade = CascadeType.ALL)
 	@JsonIgnore
-	private Set<Part5> listPart5 = new HashSet<Part5>();
-
 	@ManyToMany(mappedBy = "testList", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Account> users;
+
+	public final Audio getAudio() {
+		return audio;
+	}
+
+	public final void setAudio(Audio audio) {
+		this.audio = audio;
+	}
 
 	public final Set<Account> getUsers() {
 		return users;
@@ -71,22 +79,6 @@ public class Test {
 
 	public final void setListPart5(Set<Part5> listPart5) {
 		this.listPart5 = listPart5;
-	}
-
-	public final Set<Image> getListImage() {
-		return listImage;
-	}
-
-	public final void setListImage(Set<Image> listImage) {
-		this.listImage = listImage;
-	}
-
-	public final Set<Audio> getListAudio() {
-		return listAudio;
-	}
-
-	public final void setListAudio(Set<Audio> listAudio) {
-		this.listAudio = listAudio;
 	}
 
 	public final Set<Paragraph> getListParagraph() {

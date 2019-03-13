@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -27,14 +28,14 @@ public class Part5 {
 	private String D;
 	private String RightAnswer;
 
+	@JsonBackReference
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "PracticeID", nullable = true)
-	@JsonIgnore
 	private Practice practice;
 
+	@JsonBackReference
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "TestID", nullable = true)
-	@JsonIgnore
 	private Test test;
 
 	public final int getId() {

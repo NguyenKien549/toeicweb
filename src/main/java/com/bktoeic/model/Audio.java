@@ -1,6 +1,5 @@
 package com.bktoeic.model;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -12,8 +11,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Audio {
@@ -26,29 +29,35 @@ public class Audio {
 
 	private String Script;
 
-	@ManyToOne
+	@JsonBackReference
+	@OneToOne
 	@JoinColumn(name = "PracticeID", nullable = true)
 	private Practice practice;
 
-	@ManyToOne
+	@JsonBackReference
+	@OneToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name = "TestID", nullable = true)
 	private Test test;
 
 	@OneToMany(mappedBy = "audio", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JsonIgnore
-	private Set<Part1> part1 = new HashSet<Part1>();
+	@JsonManagedReference
+	@OrderBy("id asc")
+	private Set<Part1> part1 ;
 
 	@OneToMany(mappedBy = "audio", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JsonIgnore
-	private Set<Part2> part2 = new HashSet<Part2>();
+	@JsonManagedReference
+	@OrderBy("id asc")
+	private Set<Part2> part2 ;
 
 	@OneToMany(mappedBy = "audio", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JsonIgnore
-	private Set<Part3> part3 = new HashSet<Part3>();
+	@JsonManagedReference
+	@OrderBy("id asc")
+	private Set<Part3> part3;
 
 	@OneToMany(mappedBy = "audio", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JsonIgnore
-	private Set<Part4> part4 = new HashSet<Part4>();
+	@JsonManagedReference
+	@OrderBy("id asc")
+	private Set<Part4> part4;
 
 	public final String getScript() {
 		return Script;
@@ -73,11 +82,11 @@ public class Audio {
 	public final void setPart2(Set<Part2> part2) {
 		this.part2 = part2;
 	}
-
+	
 	public final Set<Part3> getPart3() {
 		return part3;
 	}
-
+	
 	public final void setPart3(Set<Part3> part3) {
 		this.part3 = part3;
 	}

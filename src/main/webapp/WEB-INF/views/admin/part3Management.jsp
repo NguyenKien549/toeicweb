@@ -7,8 +7,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Part 3 Management</title>
 <link rel="stylesheet" type="text/css"
-	href="../../resources/css/bootstrap/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="../../resources/css/admin.css">
+	href="../../../resources/css/bootstrap/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="../../../resources/css/admin.css">
 </head>
 <body>
 <!-- HEADER -->
@@ -23,10 +23,10 @@
 				<ul class="navbar-nav">
 					<li id="mail" class="nav-item"><a class="nav-link mr-100"
 						href="#"><img class="ico-header"
-							src="../../resources/img/email-icon.png"></a></li>
+							src="../../../resources/img/email-icon.png"></a></li>
 					<li id="acc" class="nav-item">
 						<div class="dropdown nav-link" data-toggle="dropdown">
-							<img class="ico-header" src="../../resources/img/account-icon.png">
+							<img class="ico-header" src="../../../resources/img/account-icon.png">
 							<ul class="dropdown-menu" id="menu-acc">
 								<li id="dangxuat-btn">Đăng xuất</li>
 							</ul>
@@ -42,17 +42,17 @@
 		<div id="sidebar-wrapper">
 			<ul class="sidebar-nav">
 				<li> <a href="#" class="choice" ><img class="ico-manag"
-						src="../../resources/img/account-manager.png">Quản lý tài khoản</a>
+						src="../../../resources/img/account-manager.png">Quản lý tài khoản</a>
 				</li>
 				<li><a href="#"  class="choice"><img class="ico-manag"
-						src="../../resources/img/baihoc-manager.png">Quản lý bài học</a>
+						src="../../../resources/img/baihoc-manager.png">Quản lý bài học</a>
 				</li>
 				<li>
 					<a href="#"  class="choice" style="color: white">
-					<img class="ico-manag" src="../../resources/img/baihoc-manager.png">Quản lý ngân hàng câu hỏi</a>
+					<img class="ico-manag" src="../../../resources/img/baihoc-manager.png">Quản lý ngân hàng câu hỏi</a>
 				</li>
 				<li><a href="#"  class="choice"><img class="ico-manag"
-						src="../../resources/img/btl-manager.png">Quản lý bài thảo luận</a></li>
+						src="../../../resources/img/btl-manager.png">Quản lý bài thảo luận</a></li>
 			</ul>
 		</div>
 
@@ -79,7 +79,6 @@
 							<option value="part5">Part 5</option>
 							<option value="part6">Part 6</option>
 							<option value="part7">Part 7</option>
-							<option value="image">Image</option>
 							<option value="audio">Audio</option>
 							<option value="paragraph">Paragraph</option>
 						</select>
@@ -196,8 +195,8 @@
 										<span class="col-2"  style="line-height: 35px">Question</span>
 										<input
 											type="text" class="col-8 form-control" id="question1" class="form-control">
-										<img src="../../resources/img/add_button_2-512.png" alt="abc" class="col-1 add add_AudioQuestion">
-										<img src="../../resources/img/subtract-512.png" class="col-1 sub sub_AudioQuestion">
+										<img src="../../../resources/img/add_button_2-512.png" alt="abc" class="col-1 add add_AudioQuestion">
+										<img src="../../../resources/img/subtract-512.png" class="col-1 sub sub_AudioQuestion">
 									</div>
 									<div class="input-modal row">
 										<span class="col-2" style="line-height: 35px">A</span><input
@@ -301,13 +300,13 @@
 		</div>
 	</div>
 	<!-- footer -->
-<!-- 	<script type="text/javascript" src="../../resources/js/jquery-3.3.1.min.js"></script> -->
+<!-- 	<script type="text/javascript" src="../../../resources/js/jquery-3.3.1.min.js"></script> -->
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-	<script type="text/javascript" src="../../resources/js/js-for-admin-acc.js"></script>
+	<script type="text/javascript" src="../../../resources/js/js-for-admin-acc.js"></script>
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-	<script type="text/javascript" src="../../resources/js/bootstrap/bootstrap.min.js"></script>
-	<script type="text/javascript" src="../../resources/js/questionManagement.js"></script>
+	<script type="text/javascript" src="../../../resources/js/bootstrap/bootstrap.min.js"></script>
+	<script type="text/javascript" src="../../../resources/js/questionManagement.js"></script>
 </body>
 </body>
 </html>

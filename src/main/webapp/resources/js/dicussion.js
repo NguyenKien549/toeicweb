@@ -1,11 +1,11 @@
-$(".replyBox").hide();
-$(".reportBox").hide();
+$(".replyInputArea").hide();
+$(".readLessReply").hide();
 $(document).ready(function() {
 
-	$(document).on("click", ".reply", function() {
+	$(document).on("click", ".replyComment", function() {
 		var id = $(this).attr("id");
 
-		$("." + id).toggle();
+		$('.replyBox'+id).toggle();
 
 	});
 
@@ -15,5 +15,11 @@ $(document).ready(function() {
 		$("." + id).toggle();
 
 	});
+//	
+//	$(document).on("click", ".readLessReply", function() {
+//		$(".readLessReply").hide();
+//		$(".listReply").hide();
+//		$(".readmoreReply").show();
+//	});
 
 });

@@ -110,90 +110,6 @@ $(document).on("change", ".practicePart", function() {
 	}
 });
 
-$(document).on("click", ".sub", function() {
-	var id = $(this).attr('id');
-	$("div." + id).remove();
-});
-
-$(document)
-		.on(
-				"click",
-				".add_Image",
-				function() {
-					var div = "<div class=\"input-modal row image"
-							+ imageCount
-							+ "\">"
-							+ "<span class=\"col-2\" style=\"line-height: 35px\">Image</span>"
-							+ "<input class=\"col-8\" id=\"image"
-							+ imageCount
-							+ "\" type=\"text\" name=\"Image\" class=\"form-control\">"
-							+ "<img src=\"../../resources/img/add_button_2-512.png\" alt=\"abc\" class=\"col-1 add add_Image\">"
-							+ "<img src=\"../../resources/img/subtract-512.png\" class=\"col-1 sub sub_Image\" id=\"image"
-							+ imageCount + "\"></div>";
-
-					$(".image").append(div);
-					imageCount++;
-
-				});
-
-$(document)
-		.on(
-				"click",
-				".add_Audio",
-				function() {
-					var div = "<div class=\"input-modal row audio"
-							+ audioCount
-							+ "\">"
-							+ "<span class=\"col-2\" style=\"line-height: 35px\">Audio</span>"
-							+ "<input class=\"col-8\" id=\"audio"
-							+ audioCount
-							+ "\" type=\"text\" name=\"Audio\" class=\"form-control\">"
-							+ "<img src=\"../../resources/img/add_button_2-512.png\" alt=\"abc\" class=\"col-1 add add_Audio\">"
-							+ "<img src=\"../../resources/img/subtract-512.png\" class=\"col-1 sub sub_Audio\" id=\"audio"
-							+ audioCount + "\"></div>";
-					$(".audio").append(div);
-					audioCount++;
-
-				});
-
-$(document)
-		.on(
-				"click",
-				".add_Question",
-				function() {
-					var div = "<div class=\"input-modal row question"
-							+ questionCount
-							+ "\">"
-							+ "<span class=\"col-2\" style=\"line-height: 35px\">Question</span>"
-							+ "<input class=\"col-8\" id=\"question"
-							+ questionCount
-							+ "\" type=\"text\" class=\"form-control\">"
-							+ "<img src=\"../../resources/img/add_button_2-512.png\" alt=\"abc\" class=\"col-1 add add_Question\">"
-							+ "<img src=\"../../resources/img/subtract-512.png\" class=\"col-1 sub sub_Question\" id=\"question"
-							+ questionCount + "\"></div>";
-					$(".question").append(div);
-					questionCount++;
-				});
-
-$(document)
-		.on(
-				"click",
-				".add_Paragraph",
-				function() {
-					var div = "<div class=\"input-modal row paragraph"
-							+ paragraphCount
-							+ "\">"
-							+ "<span class=\"col-2\" style=\"line-height: 35px\">Paragraph</span>"
-							+ "<input class=\"col-8\" id=\"paragraph"
-							+ paragraphCount
-							+ "\" type=\"text\" class=\"form-control\">"
-							+ "<img src=\"../../resources/img/add_button_2-512.png\" alt=\"abc\" class=\"col-1 add add_Paragraph\">"
-							+ "<img src=\"../../resources/img/subtract-512.png\" class=\"col-1 sub sub_Paragraph\" id=\"paragraph"
-							+ paragraphCount + "\"></div>";
-					$(".paragraph").append(div);
-					paragraphCount++;
-				});
-
 $(document).on("click", ".choice", function() {
 	$(".choice").css("color", "#999999");
 	$(this).css("color", "white ");
@@ -235,6 +151,7 @@ $("#delete").click(function() {
 	var arrId = new Array();
 	$(".notice").empty();
 	var i = 0;
+	var type=$(this).attr("class");
 	// get id of deleted account
 	$("table tr").each(function() {
 		if ($(this).hasClass("selected")) {
@@ -245,51 +162,85 @@ $("#delete").click(function() {
 	if (i == 0) {
 		alert("Get 1 row to delete!!!");
 	}
+	
+	if(type=="part5"){
+		deletePart5(arrId,type);
+	}
+	if(type=="account"){
+		deleteAccount(arrId,type);
+	}
+	
+});
+
+function deleteAccount(arrId,type){
 	$.ajax({
-		url : "deleteAccount",
+		url : "../deleteDocument",
 		type : "post",
 		dataType : 'json',
 		data : {
-			ids : arrId
+			ids : arrId,
+			type: type
 		},
 		error : function(e) {
 			console.log(e);
 		}
 	}).done(function(data) {
 		if (data == "done") {
+			alert("delete done")
 			location.reload();
-			$(".notice").html("Delete done");
 		}
 		if (data == "error") {
-			location.reload();
 			$(".notice").html("Delete fail");
 		}
 	}).fail(function() {
-		location.reload();
 		$(".notice").html("Delete fail");
 	});
-});
+}
 
-$("body").on("click", "#index", function() {
-	var i = $(this).text();
-	vitri = i;
+function deletePart5(arrId,type){
 	$.ajax({
-		url : "admin/laydanhsach",
-		type : "GET",
+		url : "../../deleteDocument",
+		type : "post",
 		dataType : 'json',
 		data : {
-			batDau : i,
-			search : search,
+			ids : arrId,
+			type: type
 		},
-		success : function(value) {
-			$("tbody").empty();
-			$("tbody").append(value[0]);
-			$("#pagin").empty();
-			$("#pagin").append(value[1]);
-			$("#infoPage").html("Page " + i + " of " + value[2]);
+		error : function(e) {
+			console.log(e);
 		}
-	})
+	}).done(function(data) {
+		if (data == "done") {
+			alert("Delete done");
+			location.reload();
+			
+		}
+		if (data == "error") {
+			$(".notice").html("Delete fail");
+		}
+	}).fail(function() {
+		$(".notice").html("Delete fail");
+	});
+}
+
+//khi an nut update tren view
+$("body").on("click", "#update", function() {
+	var arr = [];
+	var i = 0;
+	$("table tr").each(function() {
+		if ($(this).hasClass("selected")) {
+			arr[0] = $(this).find("td").eq(0).html();
+			i += 1;
+		}
+	});
+	if (i != 1) {
+		alert("Chỉ chọn 1 tài khoản để update");
+	} else {
+		$("#id").val(arr[0]);
+		$("#myModal-update").modal('toggle');
+	}
 });
+
 
 $("body").on("click", "#submit-add-btn", function() {
 	$("#form-them").submit();

@@ -2,6 +2,7 @@ package com.bktoeic.serviceImpl;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,7 +11,9 @@ import com.bktoeic.dao.UserDAO;
 import com.bktoeic.model.Account;
 import com.bktoeic.model.Comment;
 import com.bktoeic.model.Discussion;
+import com.bktoeic.model.ReplyComment;
 import com.bktoeic.model.Report;
+import com.bktoeic.model.Test;
 import com.bktoeic.service.userService;
 
 @Service("userService")
@@ -81,6 +84,48 @@ public class userServiceImpl implements userService {
 
 	public int getNumberPage(String type, int pageSize) {
 		return userDAO.getNumberPage(type, pageSize);
+	}
+
+	@Override
+	public List<Comment> getListComment(int page, int pageSize,int discussionID) {
+		return userDAO.getListComment(page, pageSize,discussionID);
+	}
+
+	@Override
+	public List<ReplyComment> getListReplyComment(int page, int pageSize, int commentID) {
+		return userDAO.getListReplyComment(page, pageSize, commentID);
+	}
+
+	@Override
+	public ReplyComment getReplyComment(int id) {
+		return userDAO.getReplyComment(id);
+	}
+
+	@Override
+	public ReplyComment addReplyComment(ReplyComment reply) {
+		reply.setActive((byte) 1);
+		reply.setTime(new Timestamp(System.currentTimeMillis()));
+		return userDAO.addReplyComment(reply);
+	}
+
+	@Override
+	public boolean updateReplyComment(ReplyComment reply) {
+		return userDAO.updateReplyComment(reply);
+	}
+
+	@Override
+	public boolean deleteReplyComment(int id) {
+		return userDAO.deleteReplyComment(id);
+	}
+
+	@Override
+	public Test getTest(int testID) {
+		return userDAO.getTest(testID);
+	}
+
+	@Override
+	public <T> Set<T> getPartTest(byte part, int testID) {
+		return userDAO.getPartTest(part, testID);
 	}
 
 }

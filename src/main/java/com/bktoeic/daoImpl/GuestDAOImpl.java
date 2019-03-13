@@ -1,5 +1,6 @@
 package com.bktoeic.daoImpl;
 
+import java.util.Collection;
 import java.util.HashSet;
 
 import java.util.Iterator;
@@ -16,7 +17,14 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bktoeic.dao.GuestDAO;
+import com.bktoeic.model.Audio;
 import com.bktoeic.model.Paragraph;
+import com.bktoeic.model.Part1;
+import com.bktoeic.model.Part2;
+import com.bktoeic.model.Part3;
+import com.bktoeic.model.Part4;
+import com.bktoeic.model.Part6;
+import com.bktoeic.model.Part7;
 import com.bktoeic.model.Practice;
 
 @Repository
@@ -36,7 +44,6 @@ public class GuestDAOImpl<T> implements GuestDAO<T> {
 			System.out.println("listpractice empty");
 		return list;
 	}
-
 
 	@Transactional
 	public Practice practiceReading(String code) {
@@ -60,36 +67,21 @@ public class GuestDAOImpl<T> implements GuestDAO<T> {
 		Practice practice = (Practice) cr.uniqueResult();
 		if (part == 5) {
 			return (Set<T>) practice.getListPart5();
-		} else if (part == 6 ) {
-			Set<T> result=new HashSet<T>();
-			
-			Set<Paragraph> listPara= new HashSet<Paragraph>();
-			listPara=practice.getListParagraph();
+		} else if (part == 6) {
+			Set<Paragraph> listPara = practice.getListParagraph();
+			return (Set<T>) listPara;
+		} else if (part == 7) {
+			Set<T> result = new HashSet<T>();
+
+			Set<Paragraph> listPara = new HashSet<Paragraph>();
+			listPara = practice.getListParagraph();
 			Iterator<Paragraph> it = listPara.iterator();
-			while(it.hasNext()) {
-				Set<T> temp=new HashSet<T>();
-				Paragraph para=it.next();
-				temp.add((T)para);
-				
-				temp.add((T) para.getPart6());
-				
-				
-				result.add((T) temp);
-			}
-			return result;
-		}else if(part ==7) {
-			Set<T> result=new HashSet<T>();
-			
-			Set<Paragraph> listPara= new HashSet<Paragraph>();
-			listPara=practice.getListParagraph();
-			Iterator<Paragraph> it = listPara.iterator();
-			while(it.hasNext()) {
-				Set<T> temp=new HashSet<T>();
-				Paragraph para=it.next();
-				temp.add((T)para );
-				temp.add((T) para.getPart7());
-				
-				
+			while (it.hasNext()) {
+				Set<T> temp = new HashSet<T>();
+				Paragraph para = it.next();
+				Set<Part7> part7 = para.getPart7();
+				para.setPart7(part7);
+				temp.add((T) para);
 				result.add((T) temp);
 			}
 			return result;
@@ -99,9 +91,51 @@ public class GuestDAOImpl<T> implements GuestDAO<T> {
 	}
 
 	@Transactional
-	public Practice practiceListening(String code) {
-		// TODO Auto-generated method stub
+	public Practice practice(int id, byte part) {
+		try {
+			Session session = sessionFactory.openSession();
+			Criteria cr = session.createCriteria(Practice.class);
+			cr.add(Restrictions.eq("Id", id));
+			cr.add(Restrictions.eq("Part", part));
+			Practice practice = (Practice) cr.uniqueResult();
+			if (practice != null) {
+				Audio audio = practice.getAudio();
+				if (part == 3) {
+					Set<Part3> part3 = audio.getPart3();
+					audio.setPart3(part3);
+				} else if (part == 1) {
+					Set<Part1> part1 = audio.getPart1();
+					audio.setPart1(part1);
+				} else if (part == 2) {
+					Set<Part2> part2 = audio.getPart2();
+					audio.setPart2(part2);
+				}else if (part == 4) {
+					Set<Part4> part4 = audio.getPart4();
+					audio.setPart4(part4);
+				}
+				practice.setAudio(audio);
+			}
+			return practice;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		return null;
+	}
+
+	@Override
+	@Transactional
+	public Set<Paragraph> getParagraphList(int id, byte part) {
+		Session session = sessionFactory.openSession();
+		Criteria cr = session.createCriteria(Practice.class);
+
+		cr.add(Restrictions.eq("Id", id));
+
+		Practice practice = (Practice) cr.uniqueResult();
+		Set<Paragraph> temp=practice.getListParagraph();
+		
+		System.out.println("done");
+		return temp;
 	}
 
 }

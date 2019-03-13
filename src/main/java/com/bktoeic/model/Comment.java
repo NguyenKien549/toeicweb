@@ -16,6 +16,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 public class Comment {
 
@@ -38,6 +40,7 @@ public class Comment {
 	@JoinColumn(name = "DiscussionID", nullable = false)
 	private Discussion discussion;
 
+	@JsonManagedReference
 	@OneToMany(mappedBy = "comment", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<ReplyComment> replies;
 

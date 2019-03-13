@@ -5,38 +5,38 @@ $(document).on("change", "#selectDataTable", function() {
 
 	switch (choice) {
 	case "part1":
-		location.href="part1";
+		location.href="../part1/1";
 		break;
 	case "part2":
-		location.href = "part2";
+		location.href = "../part2/1";
 		break;
 	case "part3":
-		location.href = "part3";
+		location.href = "../part3/1";
 		break;
 	case "part4":
-		location.href = "part4";
+		location.href = "../part4/1";
 		break;
 
 	case "part5":
-		location.href = "part5";
+		location.href = "../part5/1";
 		break;
 
 	case "part6":
-		location.href = "part6";
+		location.href = "../part6/1";
 		break;
 
 	case "part7":
-		location.href = "part7";
+		location.href = "../part7/1";
 		break;
 
 	case "image":
-		location.href = "image";
+		location.href = "../image/1";
 		break;
 	case "audio":
-		location.href = "audio";
+		location.href = "../audio/1";
 		break;
 	case "paragraph":
-		location.href = "paragraph";
+		location.href = "../paragraph/1";
 		break;
 	default:
 		break;

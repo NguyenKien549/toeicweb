@@ -2,7 +2,7 @@ package com.bktoeic.model;
 
 import java.sql.Timestamp;
 
-import java.util.HashSet;
+
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -16,6 +16,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+
+import org.hibernate.annotations.BatchSize;
+
 
 @Entity
 public class Discussion {
@@ -44,10 +48,11 @@ public class Discussion {
 	private byte Active;
 
 	@OneToMany(mappedBy = "discussion", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Set<Comment> commentList = new HashSet<Comment>();
+	@OrderBy("Id desc")
+	private Set<Comment> commentList;
 
 	@OneToMany(mappedBy = "reportedDiscussion", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Set<Report> reportList = new HashSet<Report>();
+	private Set<Report> reportList;
 
 	public final Set<Comment> getCommentList() {
 		return commentList;

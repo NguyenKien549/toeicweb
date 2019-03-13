@@ -15,34 +15,6 @@
 	href="../../resources/css/discussion.css">
 </head>
 <body>
-	<div class="modal fade" id="login-box" role="dialog">
-		<div class="modal-dialog">
-
-			<!-- Modal content-->
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title">Login</h4>
-				</div>
-				<div class="modal-body">
-					<div class="form-group">
-						<label>Username</label> <input class="form-control" type="text"
-							id="usernameLogin" placeholder="Username" required="required"></input>
-					</div>
-
-					<div class="form-group">
-						<label>Password</label> <input class="form-control"
-							id="passwordLogin" type="password" placeholder="Password"
-							required="required"></input>
-					</div>
-					<button type="button" class="btn btn-primary loginButton">Login</button>
-				</div>
-			</div>
-
-		</div>
-	</div>
-	<!-- het login-dialog -->
-
 	<div class="container-fluid div-parent">
 		<!-- navbar -->
 		<nav class="navbar navbar-expand-md navbar-dark fixed-top"
@@ -71,22 +43,16 @@
 				<li class="nav-item"><a class="nav-link" href="#">FORUM</a></li>
 				<li class="nav-item"><a class="nav-link" href="#">TEST</a></li>
 				<li class="nav-item"><a class="nav-link" href="#">ABOUT</a></li>
-				<li class="nav-item"><c:choose>
-						<c:when test="${name==null}">
-							<a class="nav-link login-window" data-target="#login-box"
-								data-toggle="modal" href="#">LOGIN</a>
-						</c:when>
-						<c:otherwise>
-							<div class="dropdown nav-link" data-toggle="dropdown"
-								style="padding: 0">
-								<a class="nav-link" href="#">${name}</a>
-								<ul class="dropdown-menu" id="menu-acc">
-									<li id="information">Account Management</li>
-									<li id="dangxuat-btn">Đăng xuất</li>
-								</ul>
-							</div>
-						</c:otherwise>
-					</c:choose></li>
+				<li class="nav-item">
+					<div class="dropdown nav-link" data-toggle="dropdown"
+						style="padding: 0">
+						<a class="nav-link user" href="#" id="${user.getUsername() }">${name}</a>
+						<ul class="dropdown-menu" id="menu-acc">
+							<li id="information">Account Management</li>
+							<li id="dangxuat-btn">Đăng xuất</li>
+						</ul>
+					</div>
+				</li>
 
 			</ul>
 		</div>
@@ -99,7 +65,7 @@
 					khám phá.</h4>
 			</div>
 			<div class="discussion">
-				<h2 class="dicussionTitle" id="${discussion.getId()}">${discussion.getTitle()}</h2>
+				<h2 class="dicussionTitle discussionId" id="${discussion.getId()}">${discussion.getTitle()}</h2>
 				<div class="noidung">
 					<div class="title">
 						<div class="row">
@@ -116,21 +82,22 @@
 
 							<div class="col-12 questionContent">
 								<p>${discussion.getContent()}</p>
-								<a href="#" class="report">Report</a>
-								<div class="reportBox">
-									<div class="form-group">
-										<input type="text" name="reply" class="form-control">
-										<button class="btn btn-primary reportButton" type="submit"
-											placeholder="input your report">Report</button>
-									</div>
-								</div>
+								<span  class="reportDiscussion" data-target="#reportDiscussion-box" data-toggle="modal">Report</span>
 							</div>
 
 						</div>
 
 						<hr>
-						<button class="btn btn-primary commentButtonLogin"
-							data-target="#login-box" data-toggle="modal" type="button">Comment</button>
+
+						<div class="yourcomment">
+							<label>Your comment:</label>
+
+							<textarea class="form-control" rows="3" id="commentContent"
+								placeholder="input your comment"></textarea>
+							<button class="btn btn-primary commentButton" type="submit">Comment</button>
+						</div>
+
+
 
 						<c:set scope="page" var="count" value="1" />
 						<c:forEach items="${discussion.getCommentList()}" var="comment">
@@ -173,31 +140,36 @@
 									<span class="contentComment" id="${comment.getId()}">${comment.getContent()}</span>
 									<br>
 									<div class="mainComment">
-										<span data-target="#login-box" data-toggle="modal">Reply</span>
+										<span class="replyComment" id="${count}">Reply</span>
 
-<%-- 										<div class="replyBox reply${count}"> --%>
-<!-- 											<div class="form-group"> -->
-<!-- 												<input type="text" name="reply" class="form-control"> -->
-<!-- 												<button class="btn btn-primary replyButton" type="submit" -->
-<!-- 													placeholder="input your reply">Reply</button> -->
-<!-- 											</div> -->
-<!-- 										</div> -->
+										<%-- 										<div class="replyBox reply${count}"> --%>
+										<!-- 											<div class="form-group"> -->
+										<!-- 												<input type="text" name="reply" class="form-control"> -->
+										<!-- 												<button class="btn btn-primary replyButton" type="submit" -->
+										<!-- 													placeholder="input your reply">Reply</button> -->
+										<!-- 											</div> -->
+										<!-- 										</div> -->
 									</div>
 
-									<span  class="col-11 readmoreReply" style="float: right;" id="${comment.getId()}">Read
-										more 10 reply</span>
-									<span class="col-11 readLessReply"
-										style="float: right;">Read less reply</span>
+									<c:choose>
+										<c:when test="${comment.getReplies().size() > 0 }">
+											<span class="readmoreReply" id="${comment.getId()}">Read
+												more ${comment.getReplies().size()} replies</span>
+											<span class="col-11 readLessReply lessReply${comment.getId()}" id="${comment.getId()}"  style="float: right;">Read
+												less reply</span>
+										</c:when>
+									</c:choose>
+
 
 									<div class="replyArea col-11" style="float: right;">
-										<div class="row listReply${comment.getId()}">
-										
-										</div>
+										<div class="row listReply${comment.getId()}"></div>
 										<!--	het danh sach reply -->
 										<br>
 										<div class="replyInputArea row col-12 replyBox${count }">
-											<input class="col-9 form-control" id="replyInput${count}" type="text">
-											<img src="../../resources/img/send_reply.png"
+											<input
+												class="col-9 form-control replyContent${comment.getId()}"
+												id="replyInput${count}" type="text"> <img
+												src="../../resources/img/send_reply.png"
 												class="send_reply_icon" id="${comment.getId()}">
 										</div>
 									</div>
@@ -210,6 +182,7 @@
 
 							<hr>
 						</c:forEach>
+						
 						<div class="modal fade" id="editComment-box" role="dialog">
 							<div class="modal-dialog">
 								<!-- Modal content-->
@@ -231,8 +204,29 @@
 							</div>
 						</div>
 						<!-- het edit-dialog -->
+						<div class="modal fade" id="editReply-box" role="dialog">
+							<div class="modal-dialog">
+								<!-- Modal content-->
+								<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal">&times;</button>
+										<h4 class="modal-title">Edit Reply</h4>
+									</div>
+									<div class="modal-body">
+										<div class="form-group">
+											<label>Your comment:</label>
+											<textarea class="form-control" rows="4" id="editedReplyContent"
+												placeholder="input yoru comment" required="required"></textarea>
+										</div>
 
-						<!-- report Modal -->
+										<button type="button" class="btn btn-primary editReplyButton">Update</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- het edit-dialog -->
+
+						<!-- report comment Modal -->
 						<div class="modal fade" id="reportComment-box" role="dialog">
 							<div class="modal-dialog">
 								<!-- Modal content-->
@@ -255,7 +249,54 @@
 							</div>
 						</div>
 						<!-- het report-dialog -->
+						<!-- report comment Modal -->
+						<div class="modal fade" id="reportReply-box" role="dialog">
+							<div class="modal-dialog">
+								<!-- Modal content-->
+								<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal">&times;</button>
+										<h4 class="modal-title">Report this reply</h4>
+									</div>
+									<div class="modal-body">
+										<div class="form-group">
+											<label>Your report:</label>
+											<textarea class="form-control" rows="4" id="reportedReplyContent"
+												placeholder="input your report" required="required"></textarea>
+										</div>
 
+										<button type="button"
+											class="btn btn-primary reportReplyButton">Report</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- het report-dialog -->
+						
+
+						<!-- report discussion Modal -->
+						<div class="modal fade" id="reportDiscussion-box" role="dialog">
+							<div class="modal-dialog">
+								<!-- Modal content-->
+								<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal">&times;</button>
+										<h4 class="modal-title">Report this discussion</h4>
+									</div>
+									<div class="modal-body">
+										<div class="form-group">
+											<label>Your report:</label>
+											<textarea class="form-control" rows="4" id="reportedDiscussionContent"
+												placeholder="input your report" required="required"></textarea>
+										</div>
+
+										<button type="button"
+											class="btn btn-primary reportDiscussionButton" id="${discussion.getId()}">Report</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- het report-dialog -->
 
 					</div>
 
@@ -288,8 +329,7 @@
 
 	<!-- Optional JavaScript -->
 	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<!-- 	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script> -->
-<script src="../../resources/js/jquery-3.2.1.min.js"></script>
+	<script src="../../resources/js/jquery-3.2.1.min.js"></script>
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"
 		integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"

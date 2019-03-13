@@ -1,6 +1,7 @@
 package com.bktoeic.model;
 
 import javax.persistence.CascadeType;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -8,30 +9,29 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 public class Part1 {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int Id;
-	
+
 	private String Question;
-	
+
 	private String A;
 	private String B;
 	private String C;
 	private String D;
 	private String RightAnswer;
-	
-	@ManyToOne(fetch=FetchType.EAGER,cascade=CascadeType.ALL)
-	@JoinColumn(name="AudioID",nullable=false)
+	private String Image;
+
+	@JsonBackReference
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "AudioID", nullable = false)
 	private Audio audio;
-	
-	@OneToOne
-	@JoinColumn(name="ImageID",nullable=false)
-	private Image image;
 
 	public final int getId() {
 		return Id;
@@ -97,13 +97,12 @@ public class Part1 {
 		this.audio = audio;
 	}
 
-	public final Image getImage() {
-		return image;
+	public final String getImage() {
+		return Image;
 	}
 
-	public final void setImage(Image image) {
-		this.image = image;
+	public final void setImage(String image) {
+		Image = image;
 	}
-	
-	
+
 }

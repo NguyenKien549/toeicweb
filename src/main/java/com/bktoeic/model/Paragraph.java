@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -27,25 +28,25 @@ public class Paragraph {
 
 	private String Paragraph;
 
-	@JsonManagedReference
-	@ManyToOne
+	@JsonBackReference
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "PracticeID", nullable = true)
-	@JsonIgnore
 	private Practice practice;
 
-	@JsonManagedReference
-	@ManyToOne
+	@JsonBackReference
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "TestID", nullable = true)
-	@JsonIgnore
 	private Test test;
-
-	@JsonBackReference
-	@OneToMany(mappedBy = "paragraphPart6", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Set<Part6> part6 = new HashSet<Part6>();
 	
-	@JsonBackReference
-	@OneToMany(mappedBy = "paragraphPart7", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Set<Part7> part7 = new HashSet<Part7>();
+	@JsonManagedReference
+	@OneToMany(mappedBy = "paragraph", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OrderBy("id asc")
+	private Set<Part6> part6;
+	
+	@JsonManagedReference
+	@OneToMany(mappedBy = "paragraph", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OrderBy("id asc")
+	private Set<Part7> part7;
 
 	public final Set<Part7> getPart7() {
 		return part7;

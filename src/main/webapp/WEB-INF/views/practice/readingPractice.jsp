@@ -6,14 +6,14 @@
 <head>
 <title>Reading Practice</title>
 <link rel="stylesheet" type="text/css"
-	href="../resources/css/bootstrap/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="../resources/css/login.css">
+	href="../../../resources/css/bootstrap/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="../../../resources/css/login.css">
 <link rel="stylesheet" type="text/css"
-	href="../resources/css/reading.css">
+	href="../../../resources/css/reading.css">
 
 <!-- 	phan cu -->
 <link rel="stylesheet" type="text/css"
-	href="../resources/css/default.css">
+	href="../../../resources/css/default.css">
 </head>
 <body>
 	<div class="modal fade" id="login-box" role="dialog">
@@ -49,7 +49,7 @@
 	<div class="container-fluid div-parent">
 		<!-- navbar -->
 		<nav class="navbar navbar-expand-md navbar-dark fixed-top"> <!-- Brand -->
-		<span><img class="logo" src="../resources/img/logo.png"
+		<span><img class="logo" src="../../../resources/img/logo.png"
 			width="40px" height="40px" style="opacity: 0.8"> <a
 			class="navbar-brand" href="${pageContext.request.contextPath}">BKTOEIC</a></span>
 
@@ -67,7 +67,7 @@
 					target="blank">
 					<input class="form-control mr-sm-2 input-search active" type="text"
 						placeholder="Search" name="q"> <img class="btn-search"
-						src="../resources/img/search.png" width="35px" height="35px"
+						src="../../../resources/img/search.png" width="35px" height="35px"
 						style="opacity: 0.9">
 				</form>
 				<li class="nav-item"><a class="nav-link" href="#">HOME</a></li>
@@ -107,20 +107,14 @@
 				</div>
 
 				<div class="col-lg-10 col-sm-10 col-xs-10 col-10 questions">
-					<div class="listQuestions">
-						<h2 id="title">${partTitle }</h2>
-						<hr>
-						<div class="contentPractice listPractice">
-							<ul class="list-group">
-								<c:forEach items="${listPractice}" var="practice">
-									<li class="readingPractice list-group-item" value="${practice.getId()}">
-										<span class="${part}" id="practice${practice.getId()}">${practice.getName()}</span>
-									</li>
-								</c:forEach>
-							</ul>
+					<div  class="practicePart" id="${practice.getPart()}">
+						<h2 id="title">${practice.getName() }</h2>
+						<div class="contentPractice listQuesions">
+							
 						</div>
 					</div>
 				</div>
+				
 
 			</div>
 
@@ -136,9 +130,9 @@
 			</div>
 			<div class="col-5 right-footer">
 				<p>Liên hệ:</p>
-				<a href=""><span><img src="../resources/img/fb.png"
+				<a href=""><span><img src="../../../resources/img/fb.png"
 						height="40px" width="40px"></span></a> <a href=""><span><img
-						src="../resources/img/twitter.png" height="40px" width="40px"></span></a>
+						src="../../../resources/img/twitter.png" height="40px" width="40px"></span></a>
 			</div>
 
 		</div>
@@ -159,9 +153,9 @@
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 	<script type="text/javascript"
-		src="../resources/js/bootstrap/bootstrap.min.js"></script>
-	<script type="text/javascript" src="../resources/js/login.js"></script>
-	<script type="text/javascript" src="../resources/ajax/login.js"></script>
-	<script type="text/javascript" src="../resources/ajax/readingAjax.js"></script>
+		src="../../../resources/js/bootstrap/bootstrap.min.js"></script>
+	<script type="text/javascript" src="../../../resources/js/login.js"></script>
+	<script type="text/javascript" src="../../../resources/ajax/login.js"></script>
+	<script type="text/javascript" src="../../../resources/ajax/readingAjax.js"></script>
 </body>
 </html>

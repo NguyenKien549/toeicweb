@@ -59,3 +59,52 @@
 	 width: 15px;
 	 opacity: 0.5;
 }
+
+/*reply icon discussion*/
+.send_reply_icon{
+    margin: 3px 0 0 1%;
+    height: 31px;
+    width: 33px;
+}
+
+.replyComment{
+	margin-top:8px;
+	color: #007bff;
+}
+
+.replyComment:hover{
+	cursor: pointer;
+}
+
+.reportDiscussion{
+	color: #007bff;
+}
+.reportDiscussion:hover{
+	cursor: pointer;
+}
+
+.readmoreReply:hover{
+	cursor: pointer;
+	
+}
+.readmoreReply{
+	margin-left: 10%;
+	color: #007bff;	
+}
+.moreReply{
+	color: #007bff;	
+}
+.moreReply:hover {
+	cursor:pointer;	
+}
+.readLessReply:hover {
+	cursor:pointer;	
+}
+
+.readLessReply{
+	color: #007bff;	
+}
+
+.reply{
+	margin-top: 8px;
+}

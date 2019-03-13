@@ -2,7 +2,6 @@ package com.bktoeic.model;
 
 import java.sql.Timestamp;
 
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,23 +18,35 @@ public class Report {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int Id;
-	
-	@Column(name="ContentReport")
+
+	@Column(name = "ContentReport")
 	private String Content;
-	
-	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
-	@JoinColumn(name="UserID",nullable=false)
+
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name = "UserID", nullable = false)
 	private Account user;
-	
-	@ManyToOne(fetch=FetchType.EAGER,cascade=CascadeType.ALL)
-	@JoinColumn(name="ReportedDiscussionID",nullable=true)
+
+	@ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST,CascadeType.MERGE})
+	@JoinColumn(name = "ReportedDiscussionID", nullable = true)
 	private Discussion reportedDiscussion;
-	
-	@ManyToOne(fetch=FetchType.EAGER,cascade=CascadeType.ALL)
-	@JoinColumn(name="ReportedCommentID",nullable=true)
+
+	@ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST,CascadeType.MERGE})
+	@JoinColumn(name = "ReportedCommentID", nullable = true)
 	private Comment reportedComment;
-	
+
+	@ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST,CascadeType.MERGE})
+	@JoinColumn(name = "ReportedReplyCommentID", nullable = true)
+	private ReplyComment reportedReplyComment;
+
 	private Timestamp Time;
+
+	public final ReplyComment getReportedReplyComment() {
+		return reportedReplyComment;
+	}
+
+	public final void setReportedReplyComment(ReplyComment reportedReplyComment) {
+		this.reportedReplyComment = reportedReplyComment;
+	}
 
 	public final int getId() {
 		return Id;
@@ -84,6 +95,5 @@ public class Report {
 	public final void setTime(Timestamp time) {
 		Time = time;
 	}
-	
-	
+
 }

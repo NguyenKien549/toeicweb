@@ -3,7 +3,9 @@ package com.bktoeic.controller;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 
@@ -32,7 +34,9 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.bktoeic.model.Account;
+import com.bktoeic.model.Comment;
 import com.bktoeic.model.Practice;
+import com.bktoeic.model.ReplyComment;
 import com.bktoeic.service.guestService;
 import com.bktoeic.service.userService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -99,7 +103,7 @@ public class guestController {
 			}
 			model.addAttribute("logAcc", user);
 			if (user.getType().equals("Admin")) {
-				return "redirect: admin/accountManagement";
+				return "redirect: admin/accountManagement/1";
 			}
 			return "redirect: home";
 		}
@@ -134,23 +138,8 @@ public class guestController {
 
 		return "redirect: login";
 	}
-	
-//	@RequestMapping(path = { "/admin/bai-hoc-manager/audio-upload" }, method = RequestMethod.POST)
-//	@ResponseBody
-//	public boolean uploadAudio(ModelMap modelMap, @RequestParam("audio") MultipartFile file,
-//			@RequestParam("name") String fileName, HttpServletRequest request) throws IOException {
-//		if (!file.isEmpty()) {
-//			File destination = new File(request.getServletContext().getRealPath("audio-upload") + "/" + fileName);
-//			FileOutputStream fileOutputStream = new FileOutputStream(destination);
-//			fileOutputStream.write(file.getBytes());
-//			fileOutputStream.close();
-//			return true;
-//		} else {
-//			return false;
-//		}
-//	}
 
-
+	// 		PRACTICE
 	@RequestMapping("/readingpractice/{part}")
 	public String readinghome(ModelMap map, HttpSession session, @PathVariable("part") byte part) {
 		List<Practice> listPrac = guestService.accessPractice(part);
@@ -208,10 +197,47 @@ public class guestController {
 
 	@PostMapping("/readingPractice")
 	@ResponseBody
-	public String practice(ModelMap map, HttpSession session, @RequestParam("id") int id,
-			@RequestParam("part") byte part) throws JsonProcessingException, UnsupportedEncodingException {
-		String response= new String(new ObjectMapper().writeValueAsBytes(guestService.practiceReadingQues(id, part)), Charset.forName("UTF-8"));
+	public String practice(ModelMap map, HttpSession session, @RequestParam("id") int idPractice,
+			@RequestParam("part") byte part) throws IOException{
+		
+		String response=null;
+					try {
+						response = new String(new ObjectMapper().writeValueAsBytes(
+						guestService.practiceReadingQues(idPractice, part)));
+					} catch (JsonProcessingException e) {
+						System.out.println("json error"+e.getMessage());
+					}
 		return response;
+	}
+	
+	@GetMapping("/practice/{part}/{title}/{id}")
+	public String accessPractice(ModelMap map, HttpSession session, 
+			@PathVariable("id") int id, @PathVariable("part") byte part) {
+		map.put("practice", guestService.practice(id,part));
+		if(part==3 || part==4 || part ==1 ||part==2) {
+			return "practice/listeningPractice";
+		}else if(part ==6 || part==7 || part==5) {
+			return "practice/readingPractice";
+		}
+		
+		return "redirect: ";
+	}
+	
+	@PostMapping("/practice/{part}/{id}")
+	@ResponseBody
+	public String practiceListening(ModelMap map, HttpSession session, 
+			@PathVariable("id") int id, @PathVariable("part") byte part) throws JsonProcessingException {
+		Practice p=guestService.practice(id,part);
+		if(part==3) {
+			return new ObjectMapper().writeValueAsString(p.getAudio().getPart3());
+		}else if(part==1) {
+			return new ObjectMapper().writeValueAsString(p.getAudio().getPart1());
+		}else if(part==2) {
+			return new ObjectMapper().writeValueAsString(p.getAudio().getPart2());
+		}else if(part==4) {
+			return new ObjectMapper().writeValueAsString(p.getAudio().getPart4());
+		}
+		return "error";
 	}
 	
 	//THUOC VE THAO LUAN
@@ -253,8 +279,34 @@ public class guestController {
 			map.addAttribute("name", name[name.length - 1]);
 			map.put("discussion", userService.getDiscussion(id));
 			map.put("user", acc);
-			return "discussion/discussionView";
+			return "discussion/discussionViewUser";
 		}
 	}
+	
+	@PostMapping(value = { "/getPageComment" })
+	@ResponseBody
+	public String getPageComment(@RequestParam("id")int discussionId,@RequestParam("page")int page,
+			@RequestParam("pageSize")int pageSize,ModelMap map, HttpSession session) throws JsonProcessingException {
+		try {
+			List<Comment> comments= userService.getListComment(page, pageSize , discussionId);
+			return new ObjectMapper().writeValueAsString(comments);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new ObjectMapper().writeValueAsString("error");
+	}
+	
+	@PostMapping(value = { "/getReplyComment" })
+	@ResponseBody
+	public String getReplyComment(@RequestParam("id")int commentId,@RequestParam("page")int page,
+			@RequestParam("pageSize")int pageSize,ModelMap map, HttpSession session) throws JsonProcessingException {
+		try {
+			List<ReplyComment> replies= userService.getListReplyComment(page, pageSize , commentId);
+			return new ObjectMapper().writeValueAsString(replies);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+			return new ObjectMapper().writeValueAsString("error");
+		}
 	
 }

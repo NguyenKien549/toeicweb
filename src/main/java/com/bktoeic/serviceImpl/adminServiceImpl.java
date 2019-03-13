@@ -20,13 +20,11 @@ public class adminServiceImpl<T> implements adminService<T> {
 	}
 
 	public boolean save(T obj) {
-		// TODO Auto-generated method stub
-		return false;
+		return adminDAO.save(obj);
 	}
 
 	public boolean update(T obj) {
-		// TODO Auto-generated method stub
-		return false;
+		return adminDAO.save(obj);
 	}
 
 	public boolean delete(String type,int[] ids) {

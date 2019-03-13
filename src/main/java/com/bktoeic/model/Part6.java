@@ -2,6 +2,7 @@ package com.bktoeic.model;
 
 import javax.persistence.CascadeType;
 
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -10,14 +11,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 public class Part6 {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int Id;
 
 	private String A;
@@ -25,12 +25,11 @@ public class Part6 {
 	private String C;
 	private String D;
 	private String RightAnswer;
-	
-	@JsonManagedReference
-	@ManyToOne(fetch=FetchType.EAGER,cascade=CascadeType.ALL)
-	@JoinColumn(name="ParagraphID",nullable=false)
-	@JsonIgnore
-	private Paragraph paragraphPart6;
+
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "ParagraphID", nullable = false)
+	@JsonBackReference
+	private Paragraph paragraph;
 
 	public final int getId() {
 		return Id;
@@ -81,12 +80,11 @@ public class Part6 {
 	}
 
 	public final Paragraph getParagraph() {
-		return paragraphPart6;
+		return paragraph;
 	}
 
 	public final void setParagraph(Paragraph paragraph) {
-		this.paragraphPart6 = paragraph;
+		this.paragraph = paragraph;
 	}
-	
-	
+
 }

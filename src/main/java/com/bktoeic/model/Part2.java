@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 public class Part2 {
 
@@ -23,6 +25,7 @@ public class Part2 {
 	private String C;
 	private String RightAnswer;
 	
+	@JsonBackReference
 	@ManyToOne(fetch=FetchType.EAGER,cascade=CascadeType.ALL)
 	@JoinColumn(name="AudioID",nullable=false)
 	private Audio audio;

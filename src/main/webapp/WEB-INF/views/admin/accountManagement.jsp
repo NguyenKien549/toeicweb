@@ -9,8 +9,8 @@
 <title>Account Management</title>
 </head>
 <link rel="stylesheet" type="text/css"
-	href="../resources/css/bootstrap/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="../resources/css/admin.css">
+	href="../../resources/css/bootstrap/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="../../resources/css/admin.css">
 
 <body>
 <!-- HEADER -->
@@ -25,10 +25,10 @@
 				<ul class="navbar-nav">
 					<li id="mail" class="nav-item"><a class="nav-link mr-100"
 						href="#"><img class="ico-header"
-							src="../resources/img/email-icon.png"></a></li>
+							src="../../resources/img/email-icon.png"></a></li>
 					<li id="acc" class="nav-item">
 						<div class="dropdown nav-link" data-toggle="dropdown">
-							<img class="ico-header" src="../resources/img/account-icon.png">
+							<img class="ico-header" src="../../resources/img/account-icon.png">
 							<ul class="dropdown-menu" id="menu-acc">
 								<li id="dangxuat-btn">Đăng xuất</li>
 							</ul>
@@ -43,15 +43,15 @@
 		<!-- menu left -->
 		<div id="sidebar-wrapper">
 			<ul class="sidebar-nav">
-				<li> <a href="${pageContext.request.contextPath}/admin/accountManagement" class="choice" style="color: white"><img class="ico-manag"
-						src="../resources/img/account-manager.png">Quản lý tài khoản</a>
+				<li> <a href="${pageContext.request.contextPath}/admin/accountManagement/1" class="choice" style="color: white"><img class="ico-manag"
+						src="../../resources/img/account-manager.png">Quản lý tài khoản</a>
 				</li>
 				<li><a href="#"  class="choice"><img class="ico-manag"
-						src="../resources/img/baihoc-manager.png">Quản lý bài học</a></li>
-				<li><a href="${pageContext.request.contextPath}/admin/questionManagement/part1"  class="choice"><img class="ico-manag"
-						src="../resources/img/baihoc-manager.png">Quản lý ngân hàng câu hỏi</a></li>
+						src="../../resources/img/baihoc-manager.png">Quản lý bài học</a></li>
+				<li><a href="${pageContext.request.contextPath}/admin/questionManagement/part1/1"  class="choice"><img class="ico-manag"
+						src="../../resources/img/baihoc-manager.png">Quản lý ngân hàng câu hỏi</a></li>
 				<li><a href="#"  class="choice"><img class="ico-manag"
-						src="../resources/img/btl-manager.png">Quản lý bài thảo luận</a></li>
+						src="../../resources/img/btl-manager.png">Quản lý bài thảo luận</a></li>
 			</ul>
 		</div>
 
@@ -115,12 +115,12 @@
 				<!-- pagingation -->
 				<div class="col-12 row"
 					style="padding-top: 1em; padding-bottom: 1em">
-					<span class="col-md-6 col-sm-12" id="infoPage">Page 1 of
+					<span class="col-md-6 col-sm-12" id="infoPage">Page ${currentPage} of
 						${numbPage}</span>
 					<ul class="pagination" id="pagin">
 						<c:forEach var="i" begin="1" end="${numbPage}">
-							<li class="page-item" id="index"><a class="page-link"
-								href="account/${i}">${i}</a></li>
+							<li class="page-item" id="index"><a class="page-link pageIndex"
+								href="${i}">${i}</a></li>
 						</c:forEach>
 					</ul>
 				</div>
@@ -131,7 +131,7 @@
 				<input id="add" type="button" name="" value="Add Account"
 					data-toggle="modal" data-target="#myModal-add"
 					style="padding: 0.8em 1em; background-color: #066310; color: white; border: none; border-radius: 0.5em; margin-right: 2em">
-				<input id="delete" type="button" name="" value="Delete Account"
+				<input id="delete" type="button" class="account" value="Delete Account"
 					style="padding: 0.8em 1em; background-color: #F70000; color: white; border: none; border-radius: 0.5em; margin-right: 2em">
 			</div>
 		</div>
@@ -170,6 +170,10 @@
 						</div>
 						<div class="input-modal row form-group">
 							<span class="col-2" style="line-height: 35px">Username</span><input
+								type="file" name="Avatar" class="form-control col-9">
+						</div>
+						<div class="input-modal row form-group">
+							<span class="col-2" style="line-height: 35px">Username</span><input
 								type="text" name="Username" class="form-control col-9">
 						</div>
 						<div class="input-modal row form-group">
@@ -201,9 +205,10 @@
 <!-- 	<script type="text/javascript" src="resources/js/jquery-3.3.1.min.js"></script> -->
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 
-	<script type="text/javascript" src="../resources/js/js-for-admin-acc.js"></script>
+	<script type="text/javascript" src="../../resources/js/js-for-admin-acc.js"></script>
+	<script type="text/javascript" src="../../resources/ajax/adminAjax.js"></script>
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-	<script type="text/javascript" src="../resources/js/bootstrap/bootstrap.min.js"></script>
+	<script type="text/javascript" src="../../resources/js/bootstrap/bootstrap.min.js"></script>
 </body>
 </html>
