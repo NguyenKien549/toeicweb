@@ -108,3 +108,15 @@
 .reply{
 	margin-top: 8px;
 }
+
+/* in editBox */
+#titleContent{
+	margin-right: 2%;
+    width: 89%;
+}
+
+.inputContent{
+	margin: 1% 0;
+}
+
+

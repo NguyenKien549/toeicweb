@@ -123,7 +123,6 @@ public class GuestDAOImpl<T> implements GuestDAO<T> {
 		return null;
 	}
 
-	@Override
 	@Transactional
 	public Set<Paragraph> getParagraphList(int id, byte part) {
 		Session session = sessionFactory.openSession();

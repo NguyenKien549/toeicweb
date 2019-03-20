@@ -185,6 +185,7 @@ public class UserDAOImpl implements UserDAO {
 				System.out.println("BTL bi vo hieu hoa");
 				return null;
 			}
+			
 			Criteria cr2 = session.createCriteria(Comment.class);
 			cr2.add(Restrictions.eq("discussion", discussion));
 			cr2.add(Restrictions.eq("Active", (byte)1));
@@ -195,6 +196,18 @@ public class UserDAOImpl implements UserDAO {
 			Set<Comment> temp=new HashSet<>();
 			temp.addAll(listComment);
 			discussion.setCommentList(temp);
+			
+			// increase view of discussion
+//			long view = discussion.getView();
+//			System.out.println(view);
+//			view = view +1;
+//			session.evict(discussion);
+//			discussion.setView(view);
+//			discussion.setTitle("test merge");
+//			
+//			session.merge(discussion);
+//			System.out.println(discussion.getView());
+			
 			return discussion;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -202,18 +215,49 @@ public class UserDAOImpl implements UserDAO {
 		return null;
 	}
 
+	@Transactional
 	public boolean addDiscussion(Discussion discussion) {
-		// TODO Auto-generated method stub
+		try {
+			Session session = sessionFactory.openSession();
+
+			session.saveOrUpdate(discussion);
+			System.out.println("post discussion done");
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("loi khi them topic");
+		}
 		return false;
 	}
-
+	
+	@Transactional
 	public boolean updateDiscussion(Discussion discussion) {
-		// TODO Auto-generated method stub
+		try {
+			Session session = sessionFactory.getCurrentSession();
+			session.merge(discussion);
+			System.out.println("update done");
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		return false;
 	}
 
+	@Transactional
 	public boolean deleteDiscussion(int id) {
-		// TODO Auto-generated method stub
+		try {
+			Session session = sessionFactory.getCurrentSession();
+			Discussion delDiscussion = getDiscussion(id);
+			if(delDiscussion !=null) {
+				delDiscussion.setActive((byte) 0);
+				session.merge(delDiscussion);
+				System.out.println("delete done");
+				return true;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return false;
 	}
 
@@ -299,11 +343,21 @@ public class UserDAOImpl implements UserDAO {
 	public boolean report(Report report) {
 		try {
 			Session session = sessionFactory.getCurrentSession();
+			
 			session.saveOrUpdate(report);
+			if(report.getReportedReplyComment() !=null) {
+				ReplyComment reply = (ReplyComment) session.load(ReplyComment.class, report.getReportedReplyComment().getId());
+				reply.getReports().add(report);
+				session.merge(reply);
+			}else if(report.getReportedDiscussion() !=null) {
+				Discussion discussion = (Discussion) session.load(Discussion.class, report.getReportedDiscussion().getId());
+				discussion.getReportList().add(report);
+				session.merge(discussion);
+			}
 			System.out.println("report done");
 			return true;
 		} catch (Exception e) {
-			e.getStackTrace();
+			e.printStackTrace();
 		}
 		System.out.println("report error");
 		return false;
@@ -318,6 +372,7 @@ public class UserDAOImpl implements UserDAO {
 			
 			cr.add(Restrictions.eq("discussion", getDiscussion(discussionID)));
 			cr.add(Restrictions.eq("Active", (byte) 1));
+			cr.addOrder(Order.asc("Id"));
 			cr.setFirstResult(pageSize *(page-1));
 			cr.setMaxResults(pageSize);
 			List<Comment> listComment = cr.list();

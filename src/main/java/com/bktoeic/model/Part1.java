@@ -29,7 +29,7 @@ public class Part1 {
 	private String Image;
 
 	@JsonBackReference
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "AudioID", nullable = false)
 	private Audio audio;
 

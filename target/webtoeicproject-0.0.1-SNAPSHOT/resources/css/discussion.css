@@ -7,26 +7,6 @@
 	background: white;
 }
 
-.background{
-	height: 350px;
-	background:linear-gradient(
-      rgba(255,255,255,0.1), 
-      rgba(255,255,255,0.1)
-    ),  url("resources/img/forum.jpg");
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	-o-background-size: cover;
-	background-size: cover;
-}
-
-.listDiscussion thead{
-	background-color: white!important;
-}
-
-.listDiscussion tbody td{
-	padding: 0 5px 0 5px!important;
-}
-
 .note{
 	margin-top: 75px;
 	font-family: Helvetica,Arial,sans-serif;
@@ -67,4 +47,64 @@
 	 -moz-animation: my 700ms infinite; 
 	 -o-animation: my 700ms infinite; 
 	 animation: my 700ms infinite;
+}
+
+/* image icon option */
+.option-icon:hover{
+	cursor: pointer;
+}
+
+.option-icon{
+	height: 15px;
+	 width: 15px;
+	 opacity: 0.5;
+}
+
+/*reply icon discussion*/
+.send_reply_icon{
+    margin: 3px 0 0 1%;
+    height: 31px;
+    width: 33px;
+}
+
+.replyComment{
+	margin-top:8px;
+	color: #007bff;
+}
+
+.replyComment:hover{
+	cursor: pointer;
+}
+
+.reportDiscussion{
+	color: #007bff;
+}
+.reportDiscussion:hover{
+	cursor: pointer;
+}
+
+.readmoreReply:hover{
+	cursor: pointer;
+	
+}
+.readmoreReply{
+	margin-left: 10%;
+	color: #007bff;	
+}
+.moreReply{
+	color: #007bff;	
+}
+.moreReply:hover {
+	cursor:pointer;	
+}
+.readLessReply:hover {
+	cursor:pointer;	
+}
+
+.readLessReply{
+	color: #007bff;	
+}
+
+.reply{
+	margin-top: 8px;
 }

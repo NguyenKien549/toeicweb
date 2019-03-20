@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -83,11 +84,15 @@
 		</nav>
 
 
-
+		<div class="background container"></div>
 		<!-- content -->
 		<div class="container content">
-			<div class="row background"></div>
-
+			
+			<div class="sloganTitle">
+				<span>Nơi dành cho mọi người thảo luận, trao đổi liên quan đến Toeic. Hãy cùng nhau xây dựng một cộng đồng vững mạnh bạn nhé!</span>
+			</div>
+		
+			
 			<div class="discussion">
 				<table class="table table-hover listDiscussion">
 					<thead>
@@ -107,7 +112,7 @@
 								<td><a href="${pageContext.request.contextPath}/discussion/${discussion.getTitle()}/${discussion.getId()}" style="text-decoration: none;color: black">${discussion.getTitle()}</a></td>
 								<td>${discussion.getUser().getUsername()}</td>
 								<td>${discussion.getView()}</td>
-								<td>${discussion.getTime()}</td>
+								<td id="discussionTime${discussion.getId()}" title='<fmt:formatDate value="${discussion.getTime()}" pattern="dd-MM-yyyy HH:mm:ss"></fmt:formatDate>'></td>
 							</tr>
 						</c:forEach>
 					</tbody>
@@ -152,6 +157,6 @@
 	<script type="text/javascript"
 		src="resources/js/bootstrap/bootstrap.min.js"></script>
 	<script type="text/javascript" src="resources/js/login.js"></script>
-	<script type="text/javascript" src="resources/js/forum.js"></script>
+	<script type="text/javascript" src="resources/js/setTime.js"></script>
 </body>
 </html>

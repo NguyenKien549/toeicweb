@@ -13,8 +13,8 @@
 //
 //});
 
-$("*").on("click", "#dangxuat-btn", function() {
-	$.get("webtoeicproject/logout", function() {
-		location.reload();
+$(document).on("click", "#dangxuat-btn", function() {
+	$.get("/logout", function() {
+		window.location.reload();
 	});
 });

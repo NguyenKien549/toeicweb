@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>BKForum</title>
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" type="text/css"
 	href="resources/css/bootstrap/bootstrap.min.css">
@@ -93,10 +93,10 @@
 					<thead>
 
 						<tr>
-							<th style="width: 55%">Topic</th>
+							<th style="width: 60%">Topic</th>
 							<th style="width: 15%">Author</th>
 							<th style="width: 12%">View</th>
-							<th style="width: 18%">Date</th>
+							<th style="width: 13%">Date</th>
 						</tr>
 
 					</thead>

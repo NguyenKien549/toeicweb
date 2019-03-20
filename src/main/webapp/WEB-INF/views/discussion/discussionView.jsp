@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -12,7 +13,7 @@
 <link rel="stylesheet" type="text/css"
 	href="../../resources/css/login.css">
 <link rel="stylesheet" type="text/css"
-	href="../../resources/css/discussion.css">
+	href="<c:url value="/resources/css/discussion.css"></c:url>"/>
 </head>
 <body>
 	<div class="modal fade" id="login-box" role="dialog">
@@ -59,34 +60,15 @@
 		<div class="collapse navbar-collapse justify-content-end"
 			id="collapsibleNavbar">
 			<ul class="navbar-nav">
-				<!-- 				<form class="form-inline mr-auto" action="https://google.com/search" -->
-				<!-- 					target="blank"> -->
-				<!-- 					<input class="form-control mr-sm-2 input-search active" type="text" -->
-				<!-- 						placeholder="Search" name="q"> <img class="btn-search" -->
-				<!-- 						src="../../resources/img/search.png" width="35px" height="35px" -->
-				<!-- 						style="opacity: 0.9"> -->
-				<!-- 				</form> -->
 				<li class="nav-item"><a class="nav-link"
 					href="${pageContext.request.contextPath}">HOME</a></li>
 				<li class="nav-item"><a class="nav-link" href="#">FORUM</a></li>
 				<li class="nav-item"><a class="nav-link" href="#">TEST</a></li>
 				<li class="nav-item"><a class="nav-link" href="#">ABOUT</a></li>
-				<li class="nav-item"><c:choose>
-						<c:when test="${name==null}">
-							<a class="nav-link login-window" data-target="#login-box"
+				<li class="nav-item">
+					<a class="nav-link login-window" data-target="#login-box"
 								data-toggle="modal" href="#">LOGIN</a>
-						</c:when>
-						<c:otherwise>
-							<div class="dropdown nav-link" data-toggle="dropdown"
-								style="padding: 0">
-								<a class="nav-link" href="#">${name}</a>
-								<ul class="dropdown-menu" id="menu-acc">
-									<li id="information">Account Management</li>
-									<li id="dangxuat-btn">Đăng xuất</li>
-								</ul>
-							</div>
-						</c:otherwise>
-					</c:choose></li>
+				</li>
 
 			</ul>
 		</div>
@@ -110,20 +92,27 @@
 									style="opacity: 0.8; border-radius: 20px;">
 								${discussion.getUser().getUsername()}
 							</div>
-							<div class="col-2 timer">
-								<span>${discussion.getTime()}</span>
+							<div class="col-1 timer">
+								<span id="discussion${discussion.getId()}"
+								 title='<fmt:formatDate value="${discussion.getTime()}" pattern="dd-MM-yyyy HH:mm:ss"/>'></span>
+							</div>
+							
+							<div class="col-1 menu">
+								<div class="dropdown">
+									<img class="option-icon dropdown-toggle"
+										src="../../resources/img/option_icon.png"
+										data-toggle="dropdown">
+									<ul class="dropdown-menu commentOption"
+										style="min-width: 50px; width: 70px">
+										<li class="reportDiscussion"
+											data-target="#login-box" data-toggle="modal">Report</li>
+										
+									</ul>
+								</div>
 							</div>
 
 							<div class="col-12 questionContent">
-								<p>${discussion.getContent()}</p>
-								<a href="#" class="report">Report</a>
-								<div class="reportBox">
-									<div class="form-group">
-										<input type="text" name="reply" class="form-control">
-										<button class="btn btn-primary reportButton" type="submit"
-											placeholder="input your report">Report</button>
-									</div>
-								</div>
+								<span id="discussionContent">${discussion.getContent()}</span>
 							</div>
 
 						</div>
@@ -145,8 +134,8 @@
 										style="margin-left: 5px;">${comment.getUser().getUsername()}</span>
 
 								</div>
-								<div class="col-2 timer">
-									<span>${comment.getTime()}</span>
+								<div class="col-1 timer">
+									<span id="timer${comment.getId() }" title='<fmt:formatDate value="${comment.getTime()}" pattern="dd-MM-yyyy HH:mm:ss"/>'></span>
 								</div>
 								<div class="col-1 menu">
 									<div class="dropdown">
@@ -156,15 +145,8 @@
 										<ul class="dropdown-menu commentOption"
 											style="min-width: 50px; width: 70px">
 											<li id="${comment.getId()}" class="reportOption"
-												data-target="#reportComment-box" data-toggle="modal">Report</li>
-											<c:choose>
-												<c:when
-													test="${user.getUsername() == comment.getUser().getUsername()}">
-													<li id="${comment.getId()}" class="editOption"
-														data-target="#editComment-box" data-toggle="modal">Edit</li>
-													<li id="${comment.getId()}" class="deleteOption">Delete</li>
-												</c:when>
-											</c:choose>
+												data-target="#login-box" data-toggle="modal">Report</li>
+											
 										</ul>
 									</div>
 								</div>
@@ -173,31 +155,30 @@
 									<span class="contentComment" id="${comment.getId()}">${comment.getContent()}</span>
 									<br>
 									<div class="mainComment">
-										<span data-target="#login-box" data-toggle="modal">Reply</span>
-
-<%-- 										<div class="replyBox reply${count}"> --%>
-<!-- 											<div class="form-group"> -->
-<!-- 												<input type="text" name="reply" class="form-control"> -->
-<!-- 												<button class="btn btn-primary replyButton" type="submit" -->
-<!-- 													placeholder="input your reply">Reply</button> -->
-<!-- 											</div> -->
-<!-- 										</div> -->
+										<span class="replyComment" id="${count}"data-target="#login-box" data-toggle="modal">Reply</span>
 									</div>
 
-									<span  class="col-11 readmoreReply" style="float: right;" id="${comment.getId()}">Read
-										more 10 reply</span>
-									<span class="col-11 readLessReply"
-										style="float: right;">Read less reply</span>
+									<c:choose>
+										<c:when test="${comment.getReplies().size() > 0 }">
+											<span class="readmoreReply" id="${comment.getId()}">Read
+												more ${comment.getReplies().size()} replies</span>
+											<span
+												class="col-11 readLessReply lessReply${comment.getId()}"
+												id="${comment.getId()}" style="float: right;">Read
+												less reply</span>
+										</c:when>
+									</c:choose>
+
 
 									<div class="replyArea col-11" style="float: right;">
-										<div class="row listReply${comment.getId()}">
-										
-										</div>
+										<div class="row listReply${comment.getId()}"></div>
 										<!--	het danh sach reply -->
 										<br>
 										<div class="replyInputArea row col-12 replyBox${count }">
-											<input class="col-9 form-control" id="replyInput${count}" type="text">
-											<img src="../../resources/img/send_reply.png"
+											<input
+												class="col-9 form-control replyContent${comment.getId()}"
+												id="replyInput${count}" type="text"> <img
+												src="../../resources/img/send_reply.png"
 												class="send_reply_icon" id="${comment.getId()}">
 										</div>
 									</div>
@@ -210,52 +191,6 @@
 
 							<hr>
 						</c:forEach>
-						<div class="modal fade" id="editComment-box" role="dialog">
-							<div class="modal-dialog">
-								<!-- Modal content-->
-								<div class="modal-content">
-									<div class="modal-header">
-										<button type="button" class="close" data-dismiss="modal">&times;</button>
-										<h4 class="modal-title">Edit Comment</h4>
-									</div>
-									<div class="modal-body">
-										<div class="form-group">
-											<label>Your comment:</label>
-											<textarea class="form-control" rows="4" id="editedContent"
-												placeholder="input yoru comment" required="required"></textarea>
-										</div>
-
-										<button type="button" class="btn btn-primary editButton">Update</button>
-									</div>
-								</div>
-							</div>
-						</div>
-						<!-- het edit-dialog -->
-
-						<!-- report Modal -->
-						<div class="modal fade" id="reportComment-box" role="dialog">
-							<div class="modal-dialog">
-								<!-- Modal content-->
-								<div class="modal-content">
-									<div class="modal-header">
-										<button type="button" class="close" data-dismiss="modal">&times;</button>
-										<h4 class="modal-title">Report this comment</h4>
-									</div>
-									<div class="modal-body">
-										<div class="form-group">
-											<label>Your report:</label>
-											<textarea class="form-control" rows="4" id="reportedContent"
-												placeholder="input your report" required="required"></textarea>
-										</div>
-
-										<button type="button"
-											class="btn btn-primary reportCommentButton">Report</button>
-									</div>
-								</div>
-							</div>
-						</div>
-						<!-- het report-dialog -->
-
 
 					</div>
 
@@ -290,6 +225,10 @@
 	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <!-- 	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script> -->
 <script src="../../resources/js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript">
+$(".replyInputArea").hide();
+$(".readLessReply").hide();
+</script>
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"
 		integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
@@ -303,9 +242,7 @@
 	<script type="text/javascript"
 		src="../../resources/js/bootstrap/bootstrap.min.js"></script>
 	<script type="text/javascript" src="../../resources/js/login.js"></script>
-	<script type="text/javascript"
-		src="../../resources/ajax/discussionAjax.js"></script>
-	<script type="text/javascript" src="../../resources/js/dicussion.js"></script>
-
+	<script type="text/javascript" src='<c:url value="/resources/ajax/discussionAjax.js"></c:url>'></script>
+<script type="text/javascript" src="../../resources/js/setTime.js"></script>
 </body>
 </html>

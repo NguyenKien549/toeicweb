@@ -29,33 +29,33 @@ public class Audio {
 
 	private String Script;
 
-	@JsonBackReference
-	@OneToOne
+	@JsonBackReference(value="practice_json")
+	@OneToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "PracticeID", nullable = true)
 	private Practice practice;
 
-	@JsonBackReference
-	@OneToOne(fetch=FetchType.EAGER)
+	@JsonBackReference(value="test_json")
+	@OneToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "TestID", nullable = true)
 	private Test test;
 
 	@OneToMany(mappedBy = "audio", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JsonManagedReference
+	@JsonManagedReference(value="part1List")
 	@OrderBy("id asc")
 	private Set<Part1> part1 ;
 
 	@OneToMany(mappedBy = "audio", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JsonManagedReference
+	@JsonManagedReference(value="part2List")
 	@OrderBy("id asc")
 	private Set<Part2> part2 ;
 
 	@OneToMany(mappedBy = "audio", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JsonManagedReference
+	@JsonManagedReference(value="part3List")
 	@OrderBy("id asc")
 	private Set<Part3> part3;
 
 	@OneToMany(mappedBy = "audio", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JsonManagedReference
+	@JsonManagedReference(value="part4List")
 	@OrderBy("id asc")
 	private Set<Part4> part4;
 

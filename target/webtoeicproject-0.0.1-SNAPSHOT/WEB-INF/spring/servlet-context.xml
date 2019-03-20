@@ -18,6 +18,7 @@
 		<context:component-scan base-package="com.bktoeic"/>
 		
 		<resources location="/resources/" mapping="/resources/**"/>
+		<resources location="/upload/" mapping="/upload/**"/>
 		
 		<beans:bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">

@@ -44,7 +44,7 @@
 							style="padding: 0">
 							<a class="nav-link" href="#">${name}</a>
 							<ul class="dropdown-menu" id="menu-acc">
-								<li id="information"><a href="#">Account Management</a></li>
+								<li id="information">Account Management</li>
 								<li id="dangxuat-btn">Logout</li>
 							</ul>
 						</div>

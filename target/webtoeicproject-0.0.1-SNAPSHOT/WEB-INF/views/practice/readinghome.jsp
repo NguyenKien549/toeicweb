@@ -73,8 +73,7 @@
 				<li class="nav-item"><a class="nav-link" href="#">HOME</a></li>
 				<li class="nav-item"><a class="nav-link" href="#">FORUM</a></li>
 				<li class="nav-item"><a class="nav-link" href="#">ABOUT</a></li>
-				<li class="nav-item">
-					<c:choose>
+				<li class="nav-item"><c:choose>
 						<c:when test="${name==null}">
 							<a class="nav-link login-window" data-target="#login-box"
 								data-toggle="modal" href="#">LOGIN</a>
@@ -82,8 +81,7 @@
 						<c:otherwise>
 							<a class="nav-link" href="#">${name}</a>
 						</c:otherwise>
-					</c:choose>
-				</li>
+					</c:choose></li>
 			</ul>
 		</div>
 		</nav>
@@ -95,13 +93,16 @@
 			<div class="row part-list">
 				<div class="col-12 col-sm-12 col-xs-12 col-lg-12 listPart ">
 					<div class="part5 col-4 part">
-						<a href="${pageContext.request.contextPath}/readingpractice/5"><span>Part 5: Incomplete Sentence</span></a>
+						<a href="${pageContext.request.contextPath}/readingpractice/5"><span>Part
+								5: Incomplete Sentence</span></a>
 					</div>
 					<div class="part6 col-4 part">
-						<a href="${pageContext.request.contextPath}/readingpractice/6"><span>Part 6: Text completion</span></a>
+						<a href="${pageContext.request.contextPath}/readingpractice/6"><span>Part
+								6: Text completion</span></a>
 					</div>
 					<div class="part7 col-4 part">
-						<a href="${pageContext.request.contextPath}/readingpractice/7"><span>Part 7: Reading comprehen</span></a>
+						<a href="${pageContext.request.contextPath}/readingpractice/7"><span>Part
+								7: Reading comprehen</span></a>
 					</div>
 				</div>
 
@@ -109,35 +110,17 @@
 					<div class="listQuestions">
 						<h2 id="title">${partTitle }</h2>
 						<hr>
-						<!-- 						<button class="btn btn-primary start">Start</button> -->
-						<div class="contentPractice">
-							<div class="question">
-								<!-- 								<table class="table table-striped"> -->
-								<!-- 									<tbody> -->
-								<ul class="list-group">
-									<c:forEach items="${listPractice}" var="practice">
-										<li class="readingPractice list-group-item" value="${practice.getId()}"><span class="${part}">${practice.getName()}</span></li>
-									</c:forEach>
-								</ul>
-
-								<!-- 									</tbody> -->
-
-								<!-- 								</table> -->
-							</div>
-							<!-- 							<button class="btn btn-primary submit">Submit</button> -->
+						<div class="contentPractice listPractice">
+							<ul class="list-group">
+								<c:forEach items="${listPractice}" var="practice">
+									<li class="readingPractice list-group-item" value="${practice.getId()}">
+										<span class="${part}" id="practice${practice.getId()}">${practice.getName()}</span>
+									</li>
+								</c:forEach>
+							</ul>
 						</div>
 					</div>
 				</div>
-				<!-- het phan noi dung cau hoi -->
-
-				<!-- 				<div class="col-sm-2 col-lg-2 col-xs-2 col-2 timer"> -->
-				<!-- 					<div class="box-answer"> -->
-				<!-- 						<div class="header"> -->
-				<!-- 							<p id="time" style="margin-bottom: 0;">0:5:00</p> -->
-				<!-- 						</div> -->
-				<!-- 					</div> -->
-				<!-- 				</div> -->
-				<!-- //het phan timer -->
 
 			</div>
 

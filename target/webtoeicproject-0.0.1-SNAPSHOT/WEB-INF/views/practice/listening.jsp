@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -86,19 +87,19 @@
 						<a href="#" id="part1">Part 1: Photo</a>
 					</div>
 					<div class="col-3 part">
-						<a href="" id="part6">Part 2: Question-Response</a>
+						<a href="" id="part2">Part 2: Question-Response</a>
 					</div>
 					<div class="col-3 part">
-						<a href="" id="part7">Part 3: Short conversation</a>
+						<a href="${pageContext.request.contextPath}/listeningpractice/3" id="part3">Part 3: Short conversation</a>
 					</div>
 					<div class="col-3 part">
-						<a href="" id="part7">Part 4: Short talk</a>
+						<a href="" id="part4">Part 4: Short talk</a>
 					</div>
 				</div>
 
 				<div class="col-lg-8 col-sm-8 col-xs-8 col-8 questions">
 					<div class="listQuestions">
-						<h2 id="title">${partTitle }</h2>
+						<h2 id="title">${partTitle}</h2>
 						<hr>
 						<!-- 						<button class="btn btn-primary start">Start</button> -->
 						<div class="contentPractice">
@@ -107,7 +108,9 @@
 								<!-- 									<tbody> -->
 								<ul class="list-group">
 									<c:forEach items="${listPractice}" var="practice">
-										<li class="readingPractice list-group-item" value="${practice.getId()}"><span class="${part}">${practice.getName()}</span></li>
+										<li class="listeningPractice list-group-item" value="${practice.getId()}">
+											<span class="${part}">${practice.getName()}</span>
+										</li>
 									</c:forEach>
 								</ul>
 
@@ -121,14 +124,14 @@
 				</div>
 				<!-- het phan noi dung cau hoi -->
 
-				<div class="col-sm-4 col-lg-4 col-xs-4 col-4 timer">
-					<div class="box-answer">
-						<div class="header">
-							<p id="time" style="margin-bottom: 0;">0:5:00</p>
-						</div>
-						<div class="answers"></div>
-					</div>
-				</div>
+<!-- 				<div class="col-sm-4 col-lg-4 col-xs-4 col-4 timer"> -->
+<!-- 					<div class="box-answer"> -->
+<!-- 						<div class="header"> -->
+<!-- 							<p id="time" style="margin-bottom: 0;">0:5:00</p> -->
+<!-- 						</div> -->
+<!-- 						<div class="answers"></div> -->
+<!-- 					</div> -->
+<!-- 				</div> -->
 
 			</div>
 

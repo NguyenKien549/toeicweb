@@ -26,7 +26,7 @@ public class Part3 {
 	private String RightAnswer;
 	
 	@JsonBackReference
-	@ManyToOne(fetch=FetchType.EAGER,cascade=CascadeType.ALL)
+	@ManyToOne(fetch=FetchType.LAZY,cascade=CascadeType.ALL)
 	@JoinColumn(name="AudioID",nullable=false)
 	private Audio audio;
 

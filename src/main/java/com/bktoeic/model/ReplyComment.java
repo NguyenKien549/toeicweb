@@ -1,6 +1,7 @@
 package com.bktoeic.model;
 
 import java.sql.Timestamp;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -41,9 +42,8 @@ public class ReplyComment {
 	private Comment comment;
 
 	@JsonBackReference
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "reportedReplyComment", nullable = true)
-	private Set<Report> reports;
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,mappedBy="reportedReplyComment")
+	private Set<Report> reports= new HashSet<>();
 
 	private byte Active;
 

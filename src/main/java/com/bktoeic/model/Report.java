@@ -26,15 +26,15 @@ public class Report {
 	@JoinColumn(name = "UserID", nullable = false)
 	private Account user;
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST,CascadeType.MERGE})
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
 	@JoinColumn(name = "ReportedDiscussionID", nullable = true)
 	private Discussion reportedDiscussion;
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST,CascadeType.MERGE})
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "ReportedCommentID", nullable = true)
 	private Comment reportedComment;
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST,CascadeType.MERGE})
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
 	@JoinColumn(name = "ReportedReplyCommentID", nullable = true)
 	private ReplyComment reportedReplyComment;
 

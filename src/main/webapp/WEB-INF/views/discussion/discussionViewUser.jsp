@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -13,6 +14,9 @@
 	href="../../resources/css/login.css">
 <link rel="stylesheet" type="text/css"
 	href="../../resources/css/discussion.css">
+	
+	<!-- text editor -->
+	<script src='<c:url value="/resources/assets/ckeditor/ckeditor.js"></c:url>'></script>
 </head>
 <body>
 	<div class="container-fluid div-parent">
@@ -65,7 +69,7 @@
 					khám phá.</h4>
 			</div>
 			<div class="discussion">
-				<h2 class="dicussionTitle discussionId" id="${discussion.getId()}">${discussion.getTitle()}</h2>
+				<h2 class="discussionTitle discussionId" id="${discussion.getId()}">${discussion.getTitle()}</h2>
 				<div class="noidung">
 					<div class="title">
 						<div class="row">
@@ -76,13 +80,35 @@
 									style="opacity: 0.8; border-radius: 20px;">
 								${discussion.getUser().getUsername()}
 							</div>
-							<div class="col-2 timer">
-								<span>${discussion.getTime()}</span>
+							<div class="col-1 timer">
+								<span id="discussion${discussion.getId()}"
+								 title='<fmt:formatDate value="${discussion.getTime()}" pattern="dd-MM-yyyy HH:mm:ss"/>'></span>
+							</div>
+							<div class="col-1 menu">
+								<div class="dropdown">
+									<img class="option-icon dropdown-toggle"
+										src="../../resources/img/option_icon.png"
+										data-toggle="dropdown">
+									<ul class="dropdown-menu commentOption"
+										style="min-width: 50px; width: 70px">
+										<li id="${discussion.getId()}" class="reportDiscussion"
+											data-target="#reportDiscussion-box" data-toggle="modal">Report</li>
+										<c:choose>
+											<c:when
+												test="${user.getUsername() == discussion.getUser().getUsername()}">
+												<li id="${discussion.getId()}" class="editDiscussion"
+													data-target="#editTopicModal" data-toggle="modal">Edit</li>
+												<li id="${discussion.getId()}" class="deleteDiscussion">Delete</li>
+											</c:when>
+										</c:choose>
+									</ul>
+								</div>
 							</div>
 
 							<div class="col-12 questionContent">
-								<p>${discussion.getContent()}</p>
-								<span  class="reportDiscussion" data-target="#reportDiscussion-box" data-toggle="modal">Report</span>
+								<span id="discussionContent">${discussion.getContent()}</span>
+<!-- 								<span class="reportDiscussion" -->
+<!-- 									data-target="#reportDiscussion-box" data-toggle="modal">Report</span> -->
 							</div>
 
 						</div>
@@ -104,7 +130,7 @@
 							<div class="row comment">
 
 								<!-- 										danh tinh nguoi dung -->
-								<div class="col-9 avt ">
+								<div class="col-10 avt ">
 									<img
 										src="${pageContext.request.contextPath}/${comment.getUser().getAvatar()}"
 										width="40px" height="40px"
@@ -112,8 +138,8 @@
 										style="margin-left: 5px;">${comment.getUser().getUsername()}</span>
 
 								</div>
-								<div class="col-2 timer">
-									<span>${comment.getTime()}</span>
+								<div class="col-1 timer">
+									<span id="timer${comment.getId() }" title="<fmt:formatDate value="${comment.getTime()}" pattern="dd-MM-yyyy HH:mm:ss"/>"></span>
 								</div>
 								<div class="col-1 menu">
 									<div class="dropdown">
@@ -140,22 +166,16 @@
 									<span class="contentComment" id="${comment.getId()}">${comment.getContent()}</span>
 									<br>
 									<div class="mainComment">
-										<span class="replyComment" id="${count}">Reply</span>
-
-										<%-- 										<div class="replyBox reply${count}"> --%>
-										<!-- 											<div class="form-group"> -->
-										<!-- 												<input type="text" name="reply" class="form-control"> -->
-										<!-- 												<button class="btn btn-primary replyButton" type="submit" -->
-										<!-- 													placeholder="input your reply">Reply</button> -->
-										<!-- 											</div> -->
-										<!-- 										</div> -->
+										<span class="replyComment" id="${comment.getId()}">Reply</span>
 									</div>
 
 									<c:choose>
 										<c:when test="${comment.getReplies().size() > 0 }">
 											<span class="readmoreReply" id="${comment.getId()}">Read
 												more ${comment.getReplies().size()} replies</span>
-											<span class="col-11 readLessReply lessReply${comment.getId()}" id="${comment.getId()}"  style="float: right;">Read
+											<span
+												class="col-11 readLessReply lessReply${comment.getId()}"
+												id="${comment.getId()}" style="float: right;">Read
 												less reply</span>
 										</c:when>
 									</c:choose>
@@ -165,7 +185,7 @@
 										<div class="row listReply${comment.getId()}"></div>
 										<!--	het danh sach reply -->
 										<br>
-										<div class="replyInputArea row col-12 replyBox${count }">
+										<div class="replyInputArea row col-12 replyBox${comment.getId()}">
 											<input
 												class="col-9 form-control replyContent${comment.getId()}"
 												id="replyInput${count}" type="text"> <img
@@ -182,7 +202,40 @@
 
 							<hr>
 						</c:forEach>
-						
+
+						<!-- edit discussion -->
+						<!-- Modal -->
+						<div id="editTopicModal" class="modal fade" role="dialog">
+							<div class="modal-dialog modal-lg">
+
+								<!-- Modal content-->
+								<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal">&times;</button>
+										<h4 class="modal-title">Edit your topic</h4>
+									</div>
+									<div class="modal-body">
+										<div class="title row">
+											<span class="col-1" style="margin: auto">Title</span> <input
+												type="text" class="form-control" id="titleContent" value="${discussion.getTitle()}">
+										</div>
+
+										<div class="inputContent">
+											<span>Content</span>
+											<textarea name="editTopicContent" id="editTopicContent"></textarea>
+											
+										</div>
+									</div>
+									<div class="modal-footer" style="justify-content: center;">
+										<button type="button" class="btn btn-primary editTopic"
+											style="margin-left: 0; width: 6em; font-size: 17px;">Update</button>
+									</div>
+								</div>
+
+							</div>
+						</div>
+						<!-- het modal -->
+
 						<div class="modal fade" id="editComment-box" role="dialog">
 							<div class="modal-dialog">
 								<!-- Modal content-->
@@ -215,8 +268,9 @@
 									<div class="modal-body">
 										<div class="form-group">
 											<label>Your comment:</label>
-											<textarea class="form-control" rows="4" id="editedReplyContent"
-												placeholder="input yoru comment" required="required"></textarea>
+											<textarea class="form-control" rows="4"
+												id="editedReplyContent" placeholder="input yoru comment"
+												required="required"></textarea>
 										</div>
 
 										<button type="button" class="btn btn-primary editReplyButton">Update</button>
@@ -261,8 +315,9 @@
 									<div class="modal-body">
 										<div class="form-group">
 											<label>Your report:</label>
-											<textarea class="form-control" rows="4" id="reportedReplyContent"
-												placeholder="input your report" required="required"></textarea>
+											<textarea class="form-control" rows="4"
+												id="reportedReplyContent" placeholder="input your report"
+												required="required"></textarea>
 										</div>
 
 										<button type="button"
@@ -272,7 +327,7 @@
 							</div>
 						</div>
 						<!-- het report-dialog -->
-						
+
 
 						<!-- report discussion Modal -->
 						<div class="modal fade" id="reportDiscussion-box" role="dialog">
@@ -286,12 +341,14 @@
 									<div class="modal-body">
 										<div class="form-group">
 											<label>Your report:</label>
-											<textarea class="form-control" rows="4" id="reportedDiscussionContent"
+											<textarea class="form-control" rows="4"
+												id="reportedDiscussionContent"
 												placeholder="input your report" required="required"></textarea>
 										</div>
 
 										<button type="button"
-											class="btn btn-primary reportDiscussionButton" id="${discussion.getId()}">Report</button>
+											class="btn btn-primary reportDiscussionButton"
+											id="${discussion.getId()}">Report</button>
 									</div>
 								</div>
 							</div>
@@ -326,10 +383,16 @@
 		</div>
 	</div>
 
-
-	<!-- Optional JavaScript -->
+<!-- Optional JavaScript -->
 	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
 	<script src="../../resources/js/jquery-3.2.1.min.js"></script>
+
+	<script>
+		CKEDITOR.replace('editTopicContent');
+		CKEDITOR.instances.editTopicContent.setData($("#discussionContent").html());
+	</script>
+
+	
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"
 		integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
@@ -345,7 +408,8 @@
 	<script type="text/javascript" src="../../resources/js/login.js"></script>
 	<script type="text/javascript"
 		src="../../resources/ajax/discussionAjax.js"></script>
-	<script type="text/javascript" src="../../resources/js/dicussion.js"></script>
+	<script type="text/javascript" src="../../resources/js/discussion.js"></script>
+	<script type="text/javascript" src="../../resources/js/setTime.js"></script>
 
 </body>
 </html>

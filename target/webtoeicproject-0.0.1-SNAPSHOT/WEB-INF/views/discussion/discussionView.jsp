@@ -5,14 +5,14 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Discussion</title>
+<title>${discussion.getTitle()}-Discussion-BKForum</title>
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" type="text/css"
 	href="../../resources/css/bootstrap/bootstrap.min.css">
 <link rel="stylesheet" type="text/css"
 	href="../../resources/css/login.css">
 <link rel="stylesheet" type="text/css"
-	href="../../resources/css/discussion.css">
+	href='<c:url href="/resources/css/dicussion.css"></c:url>'>
 </head>
 <body>
 	<div class="modal fade" id="login-box" role="dialog">
@@ -59,14 +59,8 @@
 		<div class="collapse navbar-collapse justify-content-end"
 			id="collapsibleNavbar">
 			<ul class="navbar-nav">
-				<!-- 				<form class="form-inline mr-auto" action="https://google.com/search" -->
-				<!-- 					target="blank"> -->
-				<!-- 					<input class="form-control mr-sm-2 input-search active" type="text" -->
-				<!-- 						placeholder="Search" name="q"> <img class="btn-search" -->
-				<!-- 						src="../../resources/img/search.png" width="35px" height="35px" -->
-				<!-- 						style="opacity: 0.9"> -->
-				<!-- 				</form> -->
-				<li class="nav-item"><a class="nav-link" href="#">HOME</a></li>
+				<li class="nav-item"><a class="nav-link"
+					href="${pageContext.request.contextPath}">HOME</a></li>
 				<li class="nav-item"><a class="nav-link" href="#">FORUM</a></li>
 				<li class="nav-item"><a class="nav-link" href="#">TEST</a></li>
 				<li class="nav-item"><a class="nav-link" href="#">ABOUT</a></li>
@@ -104,10 +98,10 @@
 						<div class="row">
 							<div class="col-10 author">
 								<img
-									src="data:image/jpg;base64, ${discussion.getUser().getAvatar()}"
+									src="${pageContext.request.contextPath}/${discussion.getUser().getAvatar()}"
 									width="40px" height="40px"
 									style="opacity: 0.8; border-radius: 20px;">
-									${discussion.getUser().getUsername()}
+								${discussion.getUser().getUsername()}
 							</div>
 							<div class="col-2 timer">
 								<span>${discussion.getTime()}</span>
@@ -128,87 +122,133 @@
 						</div>
 
 						<hr>
-						<c:choose>
-							<c:when test="${name!=null}">
-								<div class="yourcomment">
-									<label>Your comment:</label>
+						<button class="btn btn-primary commentButtonLogin"
+							data-target="#login-box" data-toggle="modal" type="button">Comment</button>
 
-									<textarea class="form-control" rows="3"
-										id="commentContent" placeholder="input your comment"></textarea>
-									<button class="btn btn-primary commentButton" type="submit">Comment</button>
+						<c:set scope="page" var="count" value="1" />
+						<c:forEach items="${discussion.getCommentList()}" var="comment">
+							<div class="row comment">
+
+								<!-- 										danh tinh nguoi dung -->
+								<div class="col-9 avt ">
+									<img
+										src="${pageContext.request.contextPath}/${comment.getUser().getAvatar()}"
+										width="40px" height="40px"
+										style="opacity: 0.8; border-radius: 20px;"><span
+										style="margin-left: 5px;">${comment.getUser().getUsername()}</span>
+
 								</div>
-							</c:when>
-							<c:otherwise>
-								<button class="btn btn-primary commentButtonLogin"
-									data-target="#login-box" data-toggle="modal" type="button">Comment</button>
-							</c:otherwise>
+								<div class="col-2 timer">
+									<span>${comment.getTime()}</span>
+								</div>
+								<div class="col-1 menu">
+									<div class="dropdown">
+										<img class="option-icon dropdown-toggle"
+											src="../../resources/img/option_icon.png"
+											data-toggle="dropdown">
+										<ul class="dropdown-menu commentOption"
+											style="min-width: 50px; width: 70px">
+											<li id="${comment.getId()}" class="reportOption"
+												data-target="#reportComment-box" data-toggle="modal">Report</li>
+											<c:choose>
+												<c:when
+													test="${user.getUsername() == comment.getUser().getUsername()}">
+													<li id="${comment.getId()}" class="editOption"
+														data-target="#editComment-box" data-toggle="modal">Edit</li>
+													<li id="${comment.getId()}" class="deleteOption">Delete</li>
+												</c:when>
+											</c:choose>
+										</ul>
+									</div>
+								</div>
 
-						</c:choose>
+								<div class="col-12 commentContent">
+									<span class="contentComment" id="${comment.getId()}">${comment.getContent()}</span>
+									<br>
+									<div class="mainComment">
+										<span data-target="#login-box" data-toggle="modal">Reply</span>
 
+<%-- 										<div class="replyBox reply${count}"> --%>
+<!-- 											<div class="form-group"> -->
+<!-- 												<input type="text" name="reply" class="form-control"> -->
+<!-- 												<button class="btn btn-primary replyButton" type="submit" -->
+<!-- 													placeholder="input your reply">Reply</button> -->
+<!-- 											</div> -->
+<!-- 										</div> -->
+									</div>
 
-						<div class="row comment">
-							<c:set scope="page" var="count" value="1" />
-							<c:forEach items="${discussion.getCommentList()}" var="comment">
-								<c:choose>
-									<c:when test="${name==null}">
-										<div class="col-10 avt ">
-											<img
-												src="data:image/jpg;base64, ${comment.getUser().getAvatar()}"
-												width="40px" height="40px"
-												style="opacity: 0.8; border-radius: 20px;">${comment.getUser().getUsername()}
+									<span  class="col-11 readmoreReply" style="float: right;" id="${comment.getId()}">Read
+										more 10 reply</span>
+									<span class="col-11 readLessReply"
+										style="float: right;">Read less reply</span>
 
+									<div class="replyArea col-11" style="float: right;">
+										<div class="row listReply${comment.getId()}">
+										
 										</div>
-										<div class="col-2 timer">
-											<span>${comment.getTime()}</span>
+										<!--	het danh sach reply -->
+										<br>
+										<div class="replyInputArea row col-12 replyBox${count }">
+											<input class="col-9 form-control" id="replyInput${count}" type="text">
+											<img src="../../resources/img/send_reply.png"
+												class="send_reply_icon" id="${comment.getId()}">
 										</div>
-										<div class="col-12 commentContent">
-											<span>${comment.getContent()}</span> <br> <a href="#"
-												class="reply" data-target="#login-box" data-toggle="modal"
-												id="reply${count}">Reply</a> <a href="#" class="report"
-												data-target="#login-box" data-toggle="modal"
-												id="report${count}">Report</a>
-										</div>
-										<hr>
-										<c:set var="count" value="${count + 1}" scope="page" />
-									</c:when>
-									<c:otherwise>
-										<div class="col-10 avt ">
-											<img
-												src="data:image/jpg;base64, ${comment.getUser().getAvatar()}"
-												width="40px" height="40px"
-												style="opacity: 0.8; border-radius: 20px;">${comment.getUser().getUsername()}
+									</div>
+									<!-- het phan reply -->
+								</div>
 
-										</div>
-										<div class="col-2 timer">
-											<span>${comment.getTime()}</span>
-										</div>
-										<div class="col-12 commentContent">
-											<span>${comment.getContent()}</span> <br> <a href="#"
-												class="reply" id="reply${count}">Reply</a> <a href="#"
-												class="report" id="report${count}">Report</a>
+								<c:set var="count" value="${count + 1}" scope="page" />
+							</div>
+							<!--het phan 1 comment -->
 
-											<div class="replyBox reply${count}">
-												<div class="form-group">
-													<input type="text" name="reply" class="form-control">
-													<button class="btn btn-primary replyButton" type="submit"
-														placeholder="input your reply">Reply</button>
-												</div>
-											</div>
-											<div class="reportBox report${count}">
-												<div class="form-group">
-													<input type="text" name="reply" class="form-control">
-													<button class="btn btn-primary reportButton" type="submit"
-														placeholder="input your report">Report</button>
-												</div>
-											</div>
+							<hr>
+						</c:forEach>
+						<div class="modal fade" id="editComment-box" role="dialog">
+							<div class="modal-dialog">
+								<!-- Modal content-->
+								<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal">&times;</button>
+										<h4 class="modal-title">Edit Comment</h4>
+									</div>
+									<div class="modal-body">
+										<div class="form-group">
+											<label>Your comment:</label>
+											<textarea class="form-control" rows="4" id="editedContent"
+												placeholder="input yoru comment" required="required"></textarea>
 										</div>
-										<hr>
-										<c:set var="count" value="${count + 1}" scope="page" />
-									</c:otherwise>
-								</c:choose>
-							</c:forEach>
+
+										<button type="button" class="btn btn-primary editButton">Update</button>
+									</div>
+								</div>
+							</div>
 						</div>
-						<!--het phan comment -->
+						<!-- het edit-dialog -->
+
+						<!-- report Modal -->
+						<div class="modal fade" id="reportComment-box" role="dialog">
+							<div class="modal-dialog">
+								<!-- Modal content-->
+								<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal">&times;</button>
+										<h4 class="modal-title">Report this comment</h4>
+									</div>
+									<div class="modal-body">
+										<div class="form-group">
+											<label>Your report:</label>
+											<textarea class="form-control" rows="4" id="reportedContent"
+												placeholder="input your report" required="required"></textarea>
+										</div>
+
+										<button type="button"
+											class="btn btn-primary reportCommentButton">Report</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- het report-dialog -->
+
 
 					</div>
 
@@ -220,7 +260,7 @@
 		<!-- het div content -->
 
 
-<!-- footer -->
+		<!-- footer -->
 		<div class="container-fluid footer row">
 			<div class="col-7 left-footer">
 				<p>Một sản phẩm của KV team</p>
@@ -241,7 +281,8 @@
 
 	<!-- Optional JavaScript -->
 	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<!-- 	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script> -->
+<script src="../../resources/js/jquery-3.2.1.min.js"></script>
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"
 		integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
@@ -254,8 +295,8 @@
 		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 	<script type="text/javascript"
 		src="../../resources/js/bootstrap/bootstrap.min.js"></script>
-		<script type="text/javascript" src="../../resources/js/login.js"></script>
-	<script type="text/javascript" src="../../resources/js/dicussion.js"></script>
-	
+	<script type="text/javascript" src="../../resources/js/login.js"></script>
+	<script type="text/javascript" src='<c:url href="/resources/js/dicussion.js"></c:url>'></script>
+
 </body>
 </html>

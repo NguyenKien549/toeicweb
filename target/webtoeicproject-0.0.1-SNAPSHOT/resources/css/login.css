@@ -127,6 +127,11 @@ ul li:hover a {
 }
 
 /*content*/
+.content{
+	min-height: 59%;
+	background: white;
+}
+
 .content .register {
 	padding: 0;
 	margin: 0;
@@ -441,11 +446,15 @@ thead {
 
 /* phan dropdown menu */
 .dropdown-menu li {
-	color: #8b8b8b;
+	color: black;
+	margin: 2px 0 2px 0;
+	padding-left: 5%;
 }
 
 .dropdown-menu li:hover {
+	font-size: 1rem;
+	color: black;
+	font-weight: 500;
 	cursor: pointer;
-	color: background;
-	font-weight: 400;
+	background: #DDDDDD;
 }

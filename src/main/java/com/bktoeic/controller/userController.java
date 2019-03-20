@@ -32,19 +32,74 @@ public class userController {
 	@Autowired
 	private userService userService;
 	
+	//DISCUSSION
+	@PostMapping(value = {"/discussion/newTopic"})
+	@ResponseBody
+	public String addDiscussion(@RequestParam("title")String title,@RequestParam("content")String discussionContent,
+			HttpSession session) throws JsonProcessingException {
+		Account acc=(Account) session.getAttribute("logAcc");
+		Discussion discussion = new Discussion();
+		discussion.setTitle(title);
+		discussion.setContent(discussionContent);
+		discussion.setUser(acc);
+		discussion.setView(0);
+		if(userService.addDiscussion(discussion)) {
+			return new ObjectMapper().writeValueAsString("done");
+		};
+		return new ObjectMapper().writeValueAsString("error");
+	}
+	
+	@PostMapping(value = {"/discussion/editTopic"})
+	@ResponseBody
+	public String updateDiscussion(@RequestParam("editTitle")String title,@RequestParam("id")int id,
+			@RequestParam("editContent")String discussionContent,
+			HttpSession session) throws JsonProcessingException {
+		Account acc=(Account) session.getAttribute("logAcc");
+		Discussion discussion = userService.getDiscussion(id);
+		if(discussion.getUser().getUsername().equals(acc.getUsername())) {
+			discussion.setTitle(title);
+			discussion.setContent(discussionContent);
+			if(userService.updateDiscussion(discussion)) {
+				return new ObjectMapper().writeValueAsString("done");
+			};
+		}
+		return new ObjectMapper().writeValueAsString("error");
+	}
+	
+	@PostMapping(value = {"/discussion/deleteDiscussion"})
+	@ResponseBody
+	public String deleteDiscussion(@RequestParam("discussionId")int discussionId,
+			HttpSession session) throws JsonProcessingException {
+			Account acc=(Account) session.getAttribute("logAcc");
+			Discussion discussion = userService.getDiscussion(discussionId);
+			if(acc.getUsername().equals(discussion.getUser().getUsername())) {
+				if(userService.deleteDiscussion(discussionId)) {
+					try {
+						return new ObjectMapper().writeValueAsString("done");
+					} catch (JsonProcessingException e) {
+						e.printStackTrace();
+					}
+				};
+			}
+			
+			return new ObjectMapper().writeValueAsString("error");
+		}
+	
 	//PHAN COMMENT
 	@PostMapping(value = {"/discussion/comment"})
 	@ResponseBody
 	public String addComment(@RequestParam("discussionId")int discussionId,@RequestParam("commentContent")String commentContent,
 			HttpSession session) throws JsonProcessingException {
-			Account acc=(Account) session.getAttribute("logAcc");
-			Comment comment=new Comment();
-			comment.setDiscussion(userService.getDiscussion(discussionId));
-			comment.setContent(commentContent);
-			comment.setUser(acc);
-			if(userService.addComment(comment)) {
-				return new ObjectMapper().writeValueAsString("done");
-			};
+			if(!commentContent.trim().isEmpty()) {
+				Account acc=(Account) session.getAttribute("logAcc");
+				Comment comment=new Comment();
+				comment.setDiscussion(userService.getDiscussion(discussionId));
+				comment.setContent(commentContent);
+				comment.setUser(acc);
+				if(userService.addComment(comment)) {
+					return new ObjectMapper().writeValueAsString("done");
+				};
+			}
 			return new ObjectMapper().writeValueAsString("error");
 		}
 	
@@ -127,7 +182,6 @@ public class userController {
 			report.setContent(reportedContent);
 			report.setReportedReplyComment(reportedReplyComment);
 			report.setUser(acc);
-			System.out.println("report: "+acc.getUsername());
 			if(userService.report(report)) {
 				try {
 					return new ObjectMapper().writeValueAsString("done");
@@ -152,7 +206,6 @@ public class userController {
 			report.setContent(reportedDiscussionContent);
 			report.setReportedDiscussion(reportedDiscussion);
 			report.setUser(acc);
-			System.out.println("report: "+acc.getUsername());
 			if(userService.report(report)) {
 				try {
 					return new ObjectMapper().writeValueAsString("done");
@@ -213,10 +266,11 @@ public class userController {
 	public String editReply(@RequestParam("editedReplyId")int replyId,@RequestParam("editedReplyContent")String editedReplyContent,
 			 HttpSession session) throws JsonProcessingException {
 			
-			if(replyId>0 && !editedReplyContent.trim().isEmpty()) {
+			if(replyId > 0 && !editedReplyContent.trim().isEmpty()) {
 				Account acc=(Account) session.getAttribute("logAcc");
 				ReplyComment editReply= userService.getReplyComment(replyId);
 				if(acc.getUsername().equals(editReply.getUser().getUsername())) {
+					System.out.println(editReply.getUser().getUsername());
 					editReply.setContent(editedReplyContent);
 					if(userService.updateReplyComment(editReply)) {
 						try {

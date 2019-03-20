@@ -94,7 +94,8 @@
 								<tr class="d-flex">
 									<td class="col-sm-1 col-md-1">${account.getId() }</td>
 									<td class="col-sm-3 col-md-3">${account.getName() }</td>
-									<td class="col-sm-2 col-md-2"><fmt:formatDate
+									<td class="col-sm-2 col-md-2">
+										<fmt:formatDate
 											pattern="dd/MM/yyyy" value="${account.getDateOfBirth()}" /></td>
 									<td class="col-sm-1 col-md-1">${account.getGender() }</td>
 									<td class="col-sm-2 col-md-2">${account.getUsername() }</td>

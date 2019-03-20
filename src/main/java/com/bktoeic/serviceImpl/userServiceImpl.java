@@ -48,6 +48,8 @@ public class userServiceImpl implements userService {
 	}
 
 	public boolean addDiscussion(Discussion discussion) {
+		discussion.setActive((byte) 1);
+		discussion.setTime(new Timestamp(System.currentTimeMillis()));
 		return userDAO.addDiscussion(discussion);
 	}
 

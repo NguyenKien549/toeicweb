@@ -31,7 +31,7 @@ $(document).ready(function () {
 			type: 'post',
 			dataType: 'json',
 			data: {
-				discussionId: $(".dicussionTitle").attr("id"),
+				discussionId: $(".discussionTitle").attr("id"),
 				commentContent: $("#commentContent").val()
 			},
 			error: function(e) {
@@ -86,6 +86,7 @@ $(document).ready(function () {
 	var editedCommentId=0;
 	$(document).on("click", ".editOption",function(){
 		editedCommentId=$(this).attr("id");
+		$("#editedContent").val($("span.contentComment").html());
 	});
 	var editedReplyId=0;
 	$(document).on("click", ".editReply",function(){
@@ -98,7 +99,7 @@ $(document).ready(function () {
 			type: 'post',
 			dataType: 'json',
 			data: {
-				editedReplyId: editedCommentId,
+				editedReplyId: editedReplyId,
 				editedReplyContent: $("#editedReplyContent").val()
 			},
 			error: function(e){
@@ -310,8 +311,8 @@ $(document).ready(function () {
 							+"<img src=\"../..//"+val.user.avatar+"\" width=\"40px\""
 							+"height=\"40px\" style=\"opacity: 0.8; border-radius: 20px;\">"+val.user.username+"</div>"
 							
-							+"<div class=\"col-1 timer\">"
-							+"<span title=\"ádfgh\">"+val.time+"</span></div>"
+							+"<div class=\"col-1 timerReply\">"
+							+"<span id=\"timerReply"+val.id+"\"title=\""+val.time+"\"></span></div>"
 							
 							+"<div class=\"col-1 menu\"><div class=\"dropdown\">"
 							+"<img class=\"option-icon dropdown-toggle\""
@@ -327,13 +328,19 @@ $(document).ready(function () {
 								+"</div>"
 								+"<div class=\"col-9\">"
 								+"<span class=\"col-9\">"+val.content+"</span> <br>"
-								+"</div></div>";
+								+"</div>" +
+										"<div class=\"mainComment\">"
+										+"<span class=\"replyComment\" id=\""+commentId+"\" data-target=\"#login-box\" data-toggle=\"modal\">Reply</span>"
+									+"</div></div>";
 							
 				$(".listReply"+commentId).append(reply);
-				
+				setTimeReply("timerReply"+val.id,$("#timerReply"+val.id).attr("title"));
 			});
 			 $(".listReply"+commentId).append("<div class=\"moreReplyComment"+commentId+"\" id=\""+commentId+"\"><span class=\"moreReply col-11\" id=\""+page+"\">Read"
 						+"more replies</span></div>");
+			 
+				
+			
 			 return data;
 		})
 		.fail(function() {
@@ -341,7 +348,40 @@ $(document).ready(function () {
 		});
 	}
 	
-	
+
+	function setTimeReply(id,time){
+		var now= new Date();
+		var distance= now.getTime() -time;
+		
+		var year=Math.floor(distance/(365*86400000));
+		
+		var month= Math.floor( (distance % (365*86400000) ) / (86400000*30));
+		
+		var day= Math.floor((distance % (86400000*30) ) / 86400000);
+
+		var hours=Math.floor( (distance % 86400000)/3600000); //milisecond
+
+		var minutes = Math.floor( (distance % 3600000) / 60000 );
+		
+		var seconds = Math.floor( (distance % 60000) / 1000 );
+		//hien len html
+		if(year>0){
+			$("#"+id).html(year+"y");
+		}else if(month>0){
+			$("#"+id).html(month + "M");
+		}else if(day>0){
+			$("#"+id).html(day +"d");
+		}else if(hours>0){
+			$("#"+id).html(hours+"h");
+		}else if(minutes>0){
+			$("#"+id).html(minutes+"m");
+		}else if(seconds>0){
+			$("#"+id).html(seconds+"s");
+		}else{
+			$("#"+id).html("now");
+		}
+		
+	}
 	
 	//xu ly su kien an nut xoa reply
 	$(document).on("click", ".deleteReply",function(){
@@ -398,8 +438,8 @@ $(document).ready(function () {
 						+"<img src=\"../..//"+data.user.avatar+"\" width=\"40px\""
 						+"height=\"40px\" style=\"opacity: 0.8; border-radius: 20px;\">"+data.user.username+"</div>"
 						
-						+"<div class=\"col-1 timer\">"
-						+"<span title=\"ádfgh\">"+data.time+"</span></div>"
+						+"<div class=\"col-1 timerReply\">"
+						+"<span id=\"timerReply"+data.id +"\" title=\""+data.time+"\"></span></div>"
 						
 						+"<div class=\"col-1 menu\"><div class=\"dropdown\">"
 						+"<img class=\"option-icon dropdown-toggle\""
@@ -424,6 +464,81 @@ $(document).ready(function () {
 		.fail(function() {
 			alert("Comment error!!!");
 		});
+		
+	});
+	
+	// about discussion
+	$(document).on("click",".postTopic",function(){
+		$.ajax({
+			url:'user/discussion/newTopic',
+			type: 'POST',
+			dataType: 'json',
+			data: {
+				title: $("#title").val(),
+				content: CKEDITOR.instances.topicContent.getData() 
+			},
+		})
+		.done(function(data) {
+			console.log(data);
+			location.reload();
+		})
+		.fail(function() {
+			console.log("error error");
+			alert("Post your topic error!")
+		});
+	});
+	
+	$(document).on("click",".editTopic",function(){
+		$.ajax({
+			url:'../../user/discussion/editTopic',
+			type: 'POST',
+			dataType: 'json',
+			data: {
+				id 			:$(".discussionTitle").attr("id"),
+				editTitle	:$("#titleContent").val(),
+				editContent	:CKEDITOR.instances.editTopicContent.getData() 
+			},
+		})
+		.done(function(data) {
+			if(data == "done"){
+				alert("Update done!");
+			}else {
+				alert("Update error!")
+			}
+			
+			location.reload();
+		})
+		.fail(function() {
+			alert("Update your topic error!")
+		});
+	});
+	
+	$(document).on("click", ".deleteDiscussion",function(){
+		if(confirm("Do you want to delete your topic?")){
+			var id= $(this).attr("id");
+			$.ajax({
+				url: '../../user/discussion/deleteDiscussion',
+				type: 'post',
+				dataType: 'json',
+				data: {"discussionId": id },
+				error:function(e){
+					console.log(e);
+				}
+			})
+			.done(function(data) {
+				if (data == "error") {
+					alert("Delete error! Please again!");
+				}
+				if (data == "done") {
+					alert("Delete done!");
+					location.href="../../BKForum";
+				}
+				
+			})
+			.fail(function() {
+				alert("Delete error! Please again!");
+			});
+		}
 		
 	});
 	

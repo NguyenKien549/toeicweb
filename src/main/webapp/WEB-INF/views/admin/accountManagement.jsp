@@ -9,8 +9,8 @@
 <title>Account Management</title>
 </head>
 <link rel="stylesheet" type="text/css"
-	href="../../resources/css/bootstrap/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="../../resources/css/admin.css">
+	href="<c:url value="/resources/css/bootstrap/bootstrap.min.css" />">
+<link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/admin.css" />">
 
 <body>
 <!-- HEADER -->
