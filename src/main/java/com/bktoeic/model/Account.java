@@ -1,7 +1,7 @@
 package com.bktoeic.model;
 
 import java.sql.Date;
-
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -16,8 +16,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "Account")
@@ -32,42 +32,51 @@ public class Account {
 	private String Gender;
 	private String Email;
 	private String Username;
-	
-	@JsonIgnore
+
 	private String Password;
-	
+
 	@JsonIgnore
 	private String Salt;
 	private String Avatar;
-	
+
 	@JsonIgnore
 	private String Type;
-	
+
 	@JsonIgnore
 	private byte Active;
-	
+
+	@SuppressWarnings("static-access")
 	@JsonIgnore
-	@OneToMany(mappedBy="user",fetch=FetchType.LAZY,cascade=CascadeType.ALL)
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST.MERGE,orphanRemoval=true)
 	private Set<Discussion> discussionList;
-	
+
+	@SuppressWarnings("static-access")
 	@JsonIgnore
-	@OneToMany(mappedBy="user",fetch=FetchType.LAZY,cascade=CascadeType.ALL)
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST.MERGE,orphanRemoval=true)
 	private Set<Comment> commentList;
 
+	@SuppressWarnings("static-access")
 	@JsonIgnore
-	@OneToMany(mappedBy="user",fetch=FetchType.LAZY,cascade=CascadeType.ALL)
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST.MERGE,orphanRemoval=true)
 	private Set<ReplyComment> replies;
-	
-	@JsonIgnore
-	@OneToMany(mappedBy="user",fetch=FetchType.LAZY,cascade=CascadeType.ALL)
-	private Set<Report> reportList;
-	
-	@JsonIgnore
-	@ManyToMany(fetch=FetchType.LAZY,cascade=CascadeType.ALL)
-	@JoinTable(name="User_Test", joinColumns=@JoinColumn(name="UserID"),inverseJoinColumns=@JoinColumn(name="TestID"))
-	private Set<Test> testList;
 
-	
+	@SuppressWarnings("static-access")
+	@JsonIgnore
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.MERGE.REFRESH.REMOVE,orphanRemoval=true)
+	private Set<Report> reportList;
+
+//	@JsonManagedReference("user_test")
+//	@ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
+//	private Set<Test> testList;
+
+//	public final Set<Test> getTestList() {
+//		return testList;
+//	}
+//
+//	public final void setTestList(Set<Test> testList) {
+//		this.testList = testList;
+//	}
+
 	public final Set<ReplyComment> getReplies() {
 		return replies;
 	}
@@ -100,13 +109,13 @@ public class Account {
 		this.reportList = reportList;
 	}
 
-	public final Set<Test> getTestList() {
-		return testList;
-	}
-
-	public final void setTestList(Set<Test> testList) {
-		this.testList = testList;
-	}
+	// public final Set<Test> getTestList() {
+	// return testList;
+	// }
+	//
+	// public final void setTestList(Set<Test> testList) {
+	// this.testList = testList;
+	// }
 
 	public final String getAvatar() {
 		return Avatar;
@@ -116,6 +125,7 @@ public class Account {
 		Avatar = avatar;
 	}
 
+	@JsonIgnore
 	public final byte getActive() {
 		return Active;
 	}
@@ -140,6 +150,7 @@ public class Account {
 		Type = type;
 	}
 
+	@JsonIgnore
 	public final String getSalt() {
 		return Salt;
 	}
@@ -148,6 +159,7 @@ public class Account {
 		Salt = salt;
 	}
 
+	@JsonIgnore
 	public final int getId() {
 		return Id;
 	}
@@ -196,6 +208,7 @@ public class Account {
 		Username = username;
 	}
 
+	@JsonIgnore
 	public final String getPassword() {
 		return Password;
 	}
@@ -204,6 +217,7 @@ public class Account {
 		Password = password;
 	}
 
+	@JsonIgnore
 	public final String getType() {
 		return Type;
 	}

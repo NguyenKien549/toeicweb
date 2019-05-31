@@ -9,70 +9,14 @@
 <title>${discussion.getTitle()}-Discussion-BKForum</title>
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" type="text/css"
-	href="../../resources/css/bootstrap/bootstrap.min.css">
+	href='<c:url value="/resources/css/bootstrap/bootstrap.min.css"></c:url>' >
 <link rel="stylesheet" type="text/css"
-	href="../../resources/css/login.css">
+	href='<c:url value="/resources/css/login.css"></c:url>' >
 <link rel="stylesheet" type="text/css"
-	href="<c:url value="/resources/css/discussion.css"></c:url>"/>
+	href='<c:url value="/resources/css/discussion.css"></c:url>' >
 </head>
 <body>
-	<div class="modal fade" id="login-box" role="dialog">
-		<div class="modal-dialog">
-
-			<!-- Modal content-->
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title">Login</h4>
-				</div>
-				<div class="modal-body">
-					<div class="form-group">
-						<label>Username</label> <input class="form-control" type="text"
-							id="usernameLogin" placeholder="Username" required="required"></input>
-					</div>
-
-					<div class="form-group">
-						<label>Password</label> <input class="form-control"
-							id="passwordLogin" type="password" placeholder="Password"
-							required="required"></input>
-					</div>
-					<button type="button" class="btn btn-primary loginButton">Login</button>
-				</div>
-			</div>
-
-		</div>
-	</div>
-	<!-- het login-dialog -->
-
-	<div class="container-fluid div-parent">
-		<!-- navbar -->
-		<nav class="navbar navbar-expand-md navbar-dark fixed-top"
-			style="background-color: #0033c3"> <!-- Brand --> <span><img
-			class="logo" src="../../resources/img/forum_icon.png" width="40px"
-			height="40px" style="opacity: 0.8"> <a class="navbar-brand"
-			href="${pageContext.request.contextPath}/BKForum">BKForum</a></span> <!-- Toggler/collapsibe Button -->
-		<button class="navbar-toggler" type="button" data-toggle="collapse"
-			data-target="#collapsibleNavbar">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-
-		<!-- Navbar links -->
-		<div class="collapse navbar-collapse justify-content-end"
-			id="collapsibleNavbar">
-			<ul class="navbar-nav">
-				<li class="nav-item"><a class="nav-link"
-					href="${pageContext.request.contextPath}">HOME</a></li>
-				<li class="nav-item"><a class="nav-link" href="#">FORUM</a></li>
-				<li class="nav-item"><a class="nav-link" href="#">TEST</a></li>
-				<li class="nav-item"><a class="nav-link" href="#">ABOUT</a></li>
-				<li class="nav-item">
-					<a class="nav-link login-window" data-target="#login-box"
-								data-toggle="modal" href="#">LOGIN</a>
-				</li>
-
-			</ul>
-		</div>
-		</nav>
+	<jsp:include page="../default/forumHeader.jsp"/>
 
 		<!-- content -->
 		<div class="container content">
@@ -80,7 +24,7 @@
 				<h4 class="forumSlogan">Hãy hỏi để biết rằng còn nhiều thứ cần
 					khám phá.</h4>
 			</div>
-			<div class="discussion">
+			<div class="discussion col-12">
 				<h2 class="dicussionTitle" id="${discussion.getId()}">${discussion.getTitle()}</h2>
 				<div class="noidung">
 					<div class="title">
@@ -160,7 +104,7 @@
 
 									<c:choose>
 										<c:when test="${comment.getReplies().size() > 0 }">
-											<span class="readmoreReply" id="${comment.getId()}">Read
+											<span class="readmoreReply" id="${comment.getId()}">Read 
 												more ${comment.getReplies().size()} replies</span>
 											<span
 												class="col-11 readLessReply lessReply${comment.getId()}"
@@ -200,35 +144,14 @@
 			<!-- het div discussion -->
 		</div>
 		<!-- het div content -->
+		
 
-
-		<!-- footer -->
-		<div class="container-fluid footer row">
-			<div class="col-7 left-footer">
-				<p>Một sản phẩm của KV team</p>
-				<p>Địa chỉ: Số 1, Đại Cồ Việt, Hà Nội</p>
-				<p>Hot line: 0123456789</p>
-				<p>Email: kvteam@gamil.com</p>
-			</div>
-			<div class="col-5 right-footer">
-				<p>Liên hệ:</p>
-				<a href=""><span><img src="../../resources/img/fb.png"
-						height="40px" width="40px"></span></a> <a href=""><span><img
-						src="../../resources/img/twitter.png" height="40px" width="40px"></span></a>
-			</div>
-
-		</div>
-	</div>
-
-
-	<!-- Optional JavaScript -->
-	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<!-- 	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script> -->
-<script src="../../resources/js/jquery-3.2.1.min.js"></script>
+<script src='<c:url value="/resources/js/jquery-3.2.1.min.js"></c:url>' ></script>
 <script type="text/javascript">
 $(".replyInputArea").hide();
 $(".readLessReply").hide();
 </script>
+		
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"
 		integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
@@ -240,9 +163,11 @@ $(".readLessReply").hide();
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 	<script type="text/javascript"
-		src="../../resources/js/bootstrap/bootstrap.min.js"></script>
+		src='<c:url value="/resources/js/bootstrap/bootstrap.min.js"></c:url>' ></script>
 	<script type="text/javascript" src="../../resources/js/login.js"></script>
-	<script type="text/javascript" src='<c:url value="/resources/ajax/discussionAjax.js"></c:url>'></script>
-<script type="text/javascript" src="../../resources/js/setTime.js"></script>
-</body>
-</html>
+	<script type="text/javascript"
+		src='<c:url value="/resources/ajax/discussionAjax.js"></c:url>' ></script>
+	<script type="text/javascript" src='<c:url value="/resources/js/discussion.js"></c:url>' ></script>
+	<script type="text/javascript" src='<c:url value="/resources/js/setTime.js"></c:url>' ></script>
+	
+<jsp:include page="../default/footer.jsp"/>

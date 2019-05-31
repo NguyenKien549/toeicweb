@@ -30,19 +30,21 @@ public class ReplyComment {
 
 	private String Image;
 
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "UserID", nullable = false, foreignKey = @ForeignKey(name = "FK_Comment_Account"))
 	private Account user;
 
 	private Timestamp Time;
 
 	@JsonBackReference
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "RepliedCommentID", nullable = true)
 	private Comment comment;
 
+	@SuppressWarnings("static-access")
 	@JsonBackReference
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,mappedBy="reportedReplyComment")
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE.REFRESH.REMOVE,mappedBy="reportedReplyComment",
+	orphanRemoval=true)
 	private Set<Report> reports= new HashSet<>();
 
 	private byte Active;

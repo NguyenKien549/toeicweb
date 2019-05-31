@@ -13,7 +13,7 @@ public interface guestService {
 	
 	public Practice practiceReading(String code);
 	public <T> Set<T> practiceReadingQues(int id,byte part);
-	public Practice practice(int id,byte part);
+	public Practice practice(int id,byte part,boolean increase);
 	public Set<Paragraph> getParagraphList(int id,byte part);
 	
 }

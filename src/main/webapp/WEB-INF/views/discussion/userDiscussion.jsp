@@ -18,34 +18,7 @@
 </head>
 <body>
 
-	<div class="container-fluid div-parent">
-		<!-- navbar -->
-		<nav class="navbar navbar-expand-md navbar-dark fixed-top"
-			style="background-color: #0033c3"> <!-- Brand --> <span><img
-			class="logo" src="resources/img/forum_icon.png" width="40px"
-			height="40px" style="opacity: 0.8"> <a class="navbar-brand"
-			href="${pageContext.request.contextPath}">BKForum</a></span> <!-- Toggler/collapsibe Button -->
-		<button class="navbar-toggler" type="button" data-toggle="collapse"
-			data-target="#collapsibleNavbar">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-
-		<!-- Navbar links -->
-		<div class="collapse navbar-collapse justify-content-end"
-			id="collapsibleNavbar">
-			<ul class="navbar-nav">
-				<li class="nav-item"><a class="nav-link"
-					href="${pageContext.request.contextPath}/home">HOME</a></li>
-				<li class="nav-item"><a class="nav-link"
-					href="${pageContext.request.contextPath}/BKForum">FORUM</a></li>
-				<li class="nav-item"><a class="nav-link" href="#">TEST</a></li>
-				<li class="nav-item"></li>
-				<li class="nav-item"><a class="nav-link login-window"
-					 href="#">${name}</a></li>
-
-			</ul>
-		</div>
-		</nav>
+	<jsp:include page="../default/forumHeader.jsp"></jsp:include>
 		
 		<div class="background container">
 		</div>
@@ -118,25 +91,6 @@
 
 			  </div>
 			</div> <!-- het modal -->
-		
-
-		<!-- footer -->
-		<div class="container-fluid footer row">
-			<div class="col-7 left-footer">
-				<p>Một sản phẩm của KV team</p>
-				<p>Địa chỉ: Số 1, Đại Cồ Việt, Hà Nội</p>
-				<p>Hot line: 0123456789</p>
-				<p>Email: kvteam@gamil.com</p>
-			</div>
-			<div class="col-5 right-footer">
-				<p>Liên hệ:</p>
-				<a href=""><span><img src="resources/img/fb.png"
-						height="40px" width="40px"></span></a> <a href=""><span><img
-						src="resources/img/twitter.png" height="40px" width="40px"></span></a>
-			</div>
-
-		</div>
-	</div>
 
 	<!-- Optional JavaScript -->
 	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -161,5 +115,5 @@
 	<script type="text/javascript" src="resources/js/login.js"></script>
 	<script type="text/javascript" src="resources/js/setTime.js"></script>
 	<script type="text/javascript" src="resources/ajax/discussionAjax.js"></script>
-</body>
-</html>
+
+<jsp:include page="../default/footer.jsp"></jsp:include>

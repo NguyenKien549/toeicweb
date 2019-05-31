@@ -5,20 +5,26 @@ var audioCount = 2;
 var questionCount = 2;
 var paragraphCount = 2;
 
-//$(".question").hide();
-$(".paragraph").hide();
-$(".lessionTable").hide();
+// $(".question").hide();
+//$(".paragraph").hide();
+//$(".lessionTable").hide();
 $(document).ready(function() {
 	arr = new Array();
 	numSelect = 0;
-
+	
+	
 });
+$("#userView").on("click",function(){
+	location.href= "/webtoeicproject/home";
+});
+
 
 $(document).on("change","#selectType",function() {
 					var type = $("#selectType").find(":selected").val();
 					if (type === "lession") {
 						$(".practiceTable").hide();
-						$.ajax({
+						$
+								.ajax({
 									url : '/admin/getlessions',
 									type : 'post',
 									dataType : 'json',
@@ -123,63 +129,63 @@ $(document).on("click", "tbody tr", function() {
 	$(this).toggleClass("selected");
 });
 
-$(document).on("click", "#btnsearch", function() {
-	searchKey = $("#search").val();
-	vitri = 1;
+//$(document).on("click", "#btnsearch", function() {
+//	searchKey = $("#search").val();
+//	vitri = 1;
+//
+//	search = searchKey;
+//	$.ajax({
+//		url : "admin/search",
+//		type : "GET",
+//		dataType : 'json',
+//		data : {
+//			array : arr,
+//			search : search,
+//		},
+//		success : function(value) {
+//			$("tbody").empty();
+//			$("tbody").append(value[0]);
+//			$("#pagin").empty();
+//			$("#pagin").append(value[1]);
+//			$("#infoPage").html("Page " + 1 + " of " + value[2]);
+//		}
+//	});
+//
+//});
 
-	search = searchKey;
-	$.ajax({
-		url : "admin/search",
-		type : "GET",
-		dataType : 'json',
-		data : {
-			array : arr,
-			search : search,
-		},
-		success : function(value) {
-			$("tbody").empty();
-			$("tbody").append(value[0]);
-			$("#pagin").empty();
-			$("#pagin").append(value[1]);
-			$("#infoPage").html("Page " + 1 + " of " + value[2]);
-		}
-	});
+//$("#delete").click(function() {
+//	var arrId = new Array();
+//	$(".notice").empty();
+//	var i = 0;
+//	var type = $(this).attr("class");
+//	// get id of deleted account
+//	$("table tr").each(function() {
+//		if ($(this).hasClass("selected")) {
+//			arrId[i] = $(this).find("td").eq(0).html();
+//			i += 1;
+//		}
+//	});
+//	if (i == 0) {
+//		alert("Get 1 row to delete!!!");
+//	}
+//
+//	if (type == "part5") {
+//		deletePart5(arrId, type);
+//	}
+//	if (type == "account") {
+//		deleteAccount(arrId, type);
+//	}
+//
+//});
 
-});
-
-$("#delete").click(function() {
-	var arrId = new Array();
-	$(".notice").empty();
-	var i = 0;
-	var type=$(this).attr("class");
-	// get id of deleted account
-	$("table tr").each(function() {
-		if ($(this).hasClass("selected")) {
-			arrId[i] = $(this).find("td").eq(0).html();
-			i += 1;
-		}
-	});
-	if (i == 0) {
-		alert("Get 1 row to delete!!!");
-	}
-	
-	if(type=="part5"){
-		deletePart5(arrId,type);
-	}
-	if(type=="account"){
-		deleteAccount(arrId,type);
-	}
-	
-});
-
-function deleteAccount(arrId,type){
+function deleteAccount(arrId, type) {
 	$.ajax({
 		url : "../deleteDocument",
 		type : "post",
 		dataType : 'json',
 		data : {
 			ids : arrId,
-			type: type
+			type : type
 		},
 		error : function(e) {
 			console.log(e);
@@ -197,14 +203,14 @@ function deleteAccount(arrId,type){
 	});
 }
 
-function deletePart5(arrId,type){
+function deletePart5(arrId, type) {
 	$.ajax({
 		url : "../../deleteDocument",
 		type : "post",
 		dataType : 'json',
 		data : {
 			ids : arrId,
-			type: type
+			type : type
 		},
 		error : function(e) {
 			console.log(e);
@@ -213,7 +219,7 @@ function deletePart5(arrId,type){
 		if (data == "done") {
 			alert("Delete done");
 			location.reload();
-			
+
 		}
 		if (data == "error") {
 			$(".notice").html("Delete fail");
@@ -223,31 +229,30 @@ function deletePart5(arrId,type){
 	});
 }
 
-//khi an nut update tren view
-$("body").on("click", "#update", function() {
-	var arr = [];
-	var i = 0;
-	$("table tr").each(function() {
-		if ($(this).hasClass("selected")) {
-			arr[0] = $(this).find("td").eq(0).html();
-			i += 1;
-		}
-	});
-	if (i != 1) {
-		alert("Chỉ chọn 1 tài khoản để update");
-	} else {
-		$("#id").val(arr[0]);
-		$("#myModal-update").modal('toggle');
-	}
-});
-
+// khi an nut update tren view
+//$("body").on("click", "#update", function() {
+//	var arr = [];
+//	var i = 0;
+//	$("table tr").each(function() {
+//		if ($(this).hasClass("selected")) {
+//			arr[0] = $(this).find("td").eq(0).html();
+//			i += 1;
+//		}
+//	});
+//	if (i != 1) {
+//		alert("Chỉ chọn 1 tài khoản để update");
+//	} else {
+//		$("#id").val(arr[0]);
+//		$("#myModal-update").modal('toggle');
+//	}
+//});
 
 $("body").on("click", "#submit-add-btn", function() {
 	$("#form-them").submit();
 });
 
 $("*").on("click", "#dangxuat-btn", function() {
-	$.get("../logout", function() {
+	$.get("/webtoeicproject/logout", function() {
 		// alert("ok");
 		window.location.href = "/webtoeicproject";
 	});

@@ -14,21 +14,21 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Entity
 public class Part4 {
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int Id;
-	
+
 	private String Question;
-	
+
 	private String A;
 	private String B;
 	private String C;
 	private String D;
 	private String RightAnswer;
-	
-	@JsonBackReference
-	@ManyToOne(fetch=FetchType.LAZY,cascade=CascadeType.ALL)
-	@JoinColumn(name="AudioID",nullable=false)
-	private Audio audio;
+
+	@JsonBackReference(value = "part4List")
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST.MERGE)
+	@JoinColumn(name = "AudioID", nullable = true)
+	private Audio audioPart4;
 
 	public final int getId() {
 		return Id;
@@ -86,14 +86,12 @@ public class Part4 {
 		RightAnswer = rightAnswer;
 	}
 
-	public final Audio getAudio() {
-		return audio;
+	public final Audio getAudioPart4() {
+		return audioPart4;
 	}
 
-	public final void setAudio(Audio audio) {
-		this.audio = audio;
+	public final void setAudioPart4(Audio audioPart4) {
+		this.audioPart4 = audioPart4;
 	}
-	
-	
 
 }

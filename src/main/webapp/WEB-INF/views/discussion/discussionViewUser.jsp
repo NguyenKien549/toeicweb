@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <html>
@@ -9,58 +9,17 @@
 <title>${discussion.getTitle()}-Discussion-BKForum</title>
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" type="text/css"
-	href="../../resources/css/bootstrap/bootstrap.min.css">
+	href='<c:url value="/resources/css/bootstrap/bootstrap.min.css"></c:url>' >
 <link rel="stylesheet" type="text/css"
-	href="../../resources/css/login.css">
+	href='<c:url value="/resources/css/login.css"></c:url>' >
 <link rel="stylesheet" type="text/css"
-	href="../../resources/css/discussion.css">
+	href='<c:url value="/resources/css/discussion.css"></c:url>' >
 	
 	<!-- text editor -->
 	<script src='<c:url value="/resources/assets/ckeditor/ckeditor.js"></c:url>'></script>
 </head>
 <body>
-	<div class="container-fluid div-parent">
-		<!-- navbar -->
-		<nav class="navbar navbar-expand-md navbar-dark fixed-top"
-			style="background-color: #0033c3"> <!-- Brand --> <span><img
-			class="logo" src="../../resources/img/forum_icon.png" width="40px"
-			height="40px" style="opacity: 0.8"> <a class="navbar-brand"
-			href="${pageContext.request.contextPath}/BKForum">BKForum</a></span> <!-- Toggler/collapsibe Button -->
-		<button class="navbar-toggler" type="button" data-toggle="collapse"
-			data-target="#collapsibleNavbar">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-
-		<!-- Navbar links -->
-		<div class="collapse navbar-collapse justify-content-end"
-			id="collapsibleNavbar">
-			<ul class="navbar-nav">
-				<!-- 				<form class="form-inline mr-auto" action="https://google.com/search" -->
-				<!-- 					target="blank"> -->
-				<!-- 					<input class="form-control mr-sm-2 input-search active" type="text" -->
-				<!-- 						placeholder="Search" name="q"> <img class="btn-search" -->
-				<!-- 						src="../../resources/img/search.png" width="35px" height="35px" -->
-				<!-- 						style="opacity: 0.9"> -->
-				<!-- 				</form> -->
-				<li class="nav-item"><a class="nav-link"
-					href="${pageContext.request.contextPath}">HOME</a></li>
-				<li class="nav-item"><a class="nav-link" href="#">FORUM</a></li>
-				<li class="nav-item"><a class="nav-link" href="#">TEST</a></li>
-				<li class="nav-item"><a class="nav-link" href="#">ABOUT</a></li>
-				<li class="nav-item">
-					<div class="dropdown nav-link" data-toggle="dropdown"
-						style="padding: 0">
-						<a class="nav-link user" href="#" id="${user.getUsername() }">${name}</a>
-						<ul class="dropdown-menu" id="menu-acc">
-							<li id="information">Account Management</li>
-							<li id="dangxuat-btn">Đăng xuất</li>
-						</ul>
-					</div>
-				</li>
-
-			</ul>
-		</div>
-		</nav>
+	<jsp:include page="../default/forumHeader.jsp"></jsp:include>
 
 		<!-- content -->
 		<div class="container content">
@@ -68,7 +27,7 @@
 				<h4 class="forumSlogan">Hãy hỏi để biết rằng còn nhiều thứ cần
 					khám phá.</h4>
 			</div>
-			<div class="discussion">
+			<div class="discussion  col-12">
 				<h2 class="discussionTitle discussionId" id="${discussion.getId()}">${discussion.getTitle()}</h2>
 				<div class="noidung">
 					<div class="title">
@@ -87,20 +46,17 @@
 							<div class="col-1 menu">
 								<div class="dropdown">
 									<img class="option-icon dropdown-toggle"
-										src="../../resources/img/option_icon.png"
+										src='<c:url value="/resources/img/option_icon.png"></c:url>' 
 										data-toggle="dropdown">
 									<ul class="dropdown-menu commentOption"
 										style="min-width: 50px; width: 70px">
 										<li id="${discussion.getId()}" class="reportDiscussion"
 											data-target="#reportDiscussion-box" data-toggle="modal">Report</li>
-										<c:choose>
-											<c:when
-												test="${user.getUsername() == discussion.getUser().getUsername()}">
+										<c:if test="${user.getUsername() == discussion.getUser().getUsername() || user.getType() == 'Admin'}">
 												<li id="${discussion.getId()}" class="editDiscussion"
 													data-target="#editTopicModal" data-toggle="modal">Edit</li>
 												<li id="${discussion.getId()}" class="deleteDiscussion">Delete</li>
-											</c:when>
-										</c:choose>
+										</c:if>
 									</ul>
 								</div>
 							</div>
@@ -144,7 +100,7 @@
 								<div class="col-1 menu">
 									<div class="dropdown">
 										<img class="option-icon dropdown-toggle"
-											src="../../resources/img/option_icon.png"
+											src='<c:url value="/resources/img/option_icon.png"></c:url>' 
 											data-toggle="dropdown">
 										<ul class="dropdown-menu commentOption"
 											style="min-width: 50px; width: 70px">
@@ -152,7 +108,7 @@
 												data-target="#reportComment-box" data-toggle="modal">Report</li>
 											<c:choose>
 												<c:when
-													test="${user.getUsername() == comment.getUser().getUsername()}">
+													test="${user.getUsername() == comment.getUser().getUsername()  || user.getType() == 'Admin'}">
 													<li id="${comment.getId()}" class="editOption"
 														data-target="#editComment-box" data-toggle="modal">Edit</li>
 													<li id="${comment.getId()}" class="deleteOption">Delete</li>
@@ -189,7 +145,7 @@
 											<input
 												class="col-9 form-control replyContent${comment.getId()}"
 												id="replyInput${count}" type="text"> <img
-												src="../../resources/img/send_reply.png"
+												src='<c:url value="/resources/img/send_reply.png"></c:url>' 
 												class="send_reply_icon" id="${comment.getId()}">
 										</div>
 									</div>
@@ -365,27 +321,9 @@
 		<!-- het div content -->
 
 
-		<!-- footer -->
-		<div class="container-fluid footer row">
-			<div class="col-7 left-footer">
-				<p>Một sản phẩm của KV team</p>
-				<p>Địa chỉ: Số 1, Đại Cồ Việt, Hà Nội</p>
-				<p>Hot line: 0123456789</p>
-				<p>Email: kvteam@gamil.com</p>
-			</div>
-			<div class="col-5 right-footer">
-				<p>Liên hệ:</p>
-				<a href=""><span><img src="../../resources/img/fb.png"
-						height="40px" width="40px"></span></a> <a href=""><span><img
-						src="../../resources/img/twitter.png" height="40px" width="40px"></span></a>
-			</div>
-
-		</div>
-	</div>
-
 <!-- Optional JavaScript -->
 	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-	<script src="../../resources/js/jquery-3.2.1.min.js"></script>
+	<script src='<c:url value="/resources/js/jquery-3.2.1.min.js"></c:url>' ></script>
 
 	<script>
 		CKEDITOR.replace('editTopicContent');
@@ -404,12 +342,11 @@
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 	<script type="text/javascript"
-		src="../../resources/js/bootstrap/bootstrap.min.js"></script>
+		src='<c:url value="/resources/js/bootstrap/bootstrap.min.js"></c:url>' ></script>
 	<script type="text/javascript" src="../../resources/js/login.js"></script>
 	<script type="text/javascript"
-		src="../../resources/ajax/discussionAjax.js"></script>
-	<script type="text/javascript" src="../../resources/js/discussion.js"></script>
-	<script type="text/javascript" src="../../resources/js/setTime.js"></script>
+		src='<c:url value="/resources/ajax/discussionAjax.js"></c:url>' ></script>
+	<script type="text/javascript" src='<c:url value="/resources/js/discussion.js"></c:url>' ></script>
+	<script type="text/javascript" src='<c:url value="/resources/js/setTime.js"></c:url>' ></script>
 
-</body>
-</html>
+<jsp:include page="../default/footer.jsp"></jsp:include>

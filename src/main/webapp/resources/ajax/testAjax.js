@@ -136,12 +136,14 @@ $(document).ready(function() {
 			});
 			$(".part5.partContent").append('</div>');
 
+			$(".part6.partContent").append('<hr><h2 id="title">Part 6: Text completion</h2>');
 			$.each(data.listParagraph, function(i, val) {
 				if(val.part6.length > 0){
 //					$(".part6_Ques").append('<hr><div class="paragraph col-12">'+val.paragraph+'</div>');
-					$(".part6.partContent").append('<hr><h2 id="title">Part 6: Text completion</h2><div class="part6_Ques">'
+					$(".part6.partContent").append('<div class="part6_Ques">'
 							
-							+'<hr><div class="paragraph col-12">'+val.paragraph+'</div>');
+							+'<hr><div class="paragraph col-12"><span style="font-size: 18px;font-weight: 600;">Paragraph: </span>'+val.paragraph+'</div>');
+					
 					$.each(val.part6, function(j, value) {
 						 content='<hr><div class=\"question'+question_numb+'\">'
 								+'<p class="cauhoi"><span>Question '+question_numb+':</span></p>'
@@ -162,9 +164,11 @@ $(document).ready(function() {
 					$(".part6.partContent").append("</div>")
 				}
 			});
+			
+			$(".part7.partContent").append('<hr><h2 id="title">Part 7: Reading comprehen</h2>');
 			$.each(data.listParagraph, function(i, val) {
 				 if(val.part7.length > 0){
-					$(".part7.partContent").append('<hr><h2 id="title">Part 7: Reading comprehen</h2><div class="part7_Ques">'
+					$(".part7.partContent").append('<div class="part7_Ques">'
 								
 							+'<hr><div class="paragraph col-12">'+val.paragraph+'</div>');
 					$.each(val.part7, function(j, value) {

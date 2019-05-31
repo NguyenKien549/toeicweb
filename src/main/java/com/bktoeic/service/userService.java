@@ -38,6 +38,12 @@ public interface userService {
 	public boolean report(Report report);
 	
 	// TEST
-	public Test getTest(int testID);
+	public Test getTest(int testID,boolean increase,Account user);
 	public <T> Set<T> getPartTest(byte part,int testID);
+	public List<Test> getTestList();
+	
+	//SEARCH
+	public <T> List<T> search(String type,String key,int page,byte pageSize);
+	public int searchNumbPage(String type,String key,int pageSize);
+	
 }

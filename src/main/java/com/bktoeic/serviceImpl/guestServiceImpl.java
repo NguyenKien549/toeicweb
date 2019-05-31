@@ -39,8 +39,8 @@ public class guestServiceImpl<T> implements guestService {
 
 
 	@Override
-	public Practice practice(int id, byte part) {
-		return guestDAO.practice(id, part);
+	public Practice practice(int id, byte part,boolean increase) {
+		return guestDAO.practice(id, part,increase);
 	}
 
 

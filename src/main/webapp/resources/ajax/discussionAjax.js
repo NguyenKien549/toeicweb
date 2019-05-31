@@ -328,9 +328,8 @@ $(document).ready(function () {
 								+"</div>"
 								+"<div class=\"col-9\">"
 								+"<span class=\"col-9\">"+val.content+"</span> <br>"
-								+"</div>" +
-										"<div class=\"mainComment\">"
-										+"<span class=\"replyComment\" id=\""+commentId+"\" data-target=\"#login-box\" data-toggle=\"modal\">Reply</span>"
+								+"</div><div class=\"mainComment\">"
+										+"<span class=\"replyComment\" id=\""+commentId+"\">Reply</span>"
 									+"</div></div>";
 							
 				$(".listReply"+commentId).append(reply);
@@ -432,7 +431,9 @@ $(document).ready(function () {
 			if(data == "error"){
 				alert("Comment error! Please again!");
 			}
-//			$(".listReply"+commentId+" .moreReplyComment"+commentId).remove();
+			var getmoreReplyHtml = $(".listReply"+commentId+" .moreReplyComment"+commentId).html();
+			console.log(getmoreReplyHtml);
+			$(".listReply"+commentId+" .moreReplyComment"+commentId).remove();
 			var reply="<div class=\"row reply reply"+data.id+" col-12\">"
 						+"<div class=\"col-8 avt \">"
 						+"<img src=\"../..//"+data.user.avatar+"\" width=\"40px\""
@@ -453,13 +454,17 @@ $(document).ready(function () {
 
 						+"<div class=\"col-9\">"
 						+"<span class=\"col-9\">"+data.content+"</span> <br>"
-						+"</div></div>"
+						+"</div><div class=\"mainComment\">"
+						+"<span class=\"replyComment\" id=\""+commentId+"\" data-target=\"#login-box\" data-toggle=\"modal\">Reply</span>"
+						+"</div></div>";
+						
 			
 				$(".listReply"+commentId).append(reply);
+			setTimeReply("timerReply"+data.id,$("#timerReply"+data.id).attr("title"));
 			$(".replyContent"+commentId).val("");
-//			 $(".listReply"+commentId).append("<div class=\"moreReplyComment"+commentId+"\" id=\""+commentId+"\">" +
-//			 +"<span class=\"moreReply col-11\" id=\""+page+"\">Read more replies</span></div>");
-			location.reload();
+//			 $(".listReply"+commentId).append(getmoreReplyHtml);
+			 $(".listReply"+commentId).append("<div class=\"moreReplyComment"+commentId+"\" id=\""+commentId+"\">"+getmoreReplyHtml+"</div>");
+//			location.reload();
 		})
 		.fail(function() {
 			alert("Comment error!!!");

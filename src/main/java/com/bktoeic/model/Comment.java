@@ -1,7 +1,7 @@
 package com.bktoeic.model;
 
 import java.sql.Timestamp;
-
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -16,6 +16,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -30,21 +32,39 @@ public class Comment {
 
 	private String Image;
 
+	@SuppressWarnings("static-access")
+	@JsonBackReference
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "UserID", nullable = false, foreignKey = @ForeignKey(name = "FK_Comment_Account"))
 	private Account user;
 
 	private Timestamp Time;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@SuppressWarnings("static-access")
+	@JsonBackReference
+	@ManyToOne(fetch = FetchType.EAGER,cascade=CascadeType.PERSIST.MERGE.REFRESH)
 	@JoinColumn(name = "DiscussionID", nullable = false)
 	private Discussion discussion;
 
 	@JsonManagedReference
-	@OneToMany(mappedBy = "comment", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "comment", fetch = FetchType.LAZY, cascade = CascadeType.ALL,orphanRemoval=true)
 	private Set<ReplyComment> replies;
 
+	@SuppressWarnings("static-access")
+	@JsonBackReference
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE.REFRESH.REMOVE, mappedBy = "reportedComment",
+	orphanRemoval=true)
+	private Set<Report> reports = new HashSet<>();
+
 	private byte Active;
+
+	public final Set<Report> getReports() {
+		return reports;
+	}
+
+	public final void setReports(Set<Report> reports) {
+		this.reports = reports;
+	}
 
 	public final Set<ReplyComment> getReplies() {
 		return replies;
@@ -102,6 +122,7 @@ public class Comment {
 		this.discussion = discussion;
 	}
 
+	@JsonIgnore
 	public final byte getActive() {
 		return Active;
 	}

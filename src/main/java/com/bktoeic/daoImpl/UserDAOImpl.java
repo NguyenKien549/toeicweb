@@ -1,8 +1,7 @@
 package com.bktoeic.daoImpl;
 
-import java.util.ArrayList;
+
 import java.util.HashSet;
-import java.util.Iterator;
 
 import java.util.List;
 import java.util.Set;
@@ -64,7 +63,7 @@ public class UserDAOImpl implements UserDAO {
 	public boolean register(Account account) {
 		try {
 			Session session = sessionFactory.getCurrentSession();
-			session.save(account);
+			session.persist(account);
 			System.out.println("register done...");
 			return true;
 		} catch (Exception e) {
@@ -93,7 +92,7 @@ public class UserDAOImpl implements UserDAO {
 		return false;
 	}
 
-	//get number page with type 
+	// get number page with type
 	@Transactional
 	public int getNumberPage(String type, int pageSize) { // ham moi them
 		Session session = sessionFactory.getCurrentSession();
@@ -135,6 +134,12 @@ public class UserDAOImpl implements UserDAO {
 		case "paragraph":
 			numb = session.createCriteria(Paragraph.class).list().size();
 			break;
+		case "discussion":
+			numb = session.createCriteria(Discussion.class).list().size();
+			break;
+		case "report":
+			numb = session.createCriteria(Report.class).list().size();
+			break;
 		default:
 			System.out.println("Input type invalid!");
 			break;
@@ -159,6 +164,7 @@ public class UserDAOImpl implements UserDAO {
 			Session session = sessionFactory.getCurrentSession();
 			Criteria cr = session.createCriteria(Discussion.class);
 			cr.add(Restrictions.eq("Active", (byte) 1));
+			cr.addOrder(Order.desc("Id"));
 			list = cr.list();
 
 			if (!list.isEmpty()) {
@@ -178,36 +184,33 @@ public class UserDAOImpl implements UserDAO {
 
 		try {
 			Session session = sessionFactory.openSession();
-			Criteria cr = session.createCriteria(Discussion.class);
-			cr.add(Restrictions.eq("Id", id));
-			Discussion discussion = (Discussion) cr.uniqueResult();
+			Discussion discussion = (Discussion) session.get(Discussion.class, id);
 			if (discussion.getActive() == 0) {
 				System.out.println("BTL bi vo hieu hoa");
 				return null;
 			}
-			
-			Criteria cr2 = session.createCriteria(Comment.class);
-			cr2.add(Restrictions.eq("discussion", discussion));
-			cr2.add(Restrictions.eq("Active", (byte)1));
-			cr2.addOrder(Order.desc("Id"));
-			cr2.setFirstResult(0);
-			cr2.setMaxResults(20);
-			ArrayList<Comment> listComment =  (ArrayList<Comment>) cr2.list();
-			Set<Comment> temp=new HashSet<>();
+
+			long view = discussion.getView();
+
+			Query query = session.createQuery("UPDATE Discussion SET AccessCount =:access WHERE Id=:id");
+			query.setParameter("access", view + 1);
+			query.setParameter("id", id);
+			int i = query.executeUpdate();
+			if (i > 0) {
+				System.out.println("increase done");
+			}
+
+			Criteria cr = session.createCriteria(Comment.class);
+			cr.add(Restrictions.eq("discussion", discussion));
+			cr.add(Restrictions.eq("Active", (byte) 1));
+			cr.addOrder(Order.desc("Id"));
+			cr.setFirstResult(0);
+			cr.setMaxResults(20);
+			List<Comment> listComment = (List<Comment>) cr.list();
+			Set<Comment> temp = new HashSet<>();
 			temp.addAll(listComment);
 			discussion.setCommentList(temp);
-			
-			// increase view of discussion
-//			long view = discussion.getView();
-//			System.out.println(view);
-//			view = view +1;
-//			session.evict(discussion);
-//			discussion.setView(view);
-//			discussion.setTitle("test merge");
-//			
-//			session.merge(discussion);
-//			System.out.println(discussion.getView());
-			
+
 			return discussion;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -218,18 +221,18 @@ public class UserDAOImpl implements UserDAO {
 	@Transactional
 	public boolean addDiscussion(Discussion discussion) {
 		try {
-			Session session = sessionFactory.openSession();
-
+			Session session = sessionFactory.getCurrentSession();
 			session.saveOrUpdate(discussion);
 			System.out.println("post discussion done");
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("loi khi them topic");
+
 		}
+		System.out.println("loi khi them topic");
 		return false;
 	}
-	
+
 	@Transactional
 	public boolean updateDiscussion(Discussion discussion) {
 		try {
@@ -240,7 +243,7 @@ public class UserDAOImpl implements UserDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return false;
 	}
 
@@ -249,7 +252,7 @@ public class UserDAOImpl implements UserDAO {
 		try {
 			Session session = sessionFactory.getCurrentSession();
 			Discussion delDiscussion = getDiscussion(id);
-			if(delDiscussion !=null) {
+			if (delDiscussion != null) {
 				delDiscussion.setActive((byte) 0);
 				session.merge(delDiscussion);
 				System.out.println("delete done");
@@ -267,7 +270,7 @@ public class UserDAOImpl implements UserDAO {
 		try {
 			Session session = sessionFactory.openSession();
 
-			session.save(comment);
+			session.saveOrUpdate(comment);
 
 			Criteria cr1 = session.createCriteria(Account.class);
 			cr1.add(Restrictions.eq("Id", comment.getUser().getId()));
@@ -280,7 +283,7 @@ public class UserDAOImpl implements UserDAO {
 			Discussion discuss = (Discussion) cr2.uniqueResult();
 			discuss.getCommentList().add(comment);
 			session.merge(discuss);
-			
+
 			System.out.println("comment done");
 			return true;
 		} catch (Exception e) {
@@ -312,8 +315,9 @@ public class UserDAOImpl implements UserDAO {
 			cr.add(Restrictions.eq("Id", id));
 			Comment comment = (Comment) cr.uniqueResult();
 			if (comment != null) {
-				comment.setActive((byte) 0);
-				session.merge(comment);
+				comment.getReplies().clear();
+				comment.getReports().clear();
+				session.delete(comment);
 				System.out.println("delete done");
 			}
 
@@ -328,7 +332,7 @@ public class UserDAOImpl implements UserDAO {
 
 	@Transactional
 	public Comment getComment(int id) {
-		Session session = sessionFactory.getCurrentSession();
+		Session session = sessionFactory.openSession();
 		Criteria cr = session.createCriteria(Comment.class);
 		cr.add(Restrictions.eq("Id", id));
 		Comment comment = (Comment) cr.uniqueResult();
@@ -343,14 +347,16 @@ public class UserDAOImpl implements UserDAO {
 	public boolean report(Report report) {
 		try {
 			Session session = sessionFactory.getCurrentSession();
-			
+
 			session.saveOrUpdate(report);
-			if(report.getReportedReplyComment() !=null) {
-				ReplyComment reply = (ReplyComment) session.load(ReplyComment.class, report.getReportedReplyComment().getId());
+			if (report.getReportedReplyComment() != null) {
+				ReplyComment reply = (ReplyComment) session.load(ReplyComment.class,
+						report.getReportedReplyComment().getId());
 				reply.getReports().add(report);
 				session.merge(reply);
-			}else if(report.getReportedDiscussion() !=null) {
-				Discussion discussion = (Discussion) session.load(Discussion.class, report.getReportedDiscussion().getId());
+			} else if (report.getReportedDiscussion() != null) {
+				Discussion discussion = (Discussion) session.load(Discussion.class,
+						report.getReportedDiscussion().getId());
 				discussion.getReportList().add(report);
 				session.merge(discussion);
 			}
@@ -365,18 +371,18 @@ public class UserDAOImpl implements UserDAO {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Comment> getListComment(int page, int pageSize,int discussionID) {
+	public List<Comment> getListComment(int page, int pageSize, int discussionID) {
 		Session session = sessionFactory.openSession();
 		try {
-			Criteria cr =session.createCriteria(Comment.class);
-			
+			Criteria cr = session.createCriteria(Comment.class);
+
 			cr.add(Restrictions.eq("discussion", getDiscussion(discussionID)));
 			cr.add(Restrictions.eq("Active", (byte) 1));
 			cr.addOrder(Order.asc("Id"));
-			cr.setFirstResult(pageSize *(page-1));
+			cr.setFirstResult(pageSize * (page - 1));
 			cr.setMaxResults(pageSize);
 			List<Comment> listComment = cr.list();
-			System.out.println("get comment page " +page);
+			System.out.println("get comment page " + page);
 			return listComment;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -390,33 +396,34 @@ public class UserDAOImpl implements UserDAO {
 	public List<ReplyComment> getListReplyComment(int page, int pageSize, int commentID) {
 		try {
 			Session session = sessionFactory.openSession();
-			Criteria cr =session.createCriteria(ReplyComment.class);
+			Criteria cr = session.createCriteria(ReplyComment.class);
 			cr.add(Restrictions.eq("Active", (byte) 1));
 			Comment comment = getComment(commentID);
 			cr.add(Restrictions.eq("comment", comment));
-			cr.setFirstResult(pageSize *(page-1));
+			cr.setFirstResult(pageSize * (page - 1));
 			cr.setMaxResults(pageSize);
 			cr.addOrder(Order.desc("Time"));
 			List<ReplyComment> replies = cr.list();
-			System.out.println("get reply page " +page);
+			System.out.println("get reply page " + page);
 			return replies;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
-	
-	//reply comment in discussion
+
+	// reply comment in discussion
 
 	@Override
 	@Transactional
 	public ReplyComment getReplyComment(int id) {
 		try {
-			Session session = sessionFactory.getCurrentSession();
+			Session session = sessionFactory.openSession();
 			Criteria cr = session.createCriteria(ReplyComment.class);
 			cr.add(Restrictions.eq("Id", id));
-			ReplyComment reply= (ReplyComment) cr.uniqueResult();
-			if(reply!=null) System.out.println("get reply done");
+			ReplyComment reply = (ReplyComment) cr.uniqueResult();
+			if (reply != null)
+				System.out.println("get reply done");
 			return reply;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -459,9 +466,10 @@ public class UserDAOImpl implements UserDAO {
 	public boolean deleteReplyComment(int id) {
 		try {
 			ReplyComment delReply = getReplyComment(id);
-			Session session=sessionFactory.getCurrentSession();
-			delReply.setActive((byte) 0);
-			session.merge(delReply);
+			Session session = sessionFactory.getCurrentSession();
+			Comment comment = delReply.getComment();
+			comment.getReplies().remove(delReply);
+			session.merge(comment);
 			System.out.println("delete reply done!");
 			return true;
 		} catch (Exception e) {
@@ -472,13 +480,24 @@ public class UserDAOImpl implements UserDAO {
 
 	@Override
 	@Transactional
-	public Test getTest(int testID) {
+	public Test getTest(int testID,boolean increase,Account user) {
 		try {
-			Session session=sessionFactory.openSession();
-			Criteria cr = session.createCriteria(Test.class);
-			cr.add(Restrictions.eq("Id", testID));
-			Test result = (Test) cr.uniqueResult();
-			if(result !=null ) System.out.println("get test done");
+			Session session = sessionFactory.openSession();
+			Test result = (Test) session.get(Test.class,testID);
+			if(increase) {
+				result.getUsers().add(user);
+				
+				long view = result.getView();
+				Query query = session.createQuery("UPDATE Test SET AccessCount =:access WHERE Id=:id");
+				query.setParameter("access", view + 1);
+				query.setParameter("id", testID);
+				int i = query.executeUpdate();
+				if (i > 0) {
+					System.out.println("increase done");
+				}
+			}
+			if (result != null)
+				System.out.println("get test done");
 			return result;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -490,17 +509,72 @@ public class UserDAOImpl implements UserDAO {
 	@Override
 	@Transactional
 	public <T> Set<T> getPartTest(byte part, int testID) {
-//		try {
-//			Session session=sessionFactory.getCurrentSession();
-//			Criteria cr = session.createCriteria(Test.class);
-//			cr.add(Restrictions.eq("Id", testID));
-//			Test result = (Test) cr.uniqueResult();
-//			if()
-//			return result;
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		System.out.println("test error");
+		// try {
+		// Session session=sessionFactory.getCurrentSession();
+		// Criteria cr = session.createCriteria(Test.class);
+		// cr.add(Restrictions.eq("Id", testID));
+		// Test result = (Test) cr.uniqueResult();
+		// if()
+		// return result;
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// }
+		// System.out.println("test error");
 		return null;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional
+	public <T> List<T> search(String type, String key, int page, byte pageSize) {
+		try {
+			Session session = sessionFactory.openSession();
+			if (type.equals("discussion")) {
+				Criteria cr = session.createCriteria(Discussion.class);
+				cr.add(Restrictions.ilike("Title", "%" + key + "%"));
+				cr.setFirstResult(pageSize * (page - 1));
+				cr.setMaxResults(pageSize);
+				List<Discussion> list = cr.list();
+				System.out.println("search done");
+				return (List<T>) list;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	@Override
+	@Transactional
+	public int searchNumbPage(String type, String key, int pageSize) {
+		Session session = sessionFactory.getCurrentSession();
+		int numb = 0;
+
+		try {
+			numb = ((Long) session.createQuery("select count(*) from Discussion where Title like '%" + key + "%'")
+					.uniqueResult()).intValue();
+			
+			if (numb % 10 != 0) {
+				numb = numb / 10 + 1;
+			} else {
+				numb = numb / 10;
+			}
+			System.out.println("numb search: " + numb);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return numb;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional
+	public List<Test> getTestList() {
+		Session session = sessionFactory.getCurrentSession();
+		Criteria cr = session.createCriteria(Test.class);
+		List<Test> list = cr.list();
+		return list;
 	}
 }

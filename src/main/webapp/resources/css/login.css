@@ -1,3 +1,8 @@
+html{
+	margin:0;
+	padding:0;
+}
+
 a, a:visited, a:active {
 	text-decoration: none;
 }
@@ -130,6 +135,8 @@ ul li:hover a {
 .content{
 	min-height: 59%;
 	background: white;
+	padding-left: 0;
+	padding-right: 0;
 }
 
 .content .register {

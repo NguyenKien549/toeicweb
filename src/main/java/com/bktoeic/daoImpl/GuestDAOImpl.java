@@ -1,6 +1,5 @@
 package com.bktoeic.daoImpl;
 
-import java.util.Collection;
 import java.util.HashSet;
 
 import java.util.Iterator;
@@ -9,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
@@ -23,7 +23,6 @@ import com.bktoeic.model.Part1;
 import com.bktoeic.model.Part2;
 import com.bktoeic.model.Part3;
 import com.bktoeic.model.Part4;
-import com.bktoeic.model.Part6;
 import com.bktoeic.model.Part7;
 import com.bktoeic.model.Practice;
 
@@ -51,6 +50,16 @@ public class GuestDAOImpl<T> implements GuestDAO<T> {
 		Criteria cr = session.createCriteria(Practice.class);
 		cr.add(Restrictions.eq("Code", code));
 		Practice practice = (Practice) cr.uniqueResult();
+		
+		long view = practice.getView();
+		Query query = session.createQuery("UPDATE Practice SET AccessCount =:access WHERE Code=:code");
+		query.setParameter("access", view + 1);
+		query.setParameter("code", code);
+		int i = query.executeUpdate();
+		if (i > 0) {
+			System.out.println("increase done");
+		}
+		
 		if (practice != null)
 			System.out.println("practice null");
 		return practice;
@@ -91,13 +100,25 @@ public class GuestDAOImpl<T> implements GuestDAO<T> {
 	}
 
 	@Transactional
-	public Practice practice(int id, byte part) {
+	public Practice practice(int id, byte part,boolean increase) {
 		try {
 			Session session = sessionFactory.openSession();
 			Criteria cr = session.createCriteria(Practice.class);
 			cr.add(Restrictions.eq("Id", id));
 			cr.add(Restrictions.eq("Part", part));
 			Practice practice = (Practice) cr.uniqueResult();
+			
+			if(increase) {
+				long view = practice.getView();
+				Query query = session.createQuery("UPDATE Practice SET AccessCount =:access WHERE Id=:id");
+				query.setParameter("access", view + 1);
+				query.setParameter("id", id);
+				int i = query.executeUpdate();
+				if (i > 0) {
+					System.out.println("increase done");
+				}
+			}
+			
 			if (practice != null) {
 				Audio audio = practice.getAudio();
 				if (part == 3) {

@@ -27,9 +27,9 @@ public class Part7 {
 	private String D;
 	private String RightAnswer;
 
-	@JsonBackReference
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinColumn(name = "ParagraphID", nullable = false)
+	@JsonBackReference("part7")
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST.MERGE)
+	@JoinColumn(name = "ParagraphID", nullable = true)
 	private Paragraph paragraph;
 
 	public final int getId() {

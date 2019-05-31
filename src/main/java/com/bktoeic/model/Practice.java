@@ -1,7 +1,5 @@
 package com.bktoeic.model;
 
-import java.util.HashSet;
-
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -13,9 +11,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -35,18 +30,21 @@ public class Practice {
 	@Column(name = "AccessCount", nullable = false)
 	private long View;
 
-	@JsonManagedReference
-	@OneToOne(fetch = FetchType.LAZY, mappedBy = "practice", cascade = CascadeType.ALL)
+	@SuppressWarnings("static-access")
+	@JsonManagedReference(value="practice_json")
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "practice", cascade = CascadeType.PERSIST.MERGE.REFRESH)
 	private Audio audio;
 
-	@JsonManagedReference
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "practice", cascade = CascadeType.ALL)
+	@SuppressWarnings("static-access")
+	@JsonManagedReference(value="paraPrac")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "practice", cascade = CascadeType.PERSIST.MERGE.REFRESH)
 	private Set<Paragraph> listParagraph;
 
 	
-	@JsonIgnore
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "practice", cascade = CascadeType.ALL)
-	private Set<Part5> listPart5 = new HashSet<Part5>();
+	@SuppressWarnings("static-access")
+	@JsonManagedReference("part5Prac")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "practice", cascade = CascadeType.PERSIST.MERGE.REFRESH)
+	private Set<Part5> listPart5;
 
 	public final long getView() {
 		return View;

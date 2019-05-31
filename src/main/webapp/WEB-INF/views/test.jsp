@@ -1,6 +1,7 @@
+<%@page import="org.apache.jasper.tagplugins.jstl.core.Import"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
@@ -14,47 +15,7 @@
 	href="../../../resources/css/test.css">
 </head>
 <body>
-	<div class="container-fluid div-parent">
-		<!-- navbar -->
-		<nav class="navbar navbar-expand-md navbar-dark fixed-top"
-			style="background-color: #0033c3"> <!-- Brand --> <span><img
-			class="logo" src="resources/img/logo.png" width="40px" height="40px"
-			style="opacity: 0.8"> <a class="navbar-brand"
-			href="${pageContext.request.contextPath}">BKTOEIC</a></span> <!-- Toggler/collapsibe Button -->
-		<button class="navbar-toggler" type="button" data-toggle="collapse"
-			data-target="#collapsibleNavbar">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-
-		<!-- Navbar links -->
-		<div class="collapse navbar-collapse justify-content-end"
-			id="collapsibleNavbar">
-			<ul class="navbar-nav">
-<!-- 				<form class="form-inline mr-auto" action="https://google.com/search" -->
-<!-- 					target="blank"> -->
-<!-- 					<input class="form-control mr-sm-2 input-search active" type="text" -->
-<!-- 						placeholder="Search" name="q"> <img class="btn-search" -->
-<!-- 						src="resources/img/search.png" width="35px" height="35px" -->
-<!-- 						style="opacity: 0.9"> -->
-<!-- 				</form> -->
-				<li class="nav-item"><a class="nav-link" href="#">HOME</a></li>
-				<li class="nav-item"><a class="nav-link" href="#">FORUM</a></li>
-				<li class="nav-item"><a class="nav-link" href="#">TEST</a></li>
-				<li class="nav-item"><a class="nav-link" href="#">ABOUT</a></li>
-				<li class="nav-item">
-					<div class="dropdown nav-link" data-toggle="dropdown"
-						style="padding: 0">
-						<a class="nav-link" href="#">${name}</a>
-						<ul class="dropdown-menu" id="menu-acc">
-							<li id="dangxuat-btn">Đăng xuất</li>
-						</ul>
-					</div>
-				</li>
-
-			</ul>
-		</div>
-		</nav>
-
+	<jsp:include page="default/header.jsp"></jsp:include>
 		<!-- content -->
 		<div class="container content">
 			<div class="row background"></div>
@@ -172,23 +133,7 @@
 			<!-- het phan content cau hoi -->
 
 		</div>
-		<!-- footer -->
-		<div class="container-fluid footer row">
-			<div class="col-7 left-footer">
-				<p>Một sản phẩm của KV team</p>
-				<p>Địa chỉ: Số 1, Đại Cồ Việt, Hà Nội</p>
-				<p>Hot line: 0123456789</p>
-				<p>Email: kvteam@gamil.com</p>
-			</div>
-			<div class="col-5 right-footer">
-				<p>Liên hệ:</p>
-				<a href=""><span><img src="../../../resources/img/fb.png"
-						height="40px" width="40px"></span></a> <a href=""><span><img
-						src="/../../../resources/img/twitter.png" height="40px" width="40px"></span></a>
-			</div>
-
-		</div>
-	</div>
+		
 <!-- Optional JavaScript -->
 	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
@@ -205,5 +150,8 @@
 	<script type="text/javascript"
 		src="../../../resources/js/bootstrap/bootstrap.min.js"></script>
 	<script type="text/javascript" src="../../../resources/ajax/testAjax.js"></script>
-</body>
-</html>
+	<script type="text/javascript" src='<c:url value="/resources/js/login.js"></c:url>'></script>
+
+	<jsp:include page="default/footer.jsp"></jsp:include>
+<%-- 	<% Import  %> --%>
+	

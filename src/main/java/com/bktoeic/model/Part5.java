@@ -2,6 +2,7 @@ package com.bktoeic.model;
 
 import javax.persistence.CascadeType;
 
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -11,7 +12,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Part5 {
@@ -28,13 +28,15 @@ public class Part5 {
 	private String D;
 	private String RightAnswer;
 
-	@JsonBackReference
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@SuppressWarnings("static-access")
+	@JsonBackReference("part5Prac")
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST.MERGE.REFRESH)
 	@JoinColumn(name = "PracticeID", nullable = true)
 	private Practice practice;
 
-	@JsonBackReference
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@SuppressWarnings("static-access")
+	@JsonBackReference("part5Test")
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST.MERGE.REFRESH)
 	@JoinColumn(name = "TestID", nullable = true)
 	private Test test;
 

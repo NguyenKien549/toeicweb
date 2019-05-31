@@ -17,6 +17,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 public class Discussion {
 
@@ -34,20 +36,23 @@ public class Discussion {
 
 	private Timestamp Time;
 
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	@JoinColumn(name = "UserID",nullable=false,foreignKey=@ForeignKey(name="FK_Discussion_Account"))
 	private Account user;
 
-	@Column(name = "AccessCount")
+	@Column(name = "AccessCount",updatable=true)
 	private long View;
 
 	private byte Active;
 
-	@OneToMany(mappedBy = "discussion", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonManagedReference
+	@OneToMany(mappedBy = "discussion", fetch = FetchType.LAZY, cascade = CascadeType.ALL,orphanRemoval=true)
 	@OrderBy("Id desc")
 	private Set<Comment> commentList =new HashSet<>();
 
-	@OneToMany(mappedBy = "reportedDiscussion", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@SuppressWarnings("static-access")
+	@JsonManagedReference
+	@OneToMany(mappedBy = "reportedDiscussion", fetch = FetchType.LAZY, cascade = CascadeType.MERGE.REFRESH.REMOVE,orphanRemoval=true)
 	private Set<Report> reportList = new HashSet<>();
 
 	public final Set<Comment> getCommentList() {

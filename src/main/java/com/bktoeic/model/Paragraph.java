@@ -1,7 +1,5 @@
 package com.bktoeic.model;
 
-import java.util.HashSet;
-
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -16,7 +14,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -28,25 +25,39 @@ public class Paragraph {
 
 	private String Paragraph;
 
-	@JsonBackReference
-	@ManyToOne(fetch=FetchType.LAZY)
+	private byte Part;
+
+	@SuppressWarnings("static-access")
+	@JsonBackReference(value = "paraPrac")
+	@ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.PERSIST.MERGE.REFRESH)
 	@JoinColumn(name = "PracticeID", nullable = true)
 	private Practice practice;
 
-	@JsonBackReference
-	@ManyToOne(fetch=FetchType.LAZY)
+	@SuppressWarnings("static-access")
+	@JsonBackReference(value = "paraTest")
+	@ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.PERSIST.MERGE.REFRESH)
 	@JoinColumn(name = "TestID", nullable = true)
 	private Test test;
-	
-	@JsonManagedReference
-	@OneToMany(mappedBy = "paragraph", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+
+	@SuppressWarnings("static-access")
+	@JsonManagedReference(value = "part6")
+	@OneToMany(mappedBy = "paragraph", fetch = FetchType.LAZY,cascade = CascadeType.PERSIST.MERGE.REFRESH)
 	@OrderBy("id asc")
 	private Set<Part6> part6;
-	
-	@JsonManagedReference
-	@OneToMany(mappedBy = "paragraph", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+
+	@SuppressWarnings("static-access")
+	@JsonManagedReference("part7")
+	@OneToMany(mappedBy = "paragraph", fetch = FetchType.LAZY,cascade = CascadeType.PERSIST.MERGE.REFRESH)
 	@OrderBy("id asc")
 	private Set<Part7> part7;
+
+	public final byte getPart() {
+		return Part;
+	}
+
+	public final void setPart(byte part) {
+		Part = part;
+	}
 
 	public final Set<Part7> getPart7() {
 		return part7;

@@ -121,13 +121,28 @@ public class userServiceImpl implements userService {
 	}
 
 	@Override
-	public Test getTest(int testID) {
-		return userDAO.getTest(testID);
+	public Test getTest(int testID,boolean increase,Account user) {
+		return userDAO.getTest(testID,increase,user);
 	}
 
 	@Override
 	public <T> Set<T> getPartTest(byte part, int testID) {
 		return userDAO.getPartTest(part, testID);
+	}
+
+	@Override
+	public <T> List<T> search(String type, String key,int page,byte pageSize) {
+		return userDAO.search(type, key,page,pageSize);
+	}
+
+	@Override
+	public int searchNumbPage(String type, String key, int pageSize) {
+		return userDAO.searchNumbPage(type, key, pageSize);
+	}
+
+	@Override
+	public List<Test> getTestList() {
+		return userDAO.getTestList();
 	}
 
 }

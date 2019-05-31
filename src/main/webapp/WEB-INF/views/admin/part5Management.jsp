@@ -12,55 +12,7 @@
 	href="../../../resources/css/admin.css">
 </head>
 <body>
-	<!-- HEADER -->
-	<nav class="navbar navbar-expand bg-dark navbar-dark fixed-top">
-	<div class="container-fluid">
-		<!-- Brand -->
-		<a class="navbar-brand"
-			href="${pageContext.request.contextPath}/admin/accountManagement">BKTOEIC
-			ADMIN</a>
-
-		<!-- Navbar links -->
-		<div class=" navbar-collapse justify-content-end"
-			id="collapsibleNavbar">
-			<ul class="navbar-nav">
-				<li id="mail" class="nav-item"><a class="nav-link mr-100"
-					href="#"><img class="ico-header"
-						src="../../../resources/img/email-icon.png"></a></li>
-				<li id="acc" class="nav-item">
-					<div class="dropdown nav-link" data-toggle="dropdown">
-						<img class="ico-header"
-							src="../../../resources/img/account-icon.png">
-						<ul class="dropdown-menu" id="menu-acc">
-							<li id="dangxuat-btn">Đăng xuất</li>
-						</ul>
-					</div>
-				</li>
-			</ul>
-		</div>
-	</div>
-	</nav>
-	<!-- body -->
-	<div class="container-fluid" style="padding-top: 50px;">
-		<!-- menu left -->
-		<div id="sidebar-wrapper">
-			<ul class="sidebar-nav">
-				<li><a href="#" class="choice"><img class="ico-manag"
-						src="../../../resources/img/account-manager.png">Quản lý tài
-						khoản</a></li>
-				<li><a href="#" class="choice"><img class="ico-manag"
-						src="../../../resources/img/baihoc-manager.png">Quản lý bài
-						học</a></li>
-				<li><a href="#" class="choice" style="color: white"> <img
-						class="ico-manag" src="../../../resources/img/baihoc-manager.png">Quản
-						lý ngân hàng câu hỏi
-				</a></li>
-				<li><a href="#" class="choice"><img class="ico-manag"
-						src="../../../resources/img/btl-manager.png">Quản lý bài
-						thảo luận</a></li>
-			</ul>
-		</div>
-
+<jsp:include page="../default/adminHeader.jsp"></jsp:include>
 		<!-- table and button -->
 		<div class="row justify-content-center" style="margin-left: 15em;">
 			<!-- Khung ngoai table -->
@@ -84,19 +36,18 @@
 							<option value="part5" selected="selected">Part 5</option>
 							<option value="part6">Part 6</option>
 							<option value="part7">Part 7</option>
-							<option value="image">Image</option>
 							<option value="audio">Audio</option>
 							<option value="paragraph">Paragraph</option>
 						</select>
 					</div>
-					<div class="col-md-2 notice" style="color: red">
-						<span>${errors}</span>
-					</div>
-					<div class="col-md-8" style="text-align: right;">
-						<span><input id="btnsearch" type="button" name="submit"
-							value="Search"></span> <input id="search" type="text" name="q"
-							style="border-radius: 4px">
-					</div>
+<!-- 					<div class="col-md-2 notice" style="color: red"> -->
+<%-- 						<span>${errors}</span> --%>
+<!-- 					</div> -->
+<!-- 					<div class="col-md-8" style="text-align: right;"> -->
+<!-- 						<span><input id="btnsearch" type="button" name="submit" -->
+<!-- 							value="Search"></span> <input id="search" type="text" name="q" -->
+<!-- 							style="border-radius: 4px"> -->
+<!-- 					</div> -->
 				</div>
 
 				<!-- TABLE -->
@@ -134,29 +85,17 @@
 					</table>
 				</div>
 
-				<!-- pagination -->
-				<div class="col-12 row pagination"
-					style="padding-top: 1em; padding-bottom: 1em">
-					<span class="col-md-6 col-sm-12" id="infoPage">Page
-						${currentPage} of ${numbPage}</span>
-					<ul class="pagination" id="pagin">
-						<c:forEach var="i" begin="1" end="${numbPage}">
-							<li class="page-item" id="index"><a class="page-link"
-								href="${i}">${i}</a></li>
-						</c:forEach>
-					</ul>
-				</div>
-
+		<jsp:include page="../default/paginationAdmin.jsp"></jsp:include>
 
 			</div>
 			<!-- btn management -->
 			<div class="col-11 row justify-content-start"
 				style="margin-top: 1.5em; margin-bottom: 1em">
-				<input id="add" type="button" name="" value="Add Question"
-					data-toggle="modal" data-target="#myModal-add"
+				<input id="add" type="button" class="part5" value="Add Question"
+					data-toggle="modal" data-target="#myModal-addDocument"
 					style="padding: 0.8em 1em; background-color: #066310; color: white; border: none; border-radius: 0.5em; margin-right: 2em">
-				<input id="update" type="button" name="" value="Update Question"
-					data-target="#myModal-update"
+				<input id="update" type="button" value="Update Question"
+					data-target="#myModal-update" class="part5"
 					style="padding: 0.8em 1em; background-color: #c9310c; color: white; border: none; border-radius: 0.5em; margin-right: 2em">
 				<input id="delete" type="button" class="part5"
 					value="Delete Question"
@@ -169,43 +108,45 @@
 
 	<!-- modal them document -->
 
-	<div class="modal fade" id="myModal-add">
+	<div class="modal fade" id="myModal-addDocument">
 		<div class="modal-dialog modal-lg">
 			<!-- Modal content-->
 			<div class="modal-content">
 				<div class="modal-header" style="background-color: #035904">
 					<h4 class="modal-title" style="color: white">Add Document</h4>
 				</div>
-				<form action="../addPart5" method="POST" modelAttribute="part5"
-					id="form-them" accept-charset="UTF-8">
 					<div class="modal-body form-group">
 						<div class="addContent">
+						
 							<div class="audioQuestions">
-								<div class="questions">
+								<div class="questions question1">
 									<div class="input-modal row">
-										<span class="col-2" style="line-height: 35px">Question</span>
-										<input type="text" class="col-9 form-control" id="question1"
-											name="Question">
+										<span class="col-2"  style="line-height: 35px">Question</span>
+										<input
+											type="text" class="col-8 form-control" id="question1" class="form-control">
+										<img src='<c:url value="/resources/img/add_button_2-512.png"></c:url>' alt="abc" class="col-1 add add_Question">
+										<img src='<c:url value="/resources/img/subtract-512.png"></c:url>' class="col-1 sub sub_Question">
 									</div>
 									<div class="input-modal row">
 										<span class="col-2" style="line-height: 35px">A</span><input
-											type="text" name="A" class="form-control col-9">
+											type="text" class="form-control col-8" id="A1" >
 									</div>
 									<div class="input-modal row">
-										<span class="col-2" style="line-height: 35px">B</span><input
-											class="col-9 form-control" type="text" name="B">
+										<span class="col-2" style="line-height: 35px">B</span>
+										<input class="col-8 form-control" type="text" id="B1">
 									</div>
 									<div class="input-modal row">
-										<span class="col-2" style="line-height: 35px">C</span><input
-											class="col-9 form-control" type="text" name="C">
+										<span class="col-2" style="line-height: 35px">C</span>
+										<input class="col-8 form-control" type="text"  id="C1">
 									</div>
 									<div class="input-modal row">
 										<span class="col-2" style="line-height: 35px">D</span><input
-											class="col-9 form-control" type="text" name="D">
+											class="col-8 form-control" type="text" id="D1">
 									</div>
 									<div class="input-modal row">
-										<span class="col-2" style="line-height: 35px">Right
-											Answer:</span> <select class="col-9 form-control" name="RightAnswer">
+										<span class="col-2" style="line-height: 35px">Right Answer:</span>
+										<select class="col-8 form-control"
+											id="RightAnswer1">
 											<option value="A">A</option>
 											<option value="B">B</option>
 											<option value="C">C</option>
@@ -213,30 +154,18 @@
 										</select>
 									</div>
 								</div>
-							</div>
-							<!-- het phan danh sach cau hoi -->
-
-							<!-- 							<div class="input-modal row"> -->
-							<!-- 								<span class="col-2" style="line-height: 35px">PracticeID</span><input -->
-							<!-- 									type="text" name="PracticeID" class="form-control"> -->
-							<!-- 							</div> -->
-							<!-- 							<div class="input-modal row"> -->
-							<!-- 								<span class="col-2" style="line-height: 35px">LessionID</span><input -->
-							<!-- 									type="text" name="TestID" class="form-control"> -->
-							<!-- 							</div> -->
-
-						</div>
-						<!-- het phan noi dung can them addContent-->
+							</div> <!-- het phan danh sach cau hoi -->
+					
+						</div> <!-- het phan noi dung can them addContent-->
 
 						<div class="submitA" style="justify-content: center">
-							<button id="submit-add-btn"
+							<button id="part5"
 								style="background-color: #035904; color: white; margin-left: 43%; width: 100px;"
-								class="btn btn-default" data-dismiss="modal">ADD</button>
+								class="btn btn-default addSubmit" data-dismiss="modal">ADD</button>
 						</div>
 
 					</div>
 					<!-- het phan modal-body -->
-				</form>
 			</div>
 		</div>
 	</div>
@@ -251,55 +180,54 @@
 					<h4 class="modal-title" style="color: white">Update Question</h4>
 				</div>
 
-				<form action="../updatePart5" method="POST" modelAttribute="part5"
-					id="form-them" accept-charset="UTF-8">
-					<div class="modal-body form-group">
-						<div class="addContent">
-							<div class="audioQuestions">
-								<div class="questions">
-									<div class="input-modal row">
-										<span class="col-2" style="line-height: 35px">Question</span>
-										<input type="text" class="col-9 form-control"
-											name="Question">
-									</div>
-									<div class="input-modal row">
-										<span class="col-2" style="line-height: 35px">A</span><input
-											type="text" name="A" class="form-control col-9">
-									</div>
-									<div class="input-modal row">
-										<span class="col-2" style="line-height: 35px">B</span><input
-											class="col-9 form-control" type="text" name="B">
-									</div>
-									<div class="input-modal row">
-										<span class="col-2" style="line-height: 35px">C</span><input
-											class="col-9 form-control" type="text" name="C">
-									</div>
-									<div class="input-modal row">
-										<span class="col-2" style="line-height: 35px">D</span><input
-											class="col-9 form-control" type="text" name="D">
-									</div>
-									<div class="input-modal row">
-										<span class="col-2" style="line-height: 35px">Right
-											Answer:</span> <select class="col-9 form-control" name="RightAnswer">
-											<option value="A">A</option>
-											<option value="B">B</option>
-											<option value="C">C</option>
-											<option value="D">D</option>
-										</select>
-									</div>
-								</div>
+				<div class="modal-body form-group">
+					<div class="modal-body">
+						<div class="question">
+							<div class="input-modal row">
+								<span class="col-2" style="line-height: 35px">Id</span> <input
+									class="col-9 form-control" id="editId" readonly="readonly">
+							</div>
+							<div class="input-modal row">
+								<span class="col-2" style="line-height: 35px">Question </span> <input
+									type="text" class="col-9 form-control" id="editQuestion">
+
+							</div>
+							<div class="input-modal row">
+								<span class="col-2" style="line-height: 35px">A</span><input
+									type="text" id="editA" class="form-control col-9" />
+							</div>
+							<div class="input-modal row">
+								<span class="col-2" style="line-height: 35px">B</span> <input
+									class="col-9 form-control" type="text" id="editB" />
+							</div>
+							<div class="input-modal row">
+								<span class="col-2" style="line-height: 35px">C</span> <input
+									class="col-9 form-control" type="text" id="editC" />
+							</div>
+							<div class="input-modal row">
+								<span class="col-2" style="line-height: 35px">D</span><input
+									class="col-9 form-control" type="text" id="editD" />
+							</div>
+							<div class="input-modal row">
+								<span class="col-2" style="line-height: 35px">Right
+									Answer:</span> <select class="col-9 form-control" id="editRightAnswer">
+									<option value="A">A</option>
+									<option value="B">B</option>
+									<option value="C">C</option>
+									<option value="D">D</option>
+								</select>
 							</div>
 						</div>
-						<!-- het phan noi dung can them addContent-->
-
-						<div class="submitA" style="justify-content: center">
-							<button id="submit-update-btn"
-								style="background-color: #c9310c; color: white; margin-left: 43%; width: 100px;"
-								class="btn btn-default" data-dismiss="modal">Update</button>
-						</div>
 					</div>
-					<!-- het phan modal-body -->
-				</form>
+					<!-- het phan noi dung can them addContent-->
+
+					<div class="submitA" style="justify-content: center">
+						<button id="part5"
+							style="background-color: #c9310c; color: white; margin-left: 43%; width: 100px;"
+							class="btn btn-default updateButton" data-dismiss="modal">Update</button>
+					</div>
+				</div>
+				<!-- het phan modal-body -->
 			</div>
 		</div>
 	</div>
@@ -314,6 +242,8 @@
 		src="../../../resources/js/bootstrap/bootstrap.min.js"></script>
 	<script type="text/javascript"
 		src="../../../resources/js/questionManagement.js"></script>
+	<script type="text/javascript"
+		src="../../../resources/ajax/questionManagementAjax.js"></script>
 </body>
 </body>
 </html>

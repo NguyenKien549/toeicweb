@@ -149,3 +149,13 @@ th, td {
 .add:hover{
 	cursor: pointer;
 }
+
+/* scroll questionManagement */
+.bodyTable .d-flex{
+	height: 7em;
+}
+
+.bodyTable .d-flex td{
+	overflow:auto;
+	font-size: 1em;
+}

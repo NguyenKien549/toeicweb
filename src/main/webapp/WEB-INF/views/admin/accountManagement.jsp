@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <html>
@@ -13,47 +13,7 @@
 <link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/admin.css" />">
 
 <body>
-<!-- HEADER -->
-	<nav class="navbar navbar-expand bg-dark navbar-dark fixed-top">
-		<div class="container-fluid">
-			<!-- Brand -->
-			<a class="navbar-brand" href="${pageContext.request.contextPath}">BKTOEIC ADMIN</a>
-
-			<!-- Navbar links -->
-			<div class=" navbar-collapse justify-content-end"
-				id="collapsibleNavbar">
-				<ul class="navbar-nav">
-					<li id="mail" class="nav-item"><a class="nav-link mr-100"
-						href="#"><img class="ico-header"
-							src="../../resources/img/email-icon.png"></a></li>
-					<li id="acc" class="nav-item">
-						<div class="dropdown nav-link" data-toggle="dropdown">
-							<img class="ico-header" src="../../resources/img/account-icon.png">
-							<ul class="dropdown-menu" id="menu-acc">
-								<li id="dangxuat-btn">Đăng xuất</li>
-							</ul>
-						</div>
-					</li>
-				</ul>
-			</div>
-		</div>
-	</nav>
-	<!-- body -->
-	<div class="container-fluid" style="padding-top: 50px;">
-		<!-- menu left -->
-		<div id="sidebar-wrapper">
-			<ul class="sidebar-nav">
-				<li> <a href="${pageContext.request.contextPath}/admin/accountManagement/1" class="choice" style="color: white"><img class="ico-manag"
-						src="../../resources/img/account-manager.png">Quản lý tài khoản</a>
-				</li>
-				<li><a href="#"  class="choice"><img class="ico-manag"
-						src="../../resources/img/baihoc-manager.png">Quản lý bài học</a></li>
-				<li><a href="${pageContext.request.contextPath}/admin/questionManagement/part1/1"  class="choice"><img class="ico-manag"
-						src="../../resources/img/baihoc-manager.png">Quản lý ngân hàng câu hỏi</a></li>
-				<li><a href="#"  class="choice"><img class="ico-manag"
-						src="../../resources/img/btl-manager.png">Quản lý bài thảo luận</a></li>
-			</ul>
-		</div>
+<jsp:include page="../default/adminHeader.jsp"></jsp:include>
 
 		<!-- table and button -->
 		<div class="row justify-content-center" style="margin-left: 15em;">
@@ -72,11 +32,11 @@
 					<div class="col-12 col-md-4 notice" style="color: red">
 						<span>${errors}</span>
 					</div>
-					<div class="col-12 col-md-8" style="text-align: right;">
-						<span><input id="btnsearch" type="button" name="submit"
-							value="Search"></span> <input id="search" type="text" name="q"
-							style="border-radius: 4px">
-					</div>
+<!-- 					<div class="col-12 col-md-8" style="text-align: right;"> -->
+<!-- 						<span><input id="btnsearch" type="button" name="submit" -->
+<!-- 							value="Search"></span> <input id="search" type="text" name="q" -->
+<!-- 							style="border-radius: 4px"> -->
+<!-- 					</div> -->
 				</div>
 
 				<!-- TABLE -->
@@ -96,42 +56,53 @@
 						</thead>
 						<tbody>
 							<c:forEach items="${listUser}" var="account">
-								<tr class="d-flex">
-									<td style="width: 5%">${account.getId() }</td>
-									<td style="width: 25%">${account.getName() }</td>
-									<td style="width: 10%"><fmt:formatDate
-											pattern="dd/MM/yyyy" value="${account.getDateOfBirth()}" /></td>
-									<td style="width: 8%">${account.getGender() }</td>
-									<td style="width: 16%">${account.getUsername() }</td>
-									<td style="width: 22%">${account.getEmail() }</td>
-									<td style="width: 7%">${account.getType() }</td>
-									<td style="width: 7%">${account.getActive() }</td>
-								</tr>
+							<c:if test="${account.getActive() ==0}">
+									<tr class="d-flex"  style="color:red;">
+										<td style="width: 5%">${account.getId() }</td>
+										<td style="width: 25%">${account.getName() }</td>
+										<td style="width: 10%"><fmt:formatDate
+												pattern="dd/MM/yyyy" value="${account.getDateOfBirth()}" /></td>
+										<td style="width: 8%">${account.getGender() }</td>
+										<td style="width: 16%">${account.getUsername() }</td>
+										<td style="width: 22%">${account.getEmail() }</td>
+										<td style="width: 7%">${account.getType() }</td>
+										<td style="width: 7%;">${account.getActive() }</td>
+										
+									</tr>
+								</c:if>
+								<c:if test="${account.getActive() !=0}">
+									<tr class="d-flex">
+										<td style="width: 5%">${account.getId() }</td>
+										<td style="width: 25%">${account.getName() }</td>
+										<td style="width: 10%"><fmt:formatDate
+												pattern="dd/MM/yyyy" value="${account.getDateOfBirth()}" /></td>
+										<td style="width: 8%">${account.getGender() }</td>
+										<td style="width: 16%">${account.getUsername() }</td>
+										<td style="width: 22%">${account.getEmail() }</td>
+										<td style="width: 7%">${account.getType() }</td>
+										<td style="width: 7%;">${account.getActive() }</td>
+										
+									</tr>
+								</c:if>
 							</c:forEach>
 						</tbody>
 					</table>
 				</div>
 
-				<!-- pagingation -->
-				<div class="col-12 row"
-					style="padding-top: 1em; padding-bottom: 1em">
-					<span class="col-md-6 col-sm-12" id="infoPage">Page ${currentPage} of
-						${numbPage}</span>
-					<ul class="pagination" id="pagin">
-						<c:forEach var="i" begin="1" end="${numbPage}">
-							<li class="page-item" id="index"><a class="page-link pageIndex"
-								href="${i}">${i}</a></li>
-						</c:forEach>
-					</ul>
-				</div>
+	<jsp:include page="../default/paginationAdmin.jsp"></jsp:include>
+	
 			</div>
 			<!-- btn management -->
 			<div class="col-11 row justify-content-start"
 				style="margin-top: 1.5em; margin-bottom: 1em">
-				<input id="add" type="button" name="" value="Add Account"
+				<input id="add" type="button" value="Add Account"
 					data-toggle="modal" data-target="#myModal-add"
 					style="padding: 0.8em 1em; background-color: #066310; color: white; border: none; border-radius: 0.5em; margin-right: 2em">
-				<input id="delete" type="button" class="account" value="Delete Account"
+				<input id="lockAccount" type="button"  value="Lock Account"
+					style="padding: 0.8em 1em; background-color: #c9310c; color: white; border: none; border-radius: 0.5em; margin-right: 2em">
+				<input id="unlockAccount" type="button" value="Unlock Account"
+					style="padding: 0.8em 1em; background-color: blue; color: white; border: none; border-radius: 0.5em; margin-right: 2em">
+				<input id="deleteAccount" type="button" class="account" value="Delete Account"
 					style="padding: 0.8em 1em; background-color: #F70000; color: white; border: none; border-radius: 0.5em; margin-right: 2em">
 			</div>
 		</div>
@@ -148,8 +119,8 @@
 				<div class="modal-header" style="background-color: #035904">
 					<h4 class="modal-title" style="color: white">Add Account</h4>
 				</div>
-				<form action="admin/themaccount" method="POST"
-					modelAttribute="account" id="form-them" accept-charset="UTF-8">
+				<form action="${pageContext.request.contextPath}/admin/accountManagement/addAccount" method="POST"
+					modelAttribute="account" id="form-them" accept-charset="UTF-8" enctype="multipart/form-data">
 					<div class="modal-body">
 						<div class="input-modal row form-group">
 							<span class="col-2" style="line-height: 35px">Họ tên</span> <input
@@ -169,8 +140,8 @@
 							</select>
 						</div>
 						<div class="input-modal row form-group">
-							<span class="col-2" style="line-height: 35px">Username</span><input
-								type="file" name="Avatar" class="form-control col-9">
+							<span class="col-2" style="line-height: 35px">Avatar</span><input
+								type="file" name="avt" class="form-control col-9">
 						</div>
 						<div class="input-modal row form-group">
 							<span class="col-2" style="line-height: 35px">Username</span><input
@@ -202,8 +173,8 @@
 		</div>
 	</div>
 	
-<!-- 	<script type="text/javascript" src="resources/js/jquery-3.3.1.min.js"></script> -->
-	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script type="text/javascript"
+		src='<c:url value="/resources/js/jquery-3.2.1.min.js"></c:url>'></script>
 
 	<script type="text/javascript" src="../../resources/js/js-for-admin-acc.js"></script>
 	<script type="text/javascript" src="../../resources/ajax/adminAjax.js"></script>

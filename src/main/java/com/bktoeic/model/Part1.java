@@ -28,10 +28,10 @@ public class Part1 {
 	private String RightAnswer;
 	private String Image;
 
-	@JsonBackReference
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "AudioID", nullable = false)
-	private Audio audio;
+	@JsonBackReference(value = "part1")
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST.MERGE)
+	@JoinColumn(name = "AudioID", nullable = true)
+	private Audio audioPart1;
 
 	public final int getId() {
 		return Id;
@@ -89,12 +89,12 @@ public class Part1 {
 		RightAnswer = rightAnswer;
 	}
 
-	public final Audio getAudio() {
-		return audio;
+	public final Audio getAudioPart1() {
+		return audioPart1;
 	}
 
-	public final void setAudio(Audio audio) {
-		this.audio = audio;
+	public final void setAudioPart1(Audio audioPart1) {
+		this.audioPart1 = audioPart1;
 	}
 
 	public final String getImage() {
