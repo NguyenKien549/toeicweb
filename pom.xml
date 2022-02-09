@@ -13,7 +13,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		<org.springframework-version>4.3.18.RELEASE</org.springframework-version>
 		<org.aspectj-version>1.7.4</org.aspectj-version>
 		<org.slf4j-version>1.7.5</org.slf4j-version>
-		<hibernate.version>4.3.5.Final</hibernate.version>
+		<hibernate.version>5.4.24.Final</hibernate.version>
 	</properties>
   <dependencies>
   
